@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">E-Presence</string>
+    <string name="welcome">Welcome</string>
+    <string name="login_register">Login/Register</string>
+</resources>
