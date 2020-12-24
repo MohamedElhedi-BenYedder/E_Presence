@@ -19,7 +19,7 @@ import java.util.List;
 
 public class Welcome extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
-    int AUTHUI_REQUEST_CODE = 120893221;
+    int AUTHUI_REQUEST_CODE = 1208;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
