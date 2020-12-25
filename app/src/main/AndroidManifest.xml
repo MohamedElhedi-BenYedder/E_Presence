@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="tn.dev.e_presence">
+    <uses-permission android:name="android.permission.CAMERA" />
+
 
     <application
         android:allowBackup="true"
@@ -9,9 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPresence">
-        <activity android:name=".EditProfile"></activity>
+        <activity android:name=".EditProfile" />
         <activity android:name=".CreateSession" />
         <activity android:name=".SessionDetails" />
+        <activity android:name=".ScanActivity"/>
         <activity android:name=".Settings" />
         <activity android:name=".Profile" />
         <activity android:name=".Dashboard" />
@@ -30,6 +33,12 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>
