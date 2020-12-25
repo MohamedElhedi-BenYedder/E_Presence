@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -31,11 +32,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         UpdateListofSessions();
         SetDatePicker();
         SetUpBottomAppBarMenu();
-
-
-
-
-
 
 
 
@@ -126,5 +122,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         Toast.makeText(this,dateSelected.toString(),Toast.LENGTH_SHORT).show();
 
 
+    }
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+        startActivity(new Intent(getApplicationContext(),ScanActivity.class));
     }
 }
