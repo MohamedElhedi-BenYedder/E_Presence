@@ -67,8 +67,11 @@
             android:text="Profile"/>
 
         <TextView
+            android:id="@+id/btn_editprofile"
             style="@style/viewParent.headerText.settingsTextIcon"
+            android:clickable="true"
             android:drawableLeft="@drawable/ic_edit_profile"
+            android:onClick="onClick"
             android:text="Edit Profile" />
 
         <TextView
@@ -96,11 +99,14 @@
             android:drawableLeft="@drawable/ic_languages"
             android:text="Language" />
 
-        <TextView
-            style="@style/viewParent.headerText.settingsTextIcon"
-            android:drawableLeft="@drawable/ic_logout"
-            android:text="Logout" />
 
+        <TextView
+            android:id="@+id/btn_logout"
+            style="@style/viewParent.headerText.settingsTextIcon"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ic_logout"
+            android:onClick="onClick"
+            android:text="Logout" />
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"

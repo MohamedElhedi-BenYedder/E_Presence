@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:actionBarNavMode="list"
     tools:context=".SessionDetails">
 
 
@@ -15,12 +14,12 @@
         android:layout_height="wrap_content"
 
         android:layout_gravity="center"
+        android:layout_marginStart="14.7dp"
         android:layout_marginLeft="14.7dp"
         android:layout_marginTop="35.7dp"
         android:text="Create New Session"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:layout_marginStart="14.7dp" />
+        android:textSize="18sp" />
 
 
     <LinearLayout
@@ -32,19 +31,19 @@
         <ImageView
             android:layout_width="90.3dp"
             android:layout_height="16.3dp"
+            android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
 
-            android:layout_marginStart="16dp" />
+            android:layout_marginTop="16dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1.7dp"
+            android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="8.3dp"
             android:layout_marginRight="16dp"
-            android:background="#efefef"
-            android:layout_marginStart="15dp" />
+            android:background="#efefef" />
 
 
         <LinearLayout
@@ -293,7 +292,8 @@
             android:layout_marginRight="40dp"
             android:layout_weight="1"
             android:shadowColor="#FFFFFF"
-            android:text="OK" />
+            android:text="OK"
+            app:iconTintMode="add" />
 
     </LinearLayout>
 
