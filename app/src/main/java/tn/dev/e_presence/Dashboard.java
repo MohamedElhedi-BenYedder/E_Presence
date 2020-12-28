@@ -37,7 +37,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     private int REQUEST_CAMERA=1;
-    private String Scane_res;
+    private int Cur_pos;
+    private String Scane_res="hindi";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,10 +61,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(Dashboard.this, "testclick", Toast.LENGTH_SHORT).show();
+                Cur_pos=position;
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent intent = new Intent(Dashboard.this ,ScanActivity.class);
-                    Adapter.getItem(position).setFlag(true);
-                    Adapter.notifyDataSetChanged();
+                    /*Adapter.getItem(position).setFlag(true);
+                    Adapter.notifyDataSetChanged();*/
                     startActivityForResult(intent,0);}
                 else{
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
@@ -76,6 +78,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
 
             }
         });
+        Log.v("qr_res",Scane_res);
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
         if(incommingMessages != null)
@@ -161,7 +164,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
                     Barcode barcode = data.getParcelableExtra("barcode");
                     //res.setText(barcode.displayValue);
                     Scane_res=barcode.displayValue;
-                    Log.v("qr_res",barcode.displayValue);
+                    Log.v("qr_res",Scane_res);
+                    if (Scane_res.equals("Wael Mhimdi")){
+                        Adapter.getItem(Cur_pos).setFlag(true);
+                        Adapter.notifyDataSetChanged();
+                    }
 
                 }
             }
