@@ -2,4 +2,10 @@
     <string name="app_name">E-Presence</string>
     <string name="welcome">Welcome</string>
     <string name="login_register">Login/Register</string>
+    <string name="nom_prenom">Nom Prenom</string>
+    <string name="nom">Nom</string>
+    <string name="todo">TODO</string>
+    <string name="nom">Nom</string>
+    <string name="prenom">prenom</string>
+    <string name="email">Email</string>
 </resources>
