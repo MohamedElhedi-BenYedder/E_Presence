@@ -67,7 +67,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
                 else{
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
                         Toast.makeText(Dashboard.this,
-                                "Camera permission is needed ",
+                                "Camera permission is needed",
                                 Toast.LENGTH_SHORT).show();
                     }
                     ActivityCompat.requestPermissions(Dashboard.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
