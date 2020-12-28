@@ -1,11 +1,15 @@
 package tn.dev.e_presence;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.LinearLayoutCompat;
 
 public class SessionAdapter extends BaseAdapter {
     Activity mActivity;
@@ -41,6 +45,7 @@ public class SessionAdapter extends BaseAdapter {
         TextView tv_subject=oneSessionItem.findViewById(R.id.tv_subject);
         TextView tv_group=oneSessionItem.findViewById(R.id.tv_group);
         TextView tv_presential=oneSessionItem.findViewById(R.id.tv_presential);
+        LinearLayout ll =oneSessionItem.findViewById(R.id.ll);
 
         Session S=this.getItem(position);
         tv_start.setText(S.getStart());
@@ -52,8 +57,9 @@ public class SessionAdapter extends BaseAdapter {
         if (S.isPresential()) tv_presential.setText("Yes");
 
         else tv_presential.setText("No");
+        if(S.isFlag()) ll.setBackgroundColor(Color.GREEN);
 
-
-        return oneSessionItem;
+            return oneSessionItem;
     }
+
 }

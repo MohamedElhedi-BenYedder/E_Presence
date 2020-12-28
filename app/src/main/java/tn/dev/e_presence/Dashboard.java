@@ -62,6 +62,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
                 //Toast.makeText(Dashboard.this, "testclick", Toast.LENGTH_SHORT).show();
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent intent = new Intent(Dashboard.this ,ScanActivity.class);
+                    if(Adapter.getItem(position).isFlag()) parent.getChildAt(position).setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                     startActivityForResult(intent,0);}
                 else{
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){

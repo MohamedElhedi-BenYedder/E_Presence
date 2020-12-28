@@ -10,26 +10,44 @@ public class Session {
     private String Teacher;
     private String Subject;
     private boolean Presential;
+    private boolean Flag;
 
-    public Session(int sID, String day, String start, String end, String classroom,String group, String teacher, String subject, boolean presential) {
-        SID = sID;
+    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential, boolean flag) {
+        this.SID = SID;
         Day = day;
         Start = start;
         End = end;
         Classroom = classroom;
-        Group=group;
+        Group = group;
         Teacher = teacher;
         Subject = subject;
         Presential = presential;
+        Flag = flag;
+    }
+    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential) {
+        this.SID = SID;
+        Day = day;
+        Start = start;
+        End = end;
+        Classroom = classroom;
+        Group = group;
+        Teacher = teacher;
+        Subject = subject;
+        Presential = presential;
+        Flag =false;
     }
 
     public int getSID() {
         return SID;
     }
 
-    public void setSID(int sID) { SID = sID; }
+    public void setSID(int SID) {
+        this.SID = SID;
+    }
 
-    public String getDay() { return Day; }
+    public String getDay() {
+        return Day;
+    }
 
     public void setDay(String day) {
         Day = day;
@@ -71,13 +89,17 @@ public class Session {
         return Teacher;
     }
 
-    public void setTeacher(String teacher) { Teacher = teacher; }
+    public void setTeacher(String teacher) {
+        Teacher = teacher;
+    }
 
     public String getSubject() {
         return Subject;
     }
 
-    public void setSubject(String subject) { Subject = subject; }
+    public void setSubject(String subject) {
+        Subject = subject;
+    }
 
     public boolean isPresential() {
         return Presential;
@@ -85,5 +107,13 @@ public class Session {
 
     public void setPresential(boolean presential) {
         Presential = presential;
+    }
+
+    public boolean isFlag() {
+        return Flag;
+    }
+
+    public void setFlag(boolean flag) {
+        Flag = flag;
     }
 }
