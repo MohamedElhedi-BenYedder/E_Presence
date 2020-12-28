@@ -57,7 +57,7 @@ public class SessionAdapter extends BaseAdapter {
         if (S.isPresential()) tv_presential.setText("Yes");
 
         else tv_presential.setText("No");
-        if(S.isFlag()) ll.setBackgroundColor(Color.GREEN);
+        if(S.isFlag()) ll.setBackgroundColor(mActivity.getResources().getColor(R.color.colorPrimary));
 
             return oneSessionItem;
     }
