@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.Nullable;
@@ -11,11 +12,17 @@ import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Welcome extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
@@ -60,10 +67,30 @@ public class Welcome extends AppCompatActivity {
                 //Checking for User (New/Old)
                 if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp()) {
                     //This is a New User
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    String UserId=user.getUid();
+                    Map<String, Object> RegDoc = new HashMap<>();
+                    // Create a new user with a first and last name
+                    RegDoc.put("UserId", UserId);
+                    // Add a new document with a generated ID
+                    db.collection("users")
+                            .add(RegDoc)
+                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                @Override
+                                public void onSuccess(DocumentReference documentReference) {
+                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding document", e);
+                                }
+                            });
+
                 } else {
                     //This is a returning user
                 }
-
                 Intent intent = new Intent(this, Home.class);
                 startActivity(intent);
                 this.finish();
