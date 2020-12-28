@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -36,6 +37,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     private int REQUEST_CAMERA=1;
+    private String Scane_res;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -148,6 +150,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         });
     }
 
+    //Scan Fonction
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode==0){
@@ -155,19 +158,18 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
                 if (data!=null){
                     Barcode barcode = data.getParcelableExtra("barcode");
                     //res.setText(barcode.displayValue);
-
+                    Scane_res=barcode.displayValue;
+                    Log.v("qr_res",barcode.displayValue);
 
                 }
-
-
             }
         }
-
-
         else{
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+
+    //Camera Permission Function
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
