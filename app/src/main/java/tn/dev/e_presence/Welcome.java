@@ -71,22 +71,13 @@ public class Welcome extends AppCompatActivity {
                     String UserId=user.getUid();
                     Map<String, Object> RegDoc = new HashMap<>();
                     // Create a new user with a first and last name
-                    RegDoc.put("UserId", UserId);
+                    RegDoc.put("Full Name", user.getDisplayName());
+                    RegDoc.put("Email", user.getEmail());
+                    RegDoc.put("Phone Number", user.getPhoneNumber());
+                    RegDoc.put("Photo", user.getPhotoUrl());
                     // Add a new document with a generated ID
-                    db.collection("users")
-                            .add(RegDoc)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding document", e);
-                                }
-                            });
+                    db.collection("User").document(user.getUid())
+                            .set(RegDoc);
 
                 } else {
                     //This is a returning user
