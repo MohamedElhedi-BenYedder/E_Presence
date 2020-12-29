@@ -2,7 +2,7 @@
 <resources>
     <color name="c1">#FF9D46FF</color>
     <color name="c2">#FF5454</color>
-    <color name="colorPrimary">##FF5454</color>
+    <color name="colorPrimary">#FF5454</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#241514</color>
     <!--colors for light mode-->
