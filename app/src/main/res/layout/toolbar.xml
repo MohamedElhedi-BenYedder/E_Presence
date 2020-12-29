@@ -43,7 +43,6 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_below="@+id/linear_1"
-        android:paddingright="8dp"
-        android:paddingleft="8dp"/>
+         />
 
 </RelativeLayout>
