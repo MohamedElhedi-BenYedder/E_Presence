@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -31,7 +32,6 @@ public class Welcome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             startActivity(new Intent(this, Home.class));
             this.finish();
@@ -40,10 +40,13 @@ public class Welcome extends AppCompatActivity {
 
     public void handleLoginRegister(View view) {
 
-        List<AuthUI.IdpConfig> providers = Arrays.asList(
+        List<AuthUI.IdpConfig> providers;
+        providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
+                new AuthUI.IdpConfig.MicrosoftBuilder().build(),
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
                 new AuthUI.IdpConfig.PhoneBuilder().build()
+
         );
 
         Intent intent = AuthUI.getInstance()
@@ -53,6 +56,7 @@ public class Welcome extends AppCompatActivity {
                 .setLogo(R.drawable.ic_logo)
                 .setAlwaysShowSignInMethodScreen(true)
                 .setIsSmartLockEnabled(false)
+                .setTheme(R.style.AppThemeFirebaseAuth)
                 .build();
 
         startActivityForResult(intent, AUTHUI_REQUEST_CODE);

@@ -7,9 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:ignore="ContentDescription"
-    tools:context=".Home">
-
-   <include layout="@layout/toolbar" />
+    tools:context=".Profile">
 
    <LinearLayout
       android:layout_width="match_parent"
@@ -18,10 +16,10 @@
        android:paddingTop="15dp"
       >
 
-      <de.hdodenhof.circleimageview.CircleImageView
+      <ImageView
           android:layout_width="90dp"
           android:layout_height="90dp"
-          android:src="@drawable/images"
+          app:srcCompat="@drawable/ic_person"
           android:layout_gravity="center"/>
 
       <TextView
@@ -33,7 +31,7 @@
           android:textSize="20sp"
           android:textStyle="bold" />
 
-      <view
+      <View
           android:layout_width="match_parent"
           android:layout_height="1dp"
           android:background="@color/colorAccent"
@@ -51,7 +49,7 @@
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="50dp"
-            android:layout_height="44dp"
+            android:layout_height="match_parent"
             android:contentDescription="@string/todo"
             app:srcCompat="@drawable/ic_person" />
 
@@ -70,7 +68,7 @@
             android:gravity="center"
             android:text="@string/Text" />
 
-        <view
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorAccent"
@@ -109,7 +107,7 @@
             android:text="@string/prenom"
             android:textSize="14sp" />
 
-        <view
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/colorAccent"
@@ -176,10 +174,44 @@
             android:gravity="center"
             android:text="@string/Text" />
 
-        <view
+        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorAccent" />
+
+
     </LinearLayout>
-    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp">
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bnb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:verticalScrollbarPosition="defaultPosition"
+            app:fabAlignmentMode="end"
+            app:fabCradleMargin="20dp"
+            app:fabCradleRoundedCornerRadius="20dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:hideOnScroll="true"
+            app:menu="@menu/bottom_app_bar_main_menu" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_anchor="@id/bnb"
+            app:menu="@menu/bottom_app_bar_main_menu"
+            app:srcCompat="@drawable/ic_add" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</LinearLayout>
+
