@@ -4,15 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FF8A80"
     android:gravity="center"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="243dp"
-        android:layout_height="209dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_logo"
         tools:layout_editor_absoluteX="77sp"
         tools:layout_editor_absoluteY="51sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:fontFamily="@font/bangers"
+        android:gravity="center"
+        android:text="E-Presence"
+        android:textColor="#090100"
+        android:textSize="70sp" />
 
 </LinearLayout>
