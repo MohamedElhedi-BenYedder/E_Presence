@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="c1">#FF9D46FF</color>
-    <color name="c2">#FF6200EA</color>
-    <color name="colorPrimary">#d68178</color>
+    <color name="c2">#FF5454</color>
+    <color name="colorPrimary">#FF5454</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#241514</color>
     <!--colors for light mode-->
