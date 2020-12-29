@@ -1,18 +1,29 @@
 package tn.dev.e_presence;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
+import com.google.android.gms.common.api.CommonStatusCodes;
+import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -25,6 +36,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     private HorizontalPicker picker;
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
+    private int REQUEST_CAMERA=1;
+    private int Cur_pos;
+    private String Scane_res="hindi";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +56,29 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         SessionList = new ListOfSessions();
         Adapter = new SessionAdapter(Dashboard.this,SessionList);
         lv_Session.setAdapter(Adapter);
+        lv_Session.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //Toast.makeText(Dashboard.this, "testclick", Toast.LENGTH_SHORT).show();
+                Cur_pos=position;
+                if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                    Intent intent = new Intent(Dashboard.this ,ScanActivity.class);
+                    /*Adapter.getItem(position).setFlag(true);
+                    Adapter.notifyDataSetChanged();*/
+                    startActivityForResult(intent,0);}
+                else{
+                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)){
+                        Toast.makeText(Dashboard.this,
+                                "Camera permission is needed",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    ActivityCompat.requestPermissions(Dashboard.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
+             }
+
+            }
+        });
+        Log.v("qr_res",Scane_res);
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
         if(incommingMessages != null)
@@ -61,6 +98,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
             SessionList.getSessionList().add(S);
             // update adapter
             Adapter.notifyDataSetChanged();
+
         };
     }
 
@@ -117,13 +155,52 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         });
     }
 
+    //Scan Fonction
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode==0){
+            if (resultCode== CommonStatusCodes.SUCCESS) {
+                if (data!=null){
+                    Barcode barcode = data.getParcelableExtra("barcode");
+                    //res.setText(barcode.displayValue);
+                    Scane_res=barcode.displayValue;
+                    Log.v("qr_res",Scane_res);
+                    if (Scane_res.equals("Wael Mhimdi")){
+                        Adapter.getItem(Cur_pos).setFlag(true);
+                        Adapter.notifyDataSetChanged();
+                    }
+
+                }
+            }
+        }
+        else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    //Camera Permission Function
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent(this, ScanActivity.class);
+                startActivityForResult(intent, 0);
+            } else {
+                Toast.makeText(this, "Permission was not granted", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        }
+    }
     @Override
     public  void onDateSelected(DateTime dateSelected){
-        Toast.makeText(this,dateSelected.toString(),Toast.LENGTH_SHORT).show();
-
+        Toast.makeText(this, dateSelected.toString("dd MMMM yyyy"), Toast.LENGTH_SHORT).show();
+        
+        
 
     }
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    /*protected void onListItemClick(ListView l, View v, int position, long id) {
         startActivity(new Intent(getApplicationContext(),ScanActivity.class));
-    }
+    }*/
 }

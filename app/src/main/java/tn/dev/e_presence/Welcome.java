@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.Nullable;
@@ -11,11 +12,17 @@ import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Welcome extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
@@ -60,10 +67,21 @@ public class Welcome extends AppCompatActivity {
                 //Checking for User (New/Old)
                 if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp()) {
                     //This is a New User
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    String UserId=user.getUid();
+                    Map<String, Object> RegDoc = new HashMap<>();
+                    // Create a new user with a first and last name
+                    RegDoc.put("Full Name", user.getDisplayName());
+                    RegDoc.put("Email", user.getEmail());
+                    RegDoc.put("Phone Number", user.getPhoneNumber());
+                    RegDoc.put("Photo", user.getPhotoUrl());
+                    // Add a new document with a generated ID
+                    db.collection("User").document(user.getUid())
+                            .set(RegDoc);
+
                 } else {
                     //This is a returning user
                 }
-
                 Intent intent = new Intent(this, Home.class);
                 startActivity(intent);
                 this.finish();
