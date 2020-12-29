@@ -8,4 +8,7 @@
     <string name="nom">Nom</string>
     <string name="prenom">prenom</string>
     <string name="email">Email</string>
+    <string name="nom">Nom</string>
+    <string name="todo">TODO</string>
+    <string name="Text">TextView</string>
 </resources>

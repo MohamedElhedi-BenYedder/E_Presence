@@ -1,37 +1,185 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:ignore="ContentDescription"
     tools:context=".Home">
 
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bnb"
+   <include layout="@layout/toolbar" />
+
+   <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+       android:paddingTop="15dp"
+      >
+
+      <de.hdodenhof.circleimageview.CircleImageView
+          android:layout_width="90dp"
+          android:layout_height="90dp"
+          android:src="@drawable/images"
+          android:layout_gravity="center"/>
+
+      <TextView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:gravity="center"
+          android:text="@string/nom_prenom"
+          android:textColor="@color/colorAccent"
+          android:textSize="20sp"
+          android:textStyle="bold" />
+
+      <view
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/colorAccent"
+         android:layout_marginTop="16dp"/>
+   </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:verticalScrollbarPosition="defaultPosition"
-        app:fabAlignmentMode="end"
-        app:fabCradleMargin="20dp"
-        app:fabCradleRoundedCornerRadius="20dp"
-        app:fabCradleVerticalOffset="10dp"
-        app:hideOnScroll="true"
-        app:menu="@menu/bottom_app_bar_main_menu" />
+        android:layout_height="46dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_add"
-        app:layout_anchor="@id/bnb" />
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="50dp"
+            android:layout_height="44dp"
+            android:contentDescription="@string/todo"
+            app:srcCompat="@drawable/ic_person" />
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile"
-        android:textSize="100dp" />
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="@string/nom"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="208dp"
+            android:layout_height="35dp"
+            android:gravity="center"
+            android:text="@string/Text" />
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="67dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+
+        <ImageView
+            android:id="@+id/iconn"
+            android:layout_width="48dp"
+            android:layout_height="58dp"
+            app:srcCompat="@drawable/ic_person" />
+
+        <TextView
+            android:id="@+id/textprenom"
+            android:layout_width="143dp"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:text="Prenom"
+            android:textSize="@dimen/text"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/pr"
+            android:layout_width="214dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/prenom"
+            android:textSize="14sp" />
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent"
+            android:layout_marginTop="16dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:id="@+id/icon1"
+            android:layout_width="40dp"
+            android:layout_height="34dp"
+            android:contentDescription="TODO"
+            app:srcCompat="@drawable/ic_email" />
+
+        <TextView
+            android:id="@+id/textpr"
+            android:layout_width="151dp"
+            android:layout_height="match_parent"
+            android:gravity="center|top"
+            android:text="Email"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mail1"
+            android:layout_width="205dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Mail"
+            android:textSize="14sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="61dp"
+            android:layout_height="44dp"
+            app:srcCompat="@drawable/ic_phone" />
+
+        <TextView
+            android:layout_width="160dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Numéro de téléphone"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView64"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/Text" />
+
+        <view
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="16dp"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
+    </LinearLayout>
