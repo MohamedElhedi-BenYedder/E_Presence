@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".Home">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_school"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bnb"
         android:layout_width="match_parent"
@@ -26,12 +31,5 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/ic_add"
         app:layout_anchor="@id/bnb" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Home"
-        android:textSize="50sp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

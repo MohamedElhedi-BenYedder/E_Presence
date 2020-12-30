@@ -17,7 +17,7 @@
         tools:layout_editor_absoluteY="51sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_email"
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:fontFamily="@font/bangers"

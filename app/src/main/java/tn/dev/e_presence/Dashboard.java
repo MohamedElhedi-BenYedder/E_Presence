@@ -74,7 +74,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
                                 Toast.LENGTH_SHORT).show();
                     }
                     ActivityCompat.requestPermissions(Dashboard.this,new String[]{Manifest.permission.CAMERA},REQUEST_CAMERA);
-             }
+                }
 
             }
         });
@@ -102,26 +102,26 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         };
     }
 
-        private void SetDatePicker()
-        {
-            picker= (HorizontalPicker) findViewById(R.id.datePicker);
-            picker.setListener(this)
-                    .setDays(120)
-                    .setOffset(7)
-                    .setDateSelectedColor(Color.BLACK)
-                    .setDateSelectedTextColor(Color.WHITE)
-                    .setMonthAndYearTextColor(Color.BLACK)
-                    .setTodayButtonTextColor(Color.WHITE)
-                    .setTodayDateTextColor(Color.WHITE)
-                    .setTodayDateBackgroundColor(Color.GRAY)
-                    .setUnselectedDayTextColor(Color.BLACK)
-                    .setDayOfWeekTextColor(Color.BLACK)
-                    .setUnselectedDayTextColor(getResources().getColor(R.color.primaryTextColor))
-                    .showTodayButton(false)
-                    .init();
-            picker.setBackgroundColor(getResources().getColor(R.color.contentBodyColor));
-            picker.setDate(new DateTime());
-        }
+    private void SetDatePicker()
+    {
+        picker= (HorizontalPicker) findViewById(R.id.datePicker);
+        picker.setListener(this)
+                .setDays(120)
+                .setOffset(7)
+                .setDateSelectedColor(Color.BLACK)
+                .setDateSelectedTextColor(Color.WHITE)
+                .setMonthAndYearTextColor(Color.BLACK)
+                .setTodayButtonTextColor(Color.WHITE)
+                .setTodayDateTextColor(Color.WHITE)
+                .setTodayDateBackgroundColor(Color.GRAY)
+                .setUnselectedDayTextColor(Color.BLACK)
+                .setDayOfWeekTextColor(Color.BLACK)
+                .setUnselectedDayTextColor(getResources().getColor(R.color.primaryTextColor))
+                .showTodayButton(false)
+                .init();
+        picker.setBackgroundColor(getResources().getColor(R.color.contentBodyColor));
+        picker.setDate(new DateTime());
+    }
     private void SetUpBottomAppBarMenu( )
     {
         //find id
@@ -196,8 +196,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     @Override
     public  void onDateSelected(DateTime dateSelected){
         Toast.makeText(this, dateSelected.toString("dd MMMM yyyy"), Toast.LENGTH_SHORT).show();
-        
-        
+
+
 
     }
     /*protected void onListItemClick(ListView l, View v, int position, long id) {

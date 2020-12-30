@@ -1,15 +1,12 @@
 package tn.dev.e_presence;
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import androidx.appcompat.widget.LinearLayoutCompat;
 
 public class SessionAdapter extends BaseAdapter {
     Activity mActivity;
@@ -37,7 +34,7 @@ public class SessionAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View oneSessionItem;
         LayoutInflater inflaytor= (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        oneSessionItem = inflaytor.inflate(R.layout.activity_session_details,parent,false);
+        oneSessionItem = inflaytor.inflate(R.layout.item_session,parent,false);
         TextView tv_start=oneSessionItem.findViewById(R.id.tv_start);
         TextView tv_end=oneSessionItem.findViewById(R.id.tv_end);
         TextView tv_classroom=oneSessionItem.findViewById(R.id.tv_classroom);

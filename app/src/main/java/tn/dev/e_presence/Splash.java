@@ -25,7 +25,7 @@ public class Splash extends AppCompatActivity {
         ButtomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation );
 
         image = findViewById(R.id.imageView2);
-        logo = findViewById(R.id.textView2);
+        logo = findViewById(R.id.tv_email);
 
         image.setAnimation(topAnim);
         logo.setAnimation(ButtomAnim);

@@ -1,16 +1,13 @@
 package tn.dev.e_presence;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Switch;
-import android.widget.TimePicker;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class CreateSession extends AppCompatActivity {
     Button btn_ok,btn_cancel;
@@ -20,7 +17,7 @@ public class CreateSession extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_session);
+        setContentView(R.layout.activity_add_session);
         btn_ok=findViewById(R.id.btn_ok);
         et_start=findViewById(R.id.et_start);
         et_end=findViewById(R.id.et_End);

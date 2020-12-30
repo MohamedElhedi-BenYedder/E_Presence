@@ -1,30 +1,44 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 public class Home extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private CollectionReference SchoolRef =db.collection("School");
+    private SchoolAdapter schoolAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        SetUpBottomAppBarMenu();
-
+        setUpBottomAppBarMenu();
+        setUpRecyclerView();
     }
-        private void SetUpBottomAppBarMenu( )
+        private void setUpBottomAppBarMenu( )
         {
             //find id
             bottomAppBar=findViewById(R.id.bnb);
+           // bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
+
             //click event over Bottom bar menu item
             bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
                 @Override
@@ -49,6 +63,30 @@ public class Home extends AppCompatActivity {
 
             });
         }
+        private void setUpRecyclerView()
+        {
+            Query query = SchoolRef.orderBy("DisplayName");
+            FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
+                    .setQuery(query,School.class)
+                    .build();
+            schoolAdapter=new SchoolAdapter(options);
+            RecyclerView recyclerView = findViewById(R.id.rv_school);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(schoolAdapter);
 
 
+        }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        schoolAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        schoolAdapter.stopListening();
+    }
 }
