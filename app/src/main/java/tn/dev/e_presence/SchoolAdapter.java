@@ -29,10 +29,10 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder>
 
     @Override
     protected void onBindViewHolder(@NonNull SchoolHolder holder, int position, @NonNull School model) {
-        holder.tv_display_name.setText(model.getDisplayName());
+        try{ holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_location.setText(model.getLocation());
-        holder.iv_photo.setImageURI(Uri.parse(model.getPhoto()));
-        holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
+         holder.iv_photo.setImageURI(Uri.parse(model.getPhoto()));
+        holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);} catch (Exception e) { };
     }
 
     @NonNull
