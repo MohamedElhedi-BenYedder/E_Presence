@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -32,6 +37,8 @@ public class Home extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         setUpBottomAppBarMenu();
         setUpRecyclerView();
+        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this::AddSchool);
     }
         private void setUpBottomAppBarMenu( )
         {
@@ -76,6 +83,14 @@ public class Home extends AppCompatActivity {
             recyclerView.setAdapter(schoolAdapter);
 
 
+        }
+        private  void AddSchool(View v)
+        {
+
+            Intent intent =new Intent(Home.this,AddSchool.class);
+            intent.putExtra("first",true);
+            startActivity(intent);
+            finish();
         }
 
     @Override

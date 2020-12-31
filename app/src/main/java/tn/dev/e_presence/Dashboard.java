@@ -43,7 +43,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        UpdateListofSessions();
+        //UpdateListofSessions();
         SetDatePicker();
         SetUpBottomAppBarMenu();
 

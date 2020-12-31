@@ -45,7 +45,7 @@ public class UserAdapter extends BaseAdapter {
         tv_display_name.setText(U.getDisplayName());
         tv_gender.setText(U.getGender());
         tv_email.setText(U.getEmail());
-        iv_photo.setImageURI(U.getPhoto());
+//        iv_photo.setImageURI(U.getPhoto());
         ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
         return oneUserItem;
     }

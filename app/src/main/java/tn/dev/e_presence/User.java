@@ -2,27 +2,31 @@ package tn.dev.e_presence;
 
 import android.net.Uri;
 
-public class User {
-    private String Uid;
-    private String DisplayName;
-    private String Name;
-    private String Surname;
-    private String Email;
-    private String Gender;
-    private Uri Photo;
+import java.util.ArrayList;
+import java.util.List;
 
-    public User(String uid, String displayName, String name, String surname, String email, String gender, Uri photo) {
-        Uid = uid;
+public class User {
+    private String DisplayName;
+    private String Email;
+    private int PhoneNumber;
+    private String Gender;
+    private String Photo;
+    private List<String> AdminIN;
+    private List<String> StudentIN;
+    private List<String> TeacherIN;
+
+    public User(String displayName, String email, int phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
         DisplayName = displayName;
-        Name = name;
-        Surname = surname;
         Email = email;
+        PhoneNumber = phoneNumber;
         Gender = gender;
         Photo = photo;
+        AdminIN = adminIN;
+        StudentIN = studentIN;
+        TeacherIN = teacherIN;
     }
 
-    public String getUid() {
-        return Uid;
+    public User() {
     }
 
     public String getDisplayName() {
@@ -31,22 +35,6 @@ public class User {
 
     public void setDisplayName(String displayName) {
         DisplayName = displayName;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
-
-    public String getSurname() {
-        return Surname;
-    }
-
-    public void setSurname(String surname) {
-        Surname = surname;
     }
 
     public String getEmail() {
@@ -65,11 +53,56 @@ public class User {
         this.Gender = gender;
     }
 
-    public Uri getPhoto() {
+    public String getPhoto() {
         return Photo;
     }
 
-    public void setPhoto(Uri photo) {
+    public void setPhoto(String photo) {
         Photo = photo;
+    }
+
+    public int getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public List<String> getAdminIN() {
+        return AdminIN;
+    }
+
+    public void setAdminIN(List<String> adminIN) {
+        AdminIN = adminIN;
+    }
+
+    public List<String> getStudentIN() {
+        return StudentIN;
+    }
+
+    public void setStudentIN(List<String> studentIN) {
+        StudentIN = studentIN;
+    }
+
+    public List<String> getTeacherIN() {
+        return TeacherIN;
+    }
+
+    public void setTeacherIN(List<String> teacherIN) {
+        TeacherIN = teacherIN;
+    }
+    public void Copy(User other)
+    {
+        other.DisplayName=this.DisplayName;
+        other.Email=this.Email;
+        other.Gender=this.Gender;
+        other.PhoneNumber=this.PhoneNumber;
+        other.Photo=this.Photo;
+        other.AdminIN =new ArrayList<String>(this.AdminIN);
+        other.StudentIN =new ArrayList<String>(this.StudentIN);
+        other.TeacherIN =new ArrayList<String>(this.TeacherIN);
+
+
     }
 }

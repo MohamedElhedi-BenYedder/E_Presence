@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -75,10 +77,14 @@ public class Welcome extends AppCompatActivity {
                     String UserId=user.getUid();
                     Map<String, Object> RegDoc = new HashMap<>();
                     // Create a new user with a first and last name
-                    RegDoc.put("Full Name", user.getDisplayName());
+                    RegDoc.put("DisplayName", user.getDisplayName());
                     RegDoc.put("Email", user.getEmail());
-                    RegDoc.put("Phone Number", user.getPhoneNumber());
-                    RegDoc.put("Photo", user.getPhotoUrl());
+                    RegDoc.put("PhoneNumber", user.getPhoneNumber());
+                    RegDoc.put("Photo", "School/"+user.getUid());
+                    RegDoc.put("Gender", "Male");
+                    RegDoc.put("AdminIN", new ArrayList<String>());
+                    RegDoc.put("StudentIN", new ArrayList<String>());
+                    RegDoc.put("TeacherIN", new ArrayList<String>());
                     // Add a new document with a generated ID
                     db.collection("User").document(user.getUid())
                             .set(RegDoc);

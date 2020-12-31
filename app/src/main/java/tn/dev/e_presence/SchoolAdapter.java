@@ -42,6 +42,9 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder>
         return new SchoolHolder(oneSchoolItem);
     }
 
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
 
-
+    }
 }
