@@ -15,6 +15,8 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder>
 
     final static int ColorList[]={0,1,3};
     final static int ColorNumber=3;
+    final static int ImageList[]={R.drawable.ic_school,R.drawable.ic_school1,R.drawable.ic_school2};
+    final static int ImageNumber=3;
 
 
     /**
@@ -29,10 +31,12 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder>
 
     @Override
     protected void onBindViewHolder(@NonNull SchoolHolder holder, int position, @NonNull School model) {
-        try{ holder.tv_display_name.setText(model.getDisplayName());
+        holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_location.setText(model.getLocation());
-         holder.iv_photo.setImageURI(Uri.parse(model.getPhoto()));
-        holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);} catch (Exception e) { };
+         try{holder.iv_photo.setImageURI(Uri.parse(model.getPhoto()));}
+         catch(Exception e)
+         { holder.iv_photo.setImageResource(ImageList[position%ImageNumber]);}
+            holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
 
     @NonNull

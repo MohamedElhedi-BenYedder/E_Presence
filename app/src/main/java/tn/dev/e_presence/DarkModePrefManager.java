@@ -11,8 +11,7 @@ public class DarkModePrefManager {
     int PRIVATE_MODE = 0;
 
     // Shared preferences file name
-    private static final String PREF_NAME = "education-dark-mode";
-
+    private static final String PREF_NAME = "LightDarkMode";
     private static final String IS_NIGHT_MODE = "IsNightMode";
 
 
@@ -30,5 +29,6 @@ public class DarkModePrefManager {
     public boolean isNightMode() {
         return pref.getBoolean(IS_NIGHT_MODE, true);
     }
+    public boolean isLightMode() {return !isNightMode();}
 
 }

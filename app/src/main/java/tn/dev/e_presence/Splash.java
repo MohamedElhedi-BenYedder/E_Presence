@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class Splash extends AppCompatActivity {
     Animation topAnim,ButtomAnim;
@@ -20,6 +21,7 @@ public class Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        LoadLightDarkMode();// fonction to load dark mode or Light Mode . Don't delete it MohamedElhedi .
         setContentView(R.layout.activity_splash);
         topAnim = AnimationUtils.loadAnimation(this,R.anim.top_animation );
         ButtomAnim = AnimationUtils.loadAnimation(this,R.anim.bottom_animation );
@@ -40,5 +42,11 @@ public class Splash extends AppCompatActivity {
                 finish();
             }
         }, 3000);
+    }
+    void LoadLightDarkMode()
+    {
+        if(new DarkModePrefManager(this).isNightMode()){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
     }
 }
