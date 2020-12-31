@@ -3,6 +3,7 @@ package tn.dev.e_presence;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.MutableLiveData;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
@@ -60,6 +62,7 @@ public class AddSchool extends AppCompatActivity {
          tv_welcome_user=findViewById(R.id.tv_welcome_user);
          ib_photo = findViewById(R.id.ib_photo);
          fab=findViewById(R.id.fab);
+
 
 
 
@@ -99,8 +102,7 @@ public class AddSchool extends AppCompatActivity {
                                } else {
                                    db.document("School/"+et_display_name.getText().toString())
                                            .set(school);
-                                   Me.getAdminIN().add("School/"+et_display_name.getText().toString());
-                                   db.collection("User").document(user.getUid()).update((Map<String, Object>) Me);
+                                   updateDocumentArray();
 
                                    Intent intent = new Intent(AddSchool.this,SchoolPage.class);
                                    intent.putExtra("first",true);
@@ -170,18 +172,17 @@ public class AddSchool extends AppCompatActivity {
         });
 
     }
-    User loadUserInformation()
-    {
-        User curUser= new User();
-        DocumentReference docRef = db.collection("User").document(user.getUid());
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                User  auxUser = documentSnapshot.toObject(User.class);
-                auxUser.Copy(curUser);
-            }
-        });
+    public void updateDocumentArray() {
+        // [START update_document_array]
+        DocumentReference RF = db.collection("User").document(user.getUid());
 
-    return curUser;
+        // Atomically add a new region to the "regions" array field.
+        RF.update("AdminIN", FieldValue.arrayUnion(et_display_name.getText().toString()));
+
+        // Atomically remove a region from the "regions" array field.
+        //RF.update("AdminIN", FieldValue.arrayRemove("east_coast"));
+        // [END update_document_array]
     }
+
+
 }
