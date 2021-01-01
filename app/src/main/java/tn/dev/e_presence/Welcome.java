@@ -27,6 +27,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static tn.dev.e_presence.GV.createUser;
+
 public class Welcome extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
     int AUTHUI_REQUEST_CODE = 1208;
@@ -75,19 +77,7 @@ public class Welcome extends AppCompatActivity {
                     //This is a New User
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                     String UserId=user.getUid();
-                    Map<String, Object> RegDoc = new HashMap<>();
-                    // Create a new user with a first and last name
-                    RegDoc.put("DisplayName", user.getDisplayName());
-                    RegDoc.put("Email", user.getEmail());
-                    RegDoc.put("PhoneNumber", user.getPhoneNumber());
-                    RegDoc.put("Photo", "School/"+user.getUid());
-                    RegDoc.put("Gender", "Male");
-                    RegDoc.put("AdminIN", new ArrayList<String>());
-                    RegDoc.put("StudentIN", new ArrayList<String>());
-                    RegDoc.put("TeacherIN", new ArrayList<String>());
-                    // Add a new document with a generated ID
-                    db.collection("User").document(user.getUid())
-                            .set(RegDoc);
+                    createUser(UserId,user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", "School/"+UserId,  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());
 
                 } else {
                     //This is a returning user

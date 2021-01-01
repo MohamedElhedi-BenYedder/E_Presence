@@ -19,23 +19,22 @@
 
     </com.github.jhonnyx2012.horizontalpicker.HorizontalPicker>
 
-    <ListView
-        android:id="@+id/lv_session"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/datePicker"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="75dp"
-        android:clickable="true"
-        />
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
 
         android:layout_width="match_parent"
         android:layout_height="111dp"
+        android:layout_below="@+id/datePicker"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp">
+
+        <ListView
+            android:id="@+id/lv_session"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            android:clickable="true"
+            android:longClickable="true" />
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bnb"

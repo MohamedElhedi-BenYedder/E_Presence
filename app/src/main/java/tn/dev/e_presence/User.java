@@ -1,108 +1,108 @@
 package tn.dev.e_presence;
 
-import android.net.Uri;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private String DisplayName;
-    private String Email;
-    private int PhoneNumber;
-    private String Gender;
-    private String Photo;
-    private List<String> AdminIN;
-    private List<String> StudentIN;
-    private List<String> TeacherIN;
-
-    public User(String displayName, String email, int phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
-        DisplayName = displayName;
-        Email = email;
-        PhoneNumber = phoneNumber;
-        Gender = gender;
-        Photo = photo;
-        AdminIN = adminIN;
-        StudentIN = studentIN;
-        TeacherIN = teacherIN;
-    }
-
+    private String displayName;
+    private String email;
+    private String phoneNumber;
+    private String gender;
+    private String photo;
+    private List<String> adminIN;
+    private List<String> studentIN;
+    private List<String> teacherIN;
     public User() {
-
+        //public no-arg constructor needed
     }
+
+    public User(String displayName, String email, String phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
+        this.displayName = displayName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
+        this.photo = photo;
+        this.adminIN = adminIN;
+        this.studentIN = studentIN;
+        this.teacherIN = teacherIN;
+    }
+
+
 
     public String getDisplayName() {
-        return DisplayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        DisplayName = displayName;
+        return displayName;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
-    public void setEmail(String email) {
-        Email = email;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public String getGender() {
-        return Gender;
-    }
-
-    public void setGender(String gender) {
-        this.Gender = gender;
+        return gender;
     }
 
     public String getPhoto() {
-        return Photo;
-    }
-
-    public void setPhoto(String photo) {
-        Photo = photo;
-    }
-
-    public int getPhoneNumber() {
-        return PhoneNumber;
-    }
-
-    public void setPhoneNumber(int phoneNumber) {
-        PhoneNumber = phoneNumber;
+        return photo;
     }
 
     public List<String> getAdminIN() {
-        return AdminIN;
-    }
-
-    public void setAdminIN(List<String> adminIN) {
-        AdminIN = adminIN;
+        return adminIN;
     }
 
     public List<String> getStudentIN() {
-        return StudentIN;
-    }
-
-    public void setStudentIN(List<String> studentIN) {
-        StudentIN = studentIN;
+        return studentIN;
     }
 
     public List<String> getTeacherIN() {
-        return TeacherIN;
+        return teacherIN;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
+    public void setAdminIN(List<String> adminIN) {
+        this.adminIN = adminIN;
+    }
+
+    public void setStudentIN(List<String> studentIN) {
+        this.studentIN = studentIN;
     }
 
     public void setTeacherIN(List<String> teacherIN) {
-        TeacherIN = teacherIN;
+        this.teacherIN = teacherIN;
     }
+
     public void Copy(User other)
     {
-        other.DisplayName=this.DisplayName;
-        other.Email=this.Email;
-        other.Gender=this.Gender;
-        other.PhoneNumber=this.PhoneNumber;
-        other.Photo=this.Photo;
-        other.AdminIN =new ArrayList<String>(this.AdminIN);
-        other.StudentIN =new ArrayList<String>(this.StudentIN);
-        other.TeacherIN =new ArrayList<String>(this.TeacherIN);
+        other.displayName=this.displayName;
+        other.email=this.email;
+        other.gender=this.gender;
+        other.phoneNumber=this.phoneNumber;
+        other.photo=this.photo;
+        other.adminIN =new ArrayList<String>(this.adminIN);
+        other.studentIN =new ArrayList<String>(this.studentIN);
+        other.teacherIN =new ArrayList<String>(this.teacherIN);
 
 
     }

@@ -3,15 +3,17 @@ package tn.dev.e_presence;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.MutableLiveData;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -39,32 +41,39 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static tn.dev.e_presence.GV.getUser;
+
 public class AddSchool extends AppCompatActivity {
     private StorageReference mStorageRef;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    @Nullable private User modelCurrentUser = new User();
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     EditText et_display_name;
     EditText et_full_name;
     EditText et_description;
+    EditText et_location;
     TextView tv_welcome_user;
     ImageButton ib_photo ;
     FloatingActionButton fab;
-    User Me;
+    String photo="";
     String TAG= AddSchool.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_school);
+        //Getting all views needed
         Bundle incommingMessages =getIntent().getExtras();
          et_display_name =findViewById(R.id.et_display_name);
          et_full_name=findViewById(R.id.et_full_name);
          et_description=findViewById(R.id.et_description);
+         et_location=findViewById(R.id.et_location);
          tv_welcome_user=findViewById(R.id.tv_welcome_user);
+
          ib_photo = findViewById(R.id.ib_photo);
          fab=findViewById(R.id.fab);
 
-
-
+         this.getCurrentUserFromFirestore();
 
         ib_photo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -83,13 +92,19 @@ public class AddSchool extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Map<String, Object> school = new HashMap<>();
-                school.put("DisplayName",et_display_name.getText().toString());
-                school.put("FullName",et_full_name.getText().toString());
-                school.put("Description",et_description.getText().toString());
+                String displayName=et_display_name.getText().toString();
+                String location =et_location.getText().toString();
+                String fullName=et_full_name.getText().toString();
+                String Description=et_description.getText().toString();
+                school.put("DisplayName",displayName);
+                school.put("FullName",fullName);
+                school.put("Description",Description);
+                school.put("Location",location);
+                if(!photo.isEmpty())school.put("Photo",photo);
                 List<String> admins =new ArrayList<>();
                 admins.add(user.getUid());
                 school.put("Admins",admins);
-                if (incommingMessages.getBoolean("first"))
+                if ((incommingMessages.getBoolean("first"))&&(displayName.isEmpty())&&(displayName.length()>6)&&(fullName.length()>6)&&(Description.length()>6)&&(location.length()>6))
                 // the user is creating a new school
                {db.document("School/"+et_display_name.getText().toString())
                    .get()
@@ -144,13 +159,15 @@ public class AddSchool extends AppCompatActivity {
             if(resultCode==Activity.RESULT_OK)
             {
                 Uri imageUri =data.getData();
-                uploadImageToFirebase(user.getUid(),imageUri);
+                photo=uploadImageToFirebase(imageUri);
 
             }
         }
     }
-    private void uploadImageToFirebase(String name, Uri contentUri) {
-        final StorageReference image = mStorageRef.child("SchoolPhoto/" + name);
+    private String uploadImageToFirebase( Uri contentUri) {
+        String name="School/"+System.currentTimeMillis()
+                + "." + getFileExtension(contentUri);
+         StorageReference image = mStorageRef.child(name);
         image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -170,7 +187,7 @@ public class AddSchool extends AppCompatActivity {
                 Toast.makeText(AddSchool.this, "Upload Failled.", Toast.LENGTH_SHORT).show();
             }
         });
-
+    return name;
     }
     public void updateDocumentArray() {
         // [START update_document_array]
@@ -182,6 +199,20 @@ public class AddSchool extends AppCompatActivity {
         // Atomically remove a region from the "regions" array field.
         //RF.update("AdminIN", FieldValue.arrayRemove("east_coast"));
         // [END update_document_array]
+    }
+    private void getCurrentUserFromFirestore(){
+        getUser(user.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                modelCurrentUser = documentSnapshot.toObject(User.class);
+                tv_welcome_user.setText("Welcome "+modelCurrentUser.getDisplayName());
+            }
+        });
+    }
+    private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
     }
 
 

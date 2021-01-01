@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -35,7 +34,10 @@ public class Settings extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 DarkModePrefManager darkModePrefManager = new DarkModePrefManager(Settings.this);
                 darkModePrefManager.setDarkMode(!darkModePrefManager.isNightMode());
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                if(darkModePrefManager.isNightMode()){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+                else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 recreate();
             }
         });

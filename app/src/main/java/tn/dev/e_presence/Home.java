@@ -2,12 +2,16 @@ package tn.dev.e_presence;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -23,8 +29,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 public class Home extends AppCompatActivity {
+    private StorageReference mStorageRef;
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -73,10 +84,11 @@ public class Home extends AppCompatActivity {
         private void setUpRecyclerView()
         {
             Query query = SchoolRef.orderBy("DisplayName");
+            StorageReference path = FirebaseStorage.getInstance().getReference();
             FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
                     .setQuery(query,School.class)
                     .build();
-            schoolAdapter=new SchoolAdapter(options);
+            schoolAdapter=new SchoolAdapter(options,path);
             RecyclerView recyclerView = findViewById(R.id.rv_school);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -104,4 +116,5 @@ public class Home extends AppCompatActivity {
         super.onStop();
         schoolAdapter.stopListening();
     }
+
 }

@@ -16,6 +16,8 @@ public class ListOfSessions {
         Session S1= new Session(2 ,"11-10-2010",    "08:00","10:00","A200","INDP2-F","Monsieur","transmission",true);
         SessionList.add(S0);
         SessionList.add(S1);
+        SessionList.add(S0);
+        SessionList.add(S1);
 
     }
 

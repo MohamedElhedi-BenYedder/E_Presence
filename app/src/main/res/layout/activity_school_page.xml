@@ -134,7 +134,8 @@
         android:layout_width="match_parent"
         android:layout_height="381dp"
         android:isScrollContainer="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:overScrollMode="always">
 
         <LinearLayout
             android:layout_width="match_parent"
