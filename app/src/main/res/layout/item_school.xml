@@ -4,6 +4,7 @@
     android:id="@+id/ll_bg"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:clickable="true"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -11,11 +12,13 @@
         android:id="@+id/iv_photo"
         android:layout_width="75dp"
         android:layout_height="75dp"
+        android:clickable="true"
         app:srcCompat="@drawable/ic_school" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
         android:orientation="vertical">
 
         <TextView

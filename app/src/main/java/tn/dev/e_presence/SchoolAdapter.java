@@ -1,24 +1,20 @@
 package tn.dev.e_presence;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
+import android.widget.AdapterView;
 import androidx.annotation.NonNull;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder> {
+    private AdapterView.OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
     static int count=0;
     final static int ColorList[]={0,1,3};
