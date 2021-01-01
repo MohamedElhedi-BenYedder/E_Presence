@@ -5,11 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.Nullable;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -19,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,6 +39,7 @@ import static tn.dev.e_presence.GV.createUser;
 public class Welcome extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
     int AUTHUI_REQUEST_CODE = 1208;
+    private StorageReference mStorageRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +83,11 @@ public class Welcome extends AppCompatActivity {
                 //Checking for User (New/Old)
                 if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp()) {
                     //This is a New User
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    String UserId=user.getUid();
-                    createUser(UserId,user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", "School/"+UserId,  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());
+                    createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "-", user.getPhotoUrl().getPath(),  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());
+                  /*  try{createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", uploadImageToFirebase( user.getPhotoUrl(),user.getUid()),  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());}
+                    catch (Exception e){createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", user.getPhotoUrl().getPath(),  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());
 
-                } else {
+                }*/} else {
                     //This is a returning user
                 }
                 Intent intent = new Intent(this, Home.class);
@@ -97,5 +105,33 @@ public class Welcome extends AppCompatActivity {
             }
         }
     }
+  /*  private String getFileExtension(Uri uri) {
+        ContentResolver cR = getContentResolver();
+        MimeTypeMap mime = MimeTypeMap.getSingleton();
+        return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+    private String uploadImageToFirebase( Uri contentUri,String id) {
+        String name="User/"+id
+                + "."+getFileExtension(contentUri);
+        StorageReference image = mStorageRef.child(name);
+        image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("tag", "onSuccess: Uploaded Image URl is " + uri.toString());
+
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Welcome.this, "Photo Upload Failled.", Toast.LENGTH_SHORT).show();
+            }
+        });
+        return name;}*/
 
 }

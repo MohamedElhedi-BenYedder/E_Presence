@@ -104,7 +104,7 @@ public class AddSchool extends AppCompatActivity {
                 List<String> admins =new ArrayList<>();
                 admins.add(user.getUid());
                 school.put("Admins",admins);
-                if ((incommingMessages.getBoolean("first"))&&(displayName.isEmpty())&&(displayName.length()>6)&&(fullName.length()>6)&&(Description.length()>6)&&(location.length()>6))
+                if ((incommingMessages.getBoolean("first"))&&(!displayName.isEmpty())&&(displayName.length()>6)&&(fullName.length()>6)&&(Description.length()>6)&&(location.length()>6))
                 // the user is creating a new school
                {db.document("School/"+et_display_name.getText().toString())
                    .get()
@@ -205,7 +205,7 @@ public class AddSchool extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 modelCurrentUser = documentSnapshot.toObject(User.class);
-                tv_welcome_user.setText("Welcome "+modelCurrentUser.getDisplayName());
+                //tv_welcome_user.setText("Welcome "+modelCurrentUser.getDisplayName());
             }
         });
     }

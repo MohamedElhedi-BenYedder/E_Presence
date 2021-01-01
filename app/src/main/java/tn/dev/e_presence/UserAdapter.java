@@ -10,43 +10,78 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class UserAdapter extends BaseAdapter {
-    Activity mActivity;
-    ListofUsers UserList;
-    final static int[] ColorList={0,1,3};
+import android.app.Activity;
+import android.net.Uri;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.squareup.picasso.Picasso;
+
+public class UserAdapter extends FirestoreRecyclerAdapter<User,UserHolder> {
+    static StorageReference STORAGE_REFERENCE;
+    static int count=0;
+    final static int ColorList[]={0,1,3};
     final static int ColorNumber=3;
+    final static int ImageList[]={R.drawable.ic_male,R.drawable.ic_female,R.drawable.ic_person};
+    final static int ImageNumber=2;
 
-    public UserAdapter(Activity mActivity, ListofUsers userList) {
-        this.mActivity = mActivity;
-        UserList = userList;
+
+    /**
+     * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
+     * FirestoreRecyclerOptions} for configuration options.
+     *
+     * @param options
+     */
+    public UserAdapter(@NonNull FirestoreRecyclerOptions<User> options,StorageReference s) {
+        super(options);
+        STORAGE_REFERENCE=s;
     }
 
     @Override
-    public int getCount() {return UserList.getUserList().size(); }
+    protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
+        holder.tv_display_name.setText(model.getDisplayName());
+        holder.tv_email.setText(model.getEmail());
+        holder.tv_gender.setText(model.getGender());
 
-    @Override
-    public User getItem(int position) {return UserList.getUserList().get(position); }
+        try    {     StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
+            image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Log.d("tag", "onSuccess: Uploaded Image URl is " + uri.toString());
+                    Picasso.get().load(uri).into(holder.iv_photo);
 
-    @Override
-    public long getItemId(int position) { return 0; }
+                }
+            });
+        }
+        catch (Exception e){if (model .getGender()=="Male") holder.iv_photo.setImageResource(ImageList[0]);
+        else if (model .getGender()=="female") holder.iv_photo.setImageResource(ImageList[1]);
+        else holder.iv_photo.setImageResource(ImageList[2]);};
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View oneUserItem;
-        LayoutInflater inflaytor= (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        oneUserItem = inflaytor.inflate(R.layout.item_user,parent,false);
-        TextView tv_display_name=oneUserItem.findViewById(R.id.tv_display_name);
-        TextView tv_gender=oneUserItem.findViewById(R.id.tv_gender);
-        TextView tv_email =oneUserItem.findViewById(R.id.tv_email);
-        ImageView iv_photo =oneUserItem.findViewById(R.id.iv_photo);
-        LinearLayout ll_bg =oneUserItem.findViewById(R.id.ll_bg);
-
-        User U =this.getItem(position);
-        tv_display_name.setText(U.getDisplayName());
-        tv_gender.setText(U.getGender());
-        tv_email.setText(U.getEmail());
-//        iv_photo.setImageURI(U.getPhoto());
-        ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
-        return oneUserItem;
+        holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
+
+    @NonNull
+    @Override
+    public UserHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View oneUserItem=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user, parent, false);
+        return new UserHolder(oneUserItem);
+    }
+
+    @Override
+    public int getItemCount() {
+        return super.getItemCount();
+
+    }
+
 }
