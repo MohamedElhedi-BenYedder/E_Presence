@@ -38,6 +38,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_welcome_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16sp"
@@ -72,6 +73,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/tv_display_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_mediumitalic"
@@ -92,6 +94,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_full_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
@@ -177,8 +180,10 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/student"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:onClick="onStudentClick"
                             android:padding="8dp">
 
                             <TextView
@@ -209,8 +214,10 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/teacher"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:onClick="onTeacherClick"
                             android:padding="8dp">
 
                             <TextView
@@ -249,6 +256,7 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/group"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="8dp">
@@ -281,6 +289,7 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/course"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="8dp">
@@ -322,6 +331,7 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/session"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="8dp">
@@ -354,6 +364,7 @@
                         app:cardElevation="2dp">
 
                         <RelativeLayout
+                            android:id="@+id/more"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:padding="8dp">

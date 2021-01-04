@@ -46,6 +46,14 @@ public class GV {
     public static Task<Void> deleteUser(String uid) {
         return GV.getUsersCollection().document(uid).delete();
     }
+    //-------------School-----------------//
+    // ---Get USER COLLECTION REFERENCE ---
+    public static CollectionReference getSchoolsCollection(){
+        return FirebaseFirestore.getInstance().collection(SCHOOL_COLLECTION);}
+    // --- GET School---
+
+    public static Task<DocumentSnapshot> getSchool(String uid){
+        return GV.getSchoolsCollection().document(uid).get();}
 
 
 }

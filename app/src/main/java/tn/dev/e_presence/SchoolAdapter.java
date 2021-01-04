@@ -1,27 +1,34 @@
 package tn.dev.e_presence;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder> {
-    private AdapterView.OnItemClickListener listener;
+public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder> {
+    private OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
     static int count=0;
     final static int ColorList[]={0,1,3};
     final static int ColorNumber=3;
     final static int ImageList[]={R.drawable.ic_school,R.drawable.ic_school1,R.drawable.ic_school2};
     final static int ImageNumber=3;
-
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -36,6 +43,7 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolHolder>
 
     @Override
     protected void onBindViewHolder(@NonNull SchoolHolder holder, int position, @NonNull School model) {
+        model.setSid(this.getSnapshots().getSnapshot(position).getId());
         holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_location.setText(model.getLocation());
 
@@ -65,6 +73,43 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     public int getItemCount() {
         return super.getItemCount();
 
+    }
+
+
+    /***************School Holder Class*********************/
+    public class SchoolHolder extends RecyclerView.ViewHolder {
+        TextView tv_display_name;
+        TextView tv_location;
+        ImageView iv_photo ;
+        LinearLayout ll_bg ;
+
+
+        public SchoolHolder(@NonNull View oneSchoolItem) {
+            super(oneSchoolItem);
+            tv_display_name= oneSchoolItem.findViewById(R.id.tv_display_name);
+            tv_location = oneSchoolItem.findViewById(R.id.tv_location);
+            iv_photo = oneSchoolItem.findViewById(R.id.iv_photo);
+            ll_bg =oneSchoolItem.findViewById(R.id.ll_bg);
+            oneSchoolItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int pos=getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION && listener!=null)
+                    {
+                        listener.onItemClick(getSnapshots().getSnapshot(pos),pos);
+                    }
+                }
+            });
+        }
+    }
+    public interface OnItemClickListener
+    {
+        void onItemClick(DocumentSnapshot documentSnapshot,int pos);
+    }
+    public void setOnItemClickListener(OnItemClickListener listener)
+    {
+        this.listener =listener;
     }
 
 }

@@ -194,7 +194,7 @@ public class AddSchool extends AppCompatActivity {
         DocumentReference RF = db.collection("User").document(user.getUid());
 
         // Atomically add a new region to the "regions" array field.
-        RF.update("AdminIN", FieldValue.arrayUnion(et_display_name.getText().toString()));
+        RF.update("adminIN", FieldValue.arrayUnion("School/"+et_display_name.getText().toString()));
 
         // Atomically remove a region from the "regions" array field.
         //RF.update("AdminIN", FieldValue.arrayRemove("east_coast"));

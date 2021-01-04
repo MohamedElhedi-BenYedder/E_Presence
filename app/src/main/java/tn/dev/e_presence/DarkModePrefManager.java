@@ -26,9 +26,7 @@ public class DarkModePrefManager {
         editor.commit();
     }
 
-    public boolean isNightMode() {
-        return pref.getBoolean(IS_NIGHT_MODE, true);
-    }
+    public boolean isNightMode() { return pref.getBoolean(IS_NIGHT_MODE, true); }
     public boolean isLightMode() {return !isNightMode();}
 
 }
