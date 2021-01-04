@@ -46,7 +46,7 @@ public class MemberList extends AppCompatActivity {
         setUpBottomAppBarMenu();
         setUpRecyclerView();
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(this::AddMember);
+       fab.setOnClickListener(this::AddMember);
     }
     private void setUpBottomAppBarMenu( )
     {
@@ -86,7 +86,7 @@ public class MemberList extends AppCompatActivity {
         else if(key.equals("0")){}
         else
             {
-                Query query = UserRef.orderBy("displayName").whereArrayContains(key,path);
+                Query query = UserRef.orderBy("displayName");
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                     .setQuery(query,User.class)
@@ -96,7 +96,7 @@ public class MemberList extends AppCompatActivity {
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
                 recyclerView.setAdapter(UserAdapter);
-                getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+               /* getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
                     {
                         @Override
                         public void onSuccess(DocumentSnapshot documentSnapshot)
@@ -124,7 +124,7 @@ public class MemberList extends AppCompatActivity {
 
                             }
                     }
-                    );
+                    );*/
             }
     }
     private void setFloatingActionButtonIcon(FloatingActionButton f)
@@ -221,7 +221,6 @@ public class MemberList extends AppCompatActivity {
         key =incommingMessages.getString("activity","0");
         all=incommingMessages.getBoolean("all",false);
     }
-
     @Override
     protected void onStart() {
         super.onStart();

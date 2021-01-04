@@ -120,6 +120,7 @@ public class AddSchool extends AppCompatActivity {
                                    updateDocumentArray();
 
                                    Intent intent = new Intent(AddSchool.this,SchoolPage.class);
+                                   intent.putExtra("ID",displayName);
                                    intent.putExtra("first",true);
                                    startActivity(intent);
                                    finish();

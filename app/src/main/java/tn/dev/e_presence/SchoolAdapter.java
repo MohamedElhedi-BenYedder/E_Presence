@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.text.Line;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder> {
     private OnItemClickListener listener;
@@ -82,6 +85,7 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
         TextView tv_location;
         ImageView iv_photo ;
         LinearLayout ll_bg ;
+        LinearLayout ll_;
 
 
         public SchoolHolder(@NonNull View oneSchoolItem) {
@@ -90,7 +94,8 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
             tv_location = oneSchoolItem.findViewById(R.id.tv_location);
             iv_photo = oneSchoolItem.findViewById(R.id.iv_photo);
             ll_bg =oneSchoolItem.findViewById(R.id.ll_bg);
-            oneSchoolItem.setOnClickListener(new View.OnClickListener() {
+            ll_=oneSchoolItem.findViewById(R.id.ll_);
+            ll_.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 

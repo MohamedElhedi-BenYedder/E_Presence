@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import static tn.dev.e_presence.GV.getSchool;
@@ -26,6 +26,9 @@ public class SchoolPage extends AppCompatActivity {
     private TextView tv_description;
     private TextView tv_full_name;
     private TextView tv_welcome;
+    private TextView tv_location;
+    private ImageView iv_teacher;
+    private ImageView iv_student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +38,8 @@ public class SchoolPage extends AppCompatActivity {
         listenForIncommingMessages();
         displaySchoolInformations();
         setUpBottomAppBarMenu();
+       onStudentClick();
+       onTeacherClick();
 
     }
     private void setUpBottomAppBarMenu()
@@ -81,21 +86,34 @@ public class SchoolPage extends AppCompatActivity {
             }
         });
     }
-    void onStudentClick(View V)
+
+    void onStudentClick()
     {
-        Intent intent=new Intent(SchoolPage.this,MemberList.class);
-        intent.putExtra("key","studentIN");
-        intent.putExtra("path","School/schoolName");
-        startActivity(intent);
-        finish();
+        iv_student.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(SchoolPage.this,MemberList.class);
+                intent.putExtra("key","studentIN");
+                intent.putExtra("path","School/"+SchoolId);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
-    void onTeacherClick(View V)
+    void onTeacherClick()
     {
-        Intent intent=new Intent(SchoolPage.this,MemberList.class);
-        intent.putExtra("key","studentIN");
-        intent.putExtra("path","School/schoolName");
-        startActivity(intent);
-        finish();
+        iv_teacher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(SchoolPage.this,MemberList.class);
+                intent.putExtra("key","teacherIN");
+                intent.putExtra("path","School/"+SchoolId);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     void listenForIncommingMessages()
     {
@@ -111,6 +129,7 @@ public class SchoolPage extends AppCompatActivity {
                 tv_description.setText(documentSnapshot.getString("Description"));
                 tv_display_name.setText(documentSnapshot.getString("DisplayName"));
                 tv_full_name.setText(documentSnapshot.getString("FullName"));
+                tv_location.setText(documentSnapshot.getString("Location"));
             }
         });
     }
@@ -120,5 +139,8 @@ public class SchoolPage extends AppCompatActivity {
         tv_display_name=findViewById(R.id.tv_display_name);
         tv_full_name=findViewById(R.id.tv_full_name);
         tv_welcome=findViewById(R.id.tv_welcome_user);
+        tv_location=findViewById(R.id.tv_location);
+        iv_teacher=findViewById(R.id.iv_teacher);
+        iv_student=findViewById(R.id.iv_student);
     }
 }
