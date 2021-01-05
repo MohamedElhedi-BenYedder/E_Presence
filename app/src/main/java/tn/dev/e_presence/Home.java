@@ -42,7 +42,7 @@ public class Home extends AppCompatActivity {
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference SchoolRef =db.collection("School");
     private SchoolAdapter schoolAdapter;
-
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class Home extends AppCompatActivity {
         fab.setOnClickListener(this::AddSchool);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpBottomAppBarMenu( )
     {
         //find id
