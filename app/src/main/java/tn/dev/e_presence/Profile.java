@@ -15,7 +15,6 @@ public class Profile extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);

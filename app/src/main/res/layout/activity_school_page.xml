@@ -280,6 +280,7 @@
                                 android:textSize="18dp" />
 
                             <ImageView
+                                android:id="@+id/iv_group"
                                 android:layout_width="wrap_content"
                                 android:layout_height="80dp"
                                 android:layout_alignParentRight="true"

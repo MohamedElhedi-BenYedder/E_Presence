@@ -5,36 +5,33 @@ import android.view.Display;
 import java.util.List;
 
 public class Group {
-    private String Gid;
-    private String DisplayName;
-    private List<String> StudentList;
+    private String displayName;
+    private int num;
+    private List<String> studentList;
     private int Level;
 
-    public Group(String gid, String displayName, List<String> studentList, int level) {
-        Gid = gid;
-        DisplayName = displayName;
-        StudentList = studentList;
-        Level = level;
-    }
-
-    public String getGid() {
-        return Gid;
-    }
-
     public String getDisplayName() {
-        return DisplayName;
+        return displayName;
     }
 
     public void setDisplayName(String displayName) {
-        DisplayName = displayName;
+        this.displayName = displayName;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
     }
 
     public List<String> getStudentList() {
-        return StudentList;
+        return studentList;
     }
 
     public void setStudentList(List<String> studentList) {
-        StudentList = studentList;
+        this.studentList = studentList;
     }
 
     public int getLevel() {

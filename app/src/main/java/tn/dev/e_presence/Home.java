@@ -52,11 +52,12 @@ public class Home extends AppCompatActivity {
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this::AddSchool);
     }
+
     private void setUpBottomAppBarMenu( )
     {
         //find id
         bottomAppBar=findViewById(R.id.bnb);
-        // bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
+        bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
 
         //click event over Bottom bar menu item
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

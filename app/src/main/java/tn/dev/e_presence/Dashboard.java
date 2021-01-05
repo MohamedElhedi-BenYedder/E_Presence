@@ -38,7 +38,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
     private BottomNavigationView bottomNavigationView;
     private int REQUEST_CAMERA=1;
     private int Cur_pos;
-    private String Scane_res="hindi";
+    private String Scane_res="chaine";
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,10 +123,12 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener{
         picker.setBackgroundColor(getResources().getColor(R.color.contentBodyColor));
         picker.setDate(new DateTime());
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void SetUpBottomAppBarMenu( )
     {
         //find id
         bottomAppBar=findViewById(R.id.bnb);
+        bottomAppBar.getMenu().getItem(1).setIconTintList(getColorStateList(R.color.c2));
         //set bottom bar to Action bar as it is similar like Toolbar
         //bottomAppBar.replaceMenu(R.menu.bottom_app_bar_secondary_menu);
         //click event over Bottom bar menu item

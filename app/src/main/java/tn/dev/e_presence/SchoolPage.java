@@ -29,6 +29,7 @@ public class SchoolPage extends AppCompatActivity {
     private TextView tv_location;
     private ImageView iv_teacher;
     private ImageView iv_student;
+    private ImageView iv_group;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +39,9 @@ public class SchoolPage extends AppCompatActivity {
         listenForIncommingMessages();
         displaySchoolInformations();
         setUpBottomAppBarMenu();
-       onStudentClick();
-       onTeacherClick();
+        onStudentClick();
+        onTeacherClick();
+        onGroupClick();
 
     }
     private void setUpBottomAppBarMenu()
@@ -116,6 +118,19 @@ public class SchoolPage extends AppCompatActivity {
             }
         });
     }
+    void onGroupClick()
+    {
+        iv_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent=new Intent(getApplicationContext(),GroupList.class).putExtra("ID",SchoolId);
+                intent.putExtra("path","School/"+SchoolId+"Group");
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
     void listenForIncommingMessages()
     {
         //listen for incoming messages
@@ -143,5 +158,6 @@ public class SchoolPage extends AppCompatActivity {
         tv_location=findViewById(R.id.tv_location);
         iv_teacher=findViewById(R.id.iv_teacher);
         iv_student=findViewById(R.id.iv_student);
+        iv_group=findViewById(R.id.iv_group);
     }
 }
