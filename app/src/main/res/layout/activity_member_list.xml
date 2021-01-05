@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Home">
+    tools:context=".MemberList">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_user"
@@ -33,7 +33,6 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="AddSchool"
         app:layout_anchor="@id/bnb"
         app:srcCompat="@drawable/ic_back" />
 

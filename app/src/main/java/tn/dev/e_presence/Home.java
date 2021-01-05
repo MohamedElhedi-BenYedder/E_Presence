@@ -27,6 +27,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -51,36 +52,41 @@ public class Home extends AppCompatActivity {
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this::AddSchool);
     }
-        private void setUpBottomAppBarMenu( )
-        {
-            //find id
-            bottomAppBar=findViewById(R.id.bnb);
-           // bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
+    private void setUpBottomAppBarMenu( )
+    {
+        //find id
+        bottomAppBar=findViewById(R.id.bnb);
+        // bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
 
-            //click event over Bottom bar menu item
-            bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem item) {
-                    switch (item.getItemId()) {
-                        case R.id.miDashboard:
-                            startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                            overridePendingTransition(0,0);
-                            return true;
-                        case R.id.miProfile:
-                            startActivity(new Intent(getApplicationContext(),Profile.class));
-                            overridePendingTransition(0,0);
-                            return true;
-                        case R.id.miSettings:
-                            startActivity(new Intent(getApplicationContext(),Settings.class));
-                            overridePendingTransition(0,0);
-                            return true;
-                    }
-                    return true;
+        //click event over Bottom bar menu item
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.miDashboard:
+                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miProfile:
+                        startActivity(new Intent(getApplicationContext(),Profile.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miSettings:
+                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miHome:
+                        startActivity(new Intent(getApplicationContext(),Home.class));
+                        overridePendingTransition(0,0);
+                        return true;
+
                 }
+                return true;
+            }
 
 
-            });
-        }
+        });
+    }
         private void setUpRecyclerView()
         {
             Query query = SchoolRef.orderBy("DisplayName");
@@ -93,7 +99,14 @@ public class Home extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(schoolAdapter);
+            schoolAdapter.setOnItemClickListener(new SchoolAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                    String SID = documentSnapshot.getId();
+                   startActivity(new Intent(Home.this, SchoolPage.class).putExtra("ID",SID));
 
+                }
+            });
 
         }
         private  void AddSchool(View v)
