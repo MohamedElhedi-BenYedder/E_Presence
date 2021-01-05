@@ -17,7 +17,7 @@
         android:layout_marginStart="14.7dp"
         android:layout_marginLeft="14.7dp"
         android:layout_marginTop="35.7dp"
-        android:text="Create New Session"
+        android:text="Create New Session:"
         android:textColor="@android:color/black"
         android:textSize="18sp" />
 
