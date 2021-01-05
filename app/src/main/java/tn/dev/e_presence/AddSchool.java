@@ -1,10 +1,5 @@
 package tn.dev.e_presence;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -16,14 +11,15 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,7 +27,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -47,6 +42,7 @@ import static tn.dev.e_presence.GV.getUser;
 public class AddSchool extends AppCompatActivity {
     private StorageReference mStorageRef;
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final String UserId = user.getUid();
     @Nullable private User modelCurrentUser = new User();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     EditText et_display_name;
@@ -62,7 +58,7 @@ public class AddSchool extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_school);
-        //Getting all views needed
+
         Bundle incommingMessages =getIntent().getExtras();
          et_display_name =findViewById(R.id.et_display_name);
          et_full_name=findViewById(R.id.et_full_name);
@@ -73,7 +69,7 @@ public class AddSchool extends AppCompatActivity {
          ib_photo = findViewById(R.id.ib_photo);
          fab=findViewById(R.id.fab);
 
-         this.getCurrentUserFromFirestore();
+        welcomeUser();
 
         ib_photo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -201,12 +197,12 @@ public class AddSchool extends AppCompatActivity {
         //RF.update("AdminIN", FieldValue.arrayRemove("east_coast"));
         // [END update_document_array]
     }
-    private void getCurrentUserFromFirestore(){
-        getUser(user.getUid()).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    void welcomeUser()
+    {
+        getUser(UserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                modelCurrentUser = documentSnapshot.toObject(User.class);
-                //tv_welcome_user.setText("Welcome "+modelCurrentUser.getDisplayName());
+                tv_welcome_user.setText("Welcome "+documentSnapshot.getString("displayName"));
             }
         });
     }

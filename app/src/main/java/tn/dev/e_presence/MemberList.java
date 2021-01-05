@@ -39,6 +39,8 @@ public class MemberList extends AppCompatActivity {
     private String path;
     private String key;
     private boolean all;
+    private String SchoolId;
+    private FloatingActionButton fab;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,9 +50,8 @@ public class MemberList extends AppCompatActivity {
 
 
         setUpRecyclerView();
-        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
-        //setFloatingActionButtonIcon(fab);
-       fab.setOnClickListener(this::AddMember);
+        fab =(FloatingActionButton) findViewById(R.id.fab);
+        floatingActionButtonClick();
     }
     private void setUpBottomAppBarMenu( )
     {
@@ -92,7 +93,7 @@ public class MemberList extends AppCompatActivity {
 
          */
         Query query = UserRef.orderBy("displayName").whereArrayContains(key,path);
-        Toast.makeText(MemberList.this, key+path, Toast.LENGTH_SHORT).show();
+        Toast.makeText(MemberList.this, key+"/"+path, Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query,User.class)
@@ -132,48 +133,58 @@ public class MemberList extends AppCompatActivity {
             }
             );
     }
-    private  void AddMember(View v)
+    private void floatingActionButtonClick()
     {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(getApplicationContext(),SchoolPage.class).putExtra("ID",SchoolId);
+                startActivity(intent);
+                finish();
 
-        getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                                          {
-                                              @Override
-                                              public void onSuccess(DocumentSnapshot documentSnapshot)
-                                              {
-                                                  User modelCurrentUser = documentSnapshot.toObject(User.class);
-                                                  boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
-                                                  boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
-                                                  boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
-                                                  if(isAdmin)
+                /*getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
                                                   {
-                                                    //Admin
+                                                      @Override
+                                                      public void onSuccess(DocumentSnapshot documentSnapshot)
+                                                      {
+                                                          User modelCurrentUser = documentSnapshot.toObject(User.class);
+                                                          boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
+                                                          boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
+                                                          boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
+                                                          if(isAdmin)
+                                                          {
+                                                              //Admin
 
-                                                  }
-                                                  else if(isTeacher)
-                                                  {
-                                                      //Teacher
-                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                      startActivity(intent);
-                                                      finish();
-                                                  }
-                                                  else if(isStudent)
-                                                  {
-                                                      //Student
-                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                      startActivity(intent);
-                                                      finish();
-                                                  }
-                                                  else
-                                                  {
-                                                      //Public
-                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                      startActivity(intent);
-                                                      finish();
-                                                  }
+                                                          }
+                                                          else if(isTeacher)
+                                                          {
+                                                              //Teacher
+                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
+                                                              startActivity(intent);
+                                                              finish();
+                                                          }
+                                                          else if(isStudent)
+                                                          {
+                                                              //Student
+                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
+                                                              startActivity(intent);
+                                                              finish();
+                                                          }
+                                                          else
+                                                          {
+                                                              //Public
+                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
+                                                              startActivity(intent);
+                                                              finish();
+                                                          }
 
-                                              }
-                                          }
-        );
+                                                      }
+                                                  }
+                );*/
+            }
+        });
+
+
 
 
         /*Intent intent =new Intent(MemberList.this, AddMember.class);
@@ -192,7 +203,9 @@ public class MemberList extends AppCompatActivity {
         path=incommingMessages.getString("path","0");
         key =incommingMessages.getString("key","0");
         all=incommingMessages.getBoolean("all",false);
+        SchoolId =incommingMessages.getString("ID","0");
     }
+
     @Override
    protected void onStart() {
         super.onStart();
