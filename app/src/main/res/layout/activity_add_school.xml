@@ -9,7 +9,7 @@
     android:paddingLeft="16sp"
     android:paddingRight="16sp"
     android:paddingTop="16sp"
-    tools:context=".SchoolPage">
+    tools:context=".AddSchool">
 
     <LinearLayout
         android:layout_width="match_parent"

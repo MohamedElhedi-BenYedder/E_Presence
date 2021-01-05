@@ -190,7 +190,7 @@
                             android:id="@+id/rl_student"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:clickable="true"
+                            android:clickable="false"
                             android:padding="8dp">
 
                             <TextView
@@ -225,7 +225,7 @@
                             android:id="@+id/rl_teacher"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:clickable="true"
+                            android:clickable="false"
                             android:padding="8dp">
 
                             <TextView
@@ -312,6 +312,7 @@
                                 android:textSize="18dp" />
 
                             <ImageView
+                                android:id="@+id/iv"
                                 android:layout_width="153dp"
                                 android:layout_height="78dp"
                                 android:layout_alignParentRight="true"

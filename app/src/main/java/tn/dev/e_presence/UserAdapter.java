@@ -1,22 +1,10 @@
 package tn.dev.e_presence;
 
-import android.app.Activity;
-import android.content.Context;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import android.app.Activity;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -24,7 +12,6 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -52,9 +39,14 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserHolder> {
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
         holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_email.setText(model.getEmail());
-        holder.tv_gender.setText(model.getGender());
+        if (model.getGender().equals("Male"))
+            holder.tv_gender.setText("Mr");
+        else if (model.getGender().equals("Female"))
+            holder.tv_gender.setText("Mrs");
+        else
+            holder.tv_gender.setText("");
 
-        try    {     StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
+              StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
             image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -62,11 +54,15 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserHolder> {
                     Picasso.get().load(uri).into(holder.iv_photo);
 
                 }
-            });
-        }
-        catch (Exception e){if (model .getGender()=="Male") holder.iv_photo.setImageResource(ImageList[0]);
-        else if (model .getGender()=="female") holder.iv_photo.setImageResource(ImageList[1]);
-        else holder.iv_photo.setImageResource(ImageList[2]);};
+
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    if (model.getGender().equals("Male")) holder.iv_photo.setImageResource(ImageList[0]);
+                    else if (model.getGender().equals("Female")) holder.iv_photo.setImageResource(ImageList[1]);
+                }
+            })
+            ;
 
         holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }

@@ -93,7 +93,8 @@ public class SchoolPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(SchoolPage.this,MemberList.class);
+                Intent intent=new Intent(getApplicationContext(),MemberList.class);
+                startActivity(intent);
                 intent.putExtra("key","studentIN");
                 intent.putExtra("path","School/"+SchoolId);
                 startActivity(intent);
@@ -107,7 +108,7 @@ public class SchoolPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent intent=new Intent(SchoolPage.this,MemberList.class);
+                Intent intent=new Intent(getApplicationContext(),MemberList.class);
                 intent.putExtra("key","teacherIN");
                 intent.putExtra("path","School/"+SchoolId);
                 startActivity(intent);

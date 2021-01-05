@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -41,11 +42,14 @@ public class MemberList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_member_list);
         listenForIncommingMessages();
         setUpBottomAppBarMenu();
+
+
         setUpRecyclerView();
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
+        //setFloatingActionButtonIcon(fab);
        fab.setOnClickListener(this::AddMember);
     }
     private void setUpBottomAppBarMenu( )
@@ -71,6 +75,10 @@ public class MemberList extends AppCompatActivity {
                         startActivity(new Intent(getApplicationContext(), Settings.class));
                         overridePendingTransition(0,0);
                         return true;
+                    case R.id.miHome:
+                        startActivity(new Intent(getApplicationContext(), Home.class));
+                        overridePendingTransition(0,0);
+                        return true;
                 }
                 return true;
             }
@@ -81,84 +89,48 @@ public class MemberList extends AppCompatActivity {
     private void setUpRecyclerView()
     {
         /*Query query = UserRef.orderBy("DisplayName");
-        */
-        if(path.equals("0")){}
-        else if(key.equals("0")){}
-        else
-            {
-                Query query = UserRef.orderBy("displayName");
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
-                    .setQuery(query,User.class)
-                    .build();
-                UserAdapter=new UserAdapter(options,storageReference);
-                RecyclerView recyclerView = findViewById(R.id.rv_user);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(this));
-                recyclerView.setAdapter(UserAdapter);
-               /* getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                    {
-                        @Override
-                        public void onSuccess(DocumentSnapshot documentSnapshot)
-                            {
-                                User modelCurrentUser = documentSnapshot.toObject(User.class);
-                                boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
-                                boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
-                                boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
-                                        if(isAdmin)
-                                        {
-                                            // Admin
-                                        }
-                                        else if(isTeacher)
-                                        {
-                                            //Teacher
-                                        }
-                                        else if(isStudent)
-                                        {
-                                            //Student
-                                        }
-                                        else
-                                        {
-                                            //Public
-                                        }
 
-                            }
-                    }
-                    );*/
-            }
-    }
-    private void setFloatingActionButtonIcon(FloatingActionButton f)
-    {
+         */
+        Query query = UserRef.orderBy("displayName").whereArrayContains(key,path);
+        Toast.makeText(MemberList.this, key+path, Toast.LENGTH_SHORT).show();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query,User.class)
+                .build();
+        UserAdapter=new UserAdapter(options,storageReference);
+        RecyclerView recyclerView = findViewById(R.id.rv_user);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(UserAdapter);
         getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                                          {
-                                              @Override
-                                              public void onSuccess(DocumentSnapshot documentSnapshot)
-                                              {
-                                                  User modelCurrentUser = documentSnapshot.toObject(User.class);
-                                                  boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
-                                                  boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
-                                                  boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
-                                                  if(isAdmin)
-                                                  {
-                                                      f.setImageResource(R.drawable.ic_add_person);
-                                                  }
-                                                  else if(isTeacher)
-                                                  {
-                                                      //Teacher
-                                                  }
-                                                  else if(isStudent)
-                                                  {
-                                                      //Student
-                                                  }
-                                                  else
-                                                  {
-                                                      //Public
-                                                  }
+            {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot)
+                    {
+                        User modelCurrentUser = documentSnapshot.toObject(User.class);
+                        boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
+                        boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
+                        boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
+                                if(isAdmin)
+                                {
+                                    // Admin
+                                }
+                                else if(isTeacher)
+                                {
+                                    //Teacher
+                                }
+                                else if(isStudent)
+                                {
+                                    //Student
+                                }
+                                else
+                                {
+                                    //Public
+                                }
 
-                                              }
-                                          }
-        );
-
+                    }
+            }
+            );
     }
     private  void AddMember(View v)
     {
@@ -180,21 +152,21 @@ public class MemberList extends AppCompatActivity {
                                                   else if(isTeacher)
                                                   {
                                                       //Teacher
-                                                      Intent intent =new Intent(MemberList.this,SchoolPage.class);
+                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
                                                       startActivity(intent);
                                                       finish();
                                                   }
                                                   else if(isStudent)
                                                   {
                                                       //Student
-                                                      Intent intent =new Intent(MemberList.this,SchoolPage.class);
+                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
                                                       startActivity(intent);
                                                       finish();
                                                   }
                                                   else
                                                   {
                                                       //Public
-                                                      Intent intent =new Intent(MemberList.this,SchoolPage.class);
+                                                      Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
                                                       startActivity(intent);
                                                       finish();
                                                   }
@@ -218,11 +190,11 @@ public class MemberList extends AppCompatActivity {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
         path=incommingMessages.getString("path","0");
-        key =incommingMessages.getString("activity","0");
+        key =incommingMessages.getString("key","0");
         all=incommingMessages.getBoolean("all",false);
     }
     @Override
-    protected void onStart() {
+   protected void onStart() {
         super.onStart();
         UserAdapter.startListening();
     }
