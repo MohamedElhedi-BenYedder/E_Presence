@@ -11,15 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPresence">
-        <activity android:name=".MemberList"></activity>
-        <activity android:name=".AddSchool" />
-        <activity android:name=".SchoolItem" />
-        <activity android:name=".GroupItem" />
-        <activity android:name=".UserItem" />
-        <activity android:name=".SchoolPage" />
+        <activity android:name=".SchoolProfile"></activity>
         <activity android:name=".EditProfile" />
         <activity android:name=".CreateSession" />
-        <activity android:name=".SessionItem" />
+        <activity android:name=".SessionDetails" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".Settings" />
         <activity android:name=".Profile" />
