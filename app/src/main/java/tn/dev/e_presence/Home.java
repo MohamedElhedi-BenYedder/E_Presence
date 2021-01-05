@@ -44,6 +44,7 @@ public class Home extends AppCompatActivity {
     private SchoolAdapter schoolAdapter;
 
     @Override
+    @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
@@ -53,6 +54,7 @@ public class Home extends AppCompatActivity {
         fab.setOnClickListener(this::AddSchool);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpBottomAppBarMenu( )
     {
         //find id
