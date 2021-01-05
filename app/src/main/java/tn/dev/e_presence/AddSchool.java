@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -17,9 +18,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +48,7 @@ public class AddSchool extends AppCompatActivity {
     private final String UserId = user.getUid();
     @Nullable private User modelCurrentUser = new User();
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private BottomAppBar bottomAppBar;
     EditText et_display_name;
     EditText et_full_name;
     EditText et_description;
@@ -58,7 +62,7 @@ public class AddSchool extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_school);
-
+        SetUpBottomAppBarMenu();
         Bundle incommingMessages =getIntent().getExtras();
          et_display_name =findViewById(R.id.et_display_name);
          et_full_name=findViewById(R.id.et_full_name);
@@ -210,6 +214,42 @@ public class AddSchool extends AppCompatActivity {
         ContentResolver cR = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cR.getType(uri));
+    }
+    private void SetUpBottomAppBarMenu( )
+    {
+        //find id
+        bottomAppBar=findViewById(R.id.bnb);
+        //set bottom bar to Action bar as it is similar like Toolbar
+        //bottomAppBar.replaceMenu(R.menu.bottom_app_bar_secondary_menu);
+        //click event over Bottom bar menu item
+        bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId())
+                {
+                    case R.id.miHome:
+                        startActivity(new Intent(getApplicationContext(),Home.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miProfile:
+                        startActivity(new Intent(getApplicationContext(),Profile.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miSettings:
+                        startActivity(new Intent(getApplicationContext(),Settings.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                    case R.id.miDashboard:
+                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                        overridePendingTransition(0,0);
+                        return true;
+                }
+                return true;
+
+            }
+
+
+        });
     }
 
 
