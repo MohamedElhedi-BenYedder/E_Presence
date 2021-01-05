@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_bold"
-            android:text="Set School information"
+            android:text="Set School information."
             android:textColor="#5E5E5E"
             android:textSize="24dp" />
 
