@@ -103,7 +103,7 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setHasFixedSize(false);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
-        getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+       /* getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
             {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot)
@@ -131,7 +131,7 @@ public class MemberList extends AppCompatActivity {
 
                     }
             }
-            );
+            );*/
     }
     private void floatingActionButtonClick()
     {
