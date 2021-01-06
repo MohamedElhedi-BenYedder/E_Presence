@@ -58,7 +58,7 @@ public class Home extends AppCompatActivity {
     {
         //find id
         bottomAppBar=findViewById(R.id.bnb);
-        bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
+        //bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
 
         //click event over Bottom bar menu item
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {

@@ -100,7 +100,7 @@ public class MemberList extends AppCompatActivity {
                 .build();
         UserAdapter=new UserAdapter(options,storageReference);
         RecyclerView recyclerView = findViewById(R.id.rv_user);
-        recyclerView.setHasFixedSize(false);
+        recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
         getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()

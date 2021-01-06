@@ -20,7 +20,8 @@ public class GV {
     }
     // --- CREATE USER---
 
-    public static Task<Void> createUser(String uid,String displayName, String email, String phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
+    public static Task<Void> createUser(String uid,String displayName, String email, String phoneNumber, String gender, String photo,
+                                        List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
         User userToCreate = new User(displayName, email, phoneNumber, gender, photo,  adminIN,studentIN,  teacherIN);
         return GV.getUsersCollection().document(uid).set(userToCreate);
     }

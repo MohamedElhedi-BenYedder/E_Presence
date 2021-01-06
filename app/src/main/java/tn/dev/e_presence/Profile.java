@@ -26,7 +26,7 @@ public class Profile extends AppCompatActivity {
     {
 
         bottomAppBar=findViewById(R.id.bnb);
-        bottomAppBar.getMenu().getItem(2).setIconTintList(getColorStateList(R.color.c2));
+        //bottomAppBar.getMenu().getItem(2).setIconTintList(getColorStateList(R.color.c2));
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

@@ -8,11 +8,12 @@ public class Session {
     private String Classroom;
     private String Group;
     private String Teacher;
+    private String Qrstring;
     private String Subject;
     private boolean Presential;
     private boolean Flag;
 
-    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential, boolean flag) {
+    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential, boolean flag,String qrstring) {
         this.SID = SID;
         Day = day;
         Start = start;
@@ -23,8 +24,9 @@ public class Session {
         Subject = subject;
         Presential = presential;
         Flag = flag;
+        Qrstring=qrstring;
     }
-    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential) {
+    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential,String qrstring) {
         this.SID = SID;
         Day = day;
         Start = start;
@@ -35,10 +37,19 @@ public class Session {
         Subject = subject;
         Presential = presential;
         Flag =false;
+        Qrstring=qrstring;
     }
 
     public int getSID() {
         return SID;
+    }
+
+    public String getQrstring() {
+        return Qrstring;
+    }
+
+    public void setQrstring(String qrstring) {
+        Qrstring = qrstring;
     }
 
     public void setSID(int SID) {

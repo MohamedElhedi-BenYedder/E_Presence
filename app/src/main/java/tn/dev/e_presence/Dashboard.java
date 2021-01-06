@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.joda.time.DateTime;
 
@@ -40,6 +41,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private int Cur_pos;
     private String Scane_res = "chaine";
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         UpdateListofSessions();
         SetDatePicker();
         SetUpBottomAppBarMenu();
+        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this::AddSession);
 
 
     }
@@ -65,7 +69,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 Cur_pos = position;
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Dashboard.this, ScanActivity.class);
-                    Adapter.getItem(position).setFlag(true);
+
                     Adapter.notifyDataSetChanged();
                     startActivityForResult(intent, 0);
                 } else {
@@ -91,9 +95,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             String mes_subject = incommingMessages.getString("subject");
             String mes_group = incommingMessages.getString("group");
             String mes_date = incommingMessages.getString("date");
+            String mes_qrcode = incommingMessages.getString("qrcode");
             boolean mes_presential = incommingMessages.getBoolean("presential");
             //create new session object
-            Session S = new Session(1, mes_date, mes_start, mes_end, mes_classroom, mes_group, mes_teacher, mes_subject, mes_presential);
+            Session S = new Session(1, mes_date, mes_start, mes_end, mes_classroom, mes_group, mes_teacher, mes_subject, mes_presential,mes_qrcode);
             //add session to the list
             SessionList.getSessionList().add(S);
             // update adapter
@@ -127,7 +132,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private void SetUpBottomAppBarMenu() {
         //find id
         bottomAppBar = findViewById(R.id.bnb);
-        bottomAppBar.getMenu().getItem(1).setIconTintList(getColorStateList(R.color.c2));
+        //bottomAppBar.getMenu().getItem(1).setIconTintList(getColorStateList(R.color.c2));
         //set bottom bar to Action bar as it is similar like Toolbar
         //bottomAppBar.replaceMenu(R.menu.bottom_app_bar_secondary_menu);
         //click event over Bottom bar menu item
@@ -166,7 +171,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     //res.setText(barcode.displayValue);
                     Scane_res = barcode.displayValue;
                     Log.v("qr_res", Scane_res);
-                    if (Scane_res.equals("Wael Mhimdi")) {
+                    if (Scane_res.equals(Adapter.getItem(Cur_pos).getQrstring())) {
                         Adapter.getItem(Cur_pos).setFlag(true);
                         Adapter.notifyDataSetChanged();
                     }
@@ -183,7 +188,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CAMERA) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
                 Intent intent = new Intent(this, ScanActivity.class);
+
                 startActivityForResult(intent, 0);
             } else {
                 Toast.makeText(this, "Permission was not granted", Toast.LENGTH_SHORT).show();
@@ -199,6 +206,14 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         Toast.makeText(this, dateSelected.toString("dd MMMM yyyy"), Toast.LENGTH_SHORT).show();
 
 
+    }
+
+    private  void AddSession(View v)
+    {
+
+        Intent intent =new Intent(Dashboard.this,CreateSession.class);
+        startActivity(intent);
+        finish();
     }
    /* protected void onListItemClick(ListView l, View v, int position, long id) {
         startActivity(new Intent(getApplicationContext(),ScanActivity.class));

@@ -6,269 +6,344 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:scrollbars="vertical"
     tools:context=".CreateSession">
 
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:layout_gravity="center"
         android:layout_marginStart="14.7dp"
         android:layout_marginLeft="14.7dp"
         android:layout_marginTop="35.7dp"
         android:text="Create New Session"
         android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:fontFamily="sans-serif"
+        android:textSize="30sp" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="90.3dp"
-            android:layout_height="16.3dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-
-            android:layout_marginTop="16dp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1.7dp"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"
-            android:layout_marginTop="8.3dp"
+            android:layout_marginTop="50dp"
             android:layout_marginRight="16dp"
             android:background="#efefef" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
-
+        android:orientation="vertical"
+        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
+        android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20.7dp"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
-                android:orientation="vertical"
-                android:paddingLeft="16dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Start"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-
-                <EditText
-                    android:id="@+id/et_start"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:hint="08:00"
-                    android:inputType="time"
-                    android:textColor="#4b4949"
-                    android:textSize="13.3sp" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="3dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Date"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-                    android:id="@+id/et_date"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:hint="01-01-2021"
-                    android:inputType="text"
-                    android:textColor="#4b4949"
-                    android:textSize="13.3sp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:paddingLeft="1dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="End"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-                    android:id="@+id/et_End"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:hint="12:00"
-                    android:inputType="time"
-                    android:textColor="#4b4949"
-                    android:textSize="13.3sp" />
-
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="20dp"
-            android:orientation="horizontal">
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
 
-            <LinearLayout
-                android:layout_width="72dp"
+            <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1.5"
-                android:orientation="vertical">
+                android:text="Date"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:gravity="center_horizontal"
-                    android:text="Teacher"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-                    android:id="@+id/et_teacher"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-
-                    android:gravity="center_horizontal"
-
-                    android:inputType="text" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:gravity="center_horizontal"
-                    android:text="Subject"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-                    android:id="@+id/et_subject"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:gravity="center_horizontal"
-                    android:inputType="text"
-
-                    android:textColor="#4b4949" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="122dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_weight="1.2"
-                android:orientation="vertical"
-                android:paddingLeft="1dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="1dp"
-                    android:text="Group"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-                    android:id="@+id/et_group"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:inputType="text"
-                    android:paddingLeft="1dp"
-                    android:textColor="#4b4949" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:paddingLeft="1dp"
-                    android:text="Classroom"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <EditText
-
-                    android:id="@+id/et_classroom"
-                    android:layout_width="75dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rectengular_field"
-                    android:inputType="text"
-                    android:paddingLeft="1dp"
-                    android:textColor="#4b4949" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="83dp"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:text="Presential"
-                    android:textColor="@android:color/black"
-                    android:textSize="11.7sp" />
-
-                <Switch
-                    android:id="@+id/sw_presential"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp" />
-            </LinearLayout>
-
+            <EditText
+                android:id="@+id/et_date"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+                android:hint="Select Date"
+                android:inputType="date"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
 
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="59dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
         android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Start"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/et_start"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+                android:hint="Select Time"
+                android:textSize="20dp"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
+
+         </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="End"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+
+
+            <TextView
+                android:id="@+id/et_End"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@drawable/rectengular_field"
+                android:hint="Select Time"
+                android:textSize="20dp"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="#000000"
+                android:layout_marginTop="15dp"/>
+        </LinearLayout>
+     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Group"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_group"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Classroom"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+
+
+            <EditText
+                android:id="@+id/et_classroom"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:background="@drawable/rectengular_field"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="#000000"
+                android:layout_marginTop="15dp"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teacher"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_teacher"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Course"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_subject"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:text="Presential"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <Switch
+                android:id="@+id/sw_presential"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20.7dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.2"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Session Code"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/et_qrcode"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/rectengular_field"
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />
+            <TextView
+                android:id="@+id/tv_qrlink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Session Code"
+                android:layout_marginHorizontal="30dp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:textSize="15sp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="27dp">
 
         <Button
             android:id="@+id/btn_cancel"
@@ -291,11 +366,11 @@
             android:layout_marginEnd="40dp"
             android:layout_marginRight="40dp"
             android:layout_weight="1"
-            android:shadowColor="#FFFFFF"
-            android:text="OK"
-            app:iconTintMode="add" />
+            android:text="OK" />
 
     </LinearLayout>
 
+    </LinearLayout>
+    </ScrollView>
 
-</LinearLayout>
+ </LinearLayout>
