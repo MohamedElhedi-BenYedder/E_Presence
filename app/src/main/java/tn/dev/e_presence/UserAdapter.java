@@ -43,12 +43,12 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
         holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_email.setText(model.getEmail());
-        if (model.getGender().equals("Male"))
+       try{ if (model.getGender().equals("Male"))
             holder.tv_gender.setText("Mr");
         else if (model.getGender().equals("Female"))
             holder.tv_gender.setText("Mrs");
         else
-            holder.tv_gender.setText("");
+            holder.tv_gender.setText("");}catch (Exception e){};
 
         StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
         image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -62,10 +62,11 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                if (model.getGender().equals("Male"))
+               try{ if (model.getGender().equals("Male"))
                     holder.iv_photo.setImageResource(ImageList[0]);
                 else if (model.getGender().equals("Female"))
-                    holder.iv_photo.setImageResource(ImageList[1]);
+                    holder.iv_photo.setImageResource(ImageList[1]);}
+               catch(Exception e1){}
             }
         })
         ;
