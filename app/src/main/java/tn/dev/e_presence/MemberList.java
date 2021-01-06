@@ -92,7 +92,7 @@ public class MemberList extends AppCompatActivity {
         /*Query query = UserRef.orderBy("DisplayName");
 
          */
-        Query query = UserRef.orderBy("displayName").whereArrayContains(key,path);
+        Query query = UserRef.whereArrayContains(key,path);
         Toast.makeText(MemberList.this, key+"/"+path, Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
@@ -103,7 +103,7 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
-        getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
+       /* getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
             {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot)
@@ -131,7 +131,7 @@ public class MemberList extends AppCompatActivity {
 
                     }
             }
-            );
+            );*/
     }
     private void floatingActionButtonClick()
     {

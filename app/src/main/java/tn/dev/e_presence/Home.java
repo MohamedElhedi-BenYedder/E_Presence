@@ -106,7 +106,7 @@ public class Home extends AppCompatActivity {
                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                     String SID = documentSnapshot.getId();
                    startActivity(new Intent(Home.this, SchoolPage.class).putExtra("ID",SID));
-
+                    finish();
                 }
             });
 
