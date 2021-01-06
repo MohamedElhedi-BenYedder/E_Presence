@@ -57,22 +57,23 @@ public class CreateSession extends AppCompatActivity {
                                 min_start=minute;
                                 String time = hour_start + ":" + min_start;
                                 SimpleDateFormat f24Hour = new SimpleDateFormat("HH:mm");
-                                SimpleDateFormat f12Hour = new SimpleDateFormat("HH:mm aa");
+                                //SimpleDateFormat f12Hour = new SimpleDateFormat("HH:mm aa");
                                 try {
                                     Date date = f24Hour.parse(time);
-                                    time_start=f12Hour.format(date);
-                                    et_start.setText(f12Hour.format(date));
+                                    time_start=f24Hour.format(date);
+                                    et_start.setText(f24Hour.format(date));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        },12,0,false
+                        },12,0,true
                 );
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timePickerDialog.updateTime(hour_start,min_start);
                 timePickerDialog.show();
             }
         });
+        //android.R.style.Theme_Holo_Light_Dialog_MinWidth,
         et_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,16 +86,16 @@ public class CreateSession extends AppCompatActivity {
                                 min_end=minute;
                                 String time = hour_end + ":" + min_end;
                                 SimpleDateFormat f24Hour = new SimpleDateFormat("HH:mm");
-                                SimpleDateFormat f12Hour = new SimpleDateFormat("HH:mm aa");
+                                //SimpleDateFormat f12Hour = new SimpleDateFormat("HH:mm aa");
                                 try {
                                     Date date = f24Hour.parse(time);
-                                    time_end=f12Hour.format(date);
-                                    et_end.setText(f12Hour.format(date));
+                                    time_end=f24Hour.format(date);
+                                    et_end.setText(f24Hour.format(date));
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
                             }
-                        },12,0,false
+                        },12,0,true
                 );
                 timePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 timePickerDialog.updateTime(hour_end,min_end);
