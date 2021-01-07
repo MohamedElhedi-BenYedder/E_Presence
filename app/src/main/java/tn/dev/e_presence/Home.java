@@ -35,12 +35,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class Home extends AppCompatActivity {
     private StorageReference mStorageRef;
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference SchoolRef =db.collection("School");
     private SchoolAdapter schoolAdapter;
+    private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private final String UserId = user.getUid();
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +108,19 @@ public class Home extends AppCompatActivity {
                 @Override
                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                     String SID = documentSnapshot.getId();
-                   startActivity(new Intent(Home.this, SchoolPage.class).putExtra("ID",SID));
+                    int priority;
+                    boolean isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);
+                    boolean isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);
+                    boolean isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);
+                    if (isAdmin) priority=3;
+                    else if(isTeacher) priority=2;
+                    else if(isStudent) priority=1;
+                    else priority=0;
+                    String ch=""+priority;
+                    Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
+                   startActivity(new Intent(Home.this, SchoolPage.class)
+                           .putExtra("SchoolID",SID)
+                           .putExtra("Priority",priority));
                     finish();
                 }
             });
