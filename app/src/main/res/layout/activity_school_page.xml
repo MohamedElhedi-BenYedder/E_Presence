@@ -155,13 +155,16 @@
 
     </LinearLayout>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ScrollView
+            android:id="@+id/sv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="310dp"
+            android:layout_above="@+id/cl"
+            android:layout_marginBottom="-10sp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -406,31 +409,40 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:isScrollContainer="false"
-            android:keepScreenOn="false"
-            android:visibility="visible"
-            app:layout_anchor="@id/bnb"
-            app:srcCompat="@drawable/ic_add" />
-
-        <com.google.android.material.bottomappbar.BottomAppBar
-            android:id="@+id/bnb"
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/cl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            app:hideOnScroll="true"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:verticalScrollbarPosition="defaultPosition"
-            app:fabAlignmentMode="end"
-            app:fabCradleMargin="20dp"
-            app:fabCradleRoundedCornerRadius="20dp"
-            app:fabCradleVerticalOffset="10dp"
-            app:menu="@menu/bottom_app_bar_main_menu" />
+            android:layout_below="@+id/null"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="21dp">
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isScrollContainer="false"
+                android:keepScreenOn="false"
+                android:visibility="visible"
+                app:layout_anchor="@id/bnb"
+                app:srcCompat="@drawable/ic_add" />
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bnb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:verticalScrollbarPosition="defaultPosition"
+                app:fabAlignmentMode="end"
+                app:fabCradleMargin="20dp"
+                app:fabCradleRoundedCornerRadius="20dp"
+                app:fabCradleVerticalOffset="10dp"
+                app:hideOnScroll="true"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:menu="@menu/bottom_app_bar_main_menu" />
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </RelativeLayout>
 
 
 </LinearLayout>
