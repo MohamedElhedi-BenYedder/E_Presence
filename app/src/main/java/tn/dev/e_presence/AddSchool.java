@@ -100,6 +100,9 @@ public class AddSchool extends AppCompatActivity {
                 school.put("FullName",fullName);
                 school.put("Description",Description);
                 school.put("Location",location);
+                school.put("Students",new ArrayList<String>());
+                school.put("Teachers",new ArrayList<String>());
+                school.put("Admins",new ArrayList<String>());
                 if(!photo.isEmpty())school.put("Photo",photo);
                 List<String> admins =new ArrayList<>();
                 admins.add(user.getUid());
