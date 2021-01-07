@@ -53,7 +53,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         if (model.isPresential()) holder.tv_presential.setText("Yes");
 
         else holder.tv_presential.setText("No");
-        if(model.isFlag()) holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+        //if(model.isFlag()) holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
 
 
     }

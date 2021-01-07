@@ -34,7 +34,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -139,7 +141,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
         });
     }
-
     //Scan Fonction
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -147,13 +148,14 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
                     Barcode barcode = data.getParcelableExtra("barcode");
-                    //res.setText(barcode.displayValue);
+
                     Scane_res = barcode.displayValue;
                     Log.v("qr_res", Scane_res);
-                    if (Scane_res.equals(Adapter.getItem(Cur_pos).getQrstring())) {
-                        sessionAdapter.getItem(Cur_pos).setFlag(true);
-                        sessionAdapter.notifyDataSetChanged();
+                    if (Scane_res.equals(data.getStringExtra("DataBaseQRcode"))) {
+                        Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
+
                     }
+                    else  Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -215,15 +217,18 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
         recyclerView.setAdapter(sessionAdapter);
         /*------------------set click--------------*/
-       /* sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
+        sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 String SID = documentSnapshot.getId();
+                String db_QR_Code=documentSnapshot.getString("qrcode");
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Dashboard.this, ScanActivity.class);
-
-                    sessionAdapter.notifyDataSetChanged();
+                    Intent intent = new Intent(Dashboard.this,ScanActivity.class)
+                            .putExtra("SchoolID",SchoolId)
+                            .putExtra("GroupID",GroupId)
+                            .putExtra("SessionID",SID)
+                            .putExtra("DataBaseQRcode",db_QR_Code);
                     startActivityForResult(intent, 0);
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -235,7 +240,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 }
                 finish();
             }
-        });*/
+        });
     }
 
       /* GroupRef.get()
@@ -301,7 +306,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
         SessionRef=db.collection("School").document(SchoolId).collection("Session");
         GroupRef=db.collection("School").document(SchoolId).collection("Group");
-        Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
 
     }
     String getTodayDate()
