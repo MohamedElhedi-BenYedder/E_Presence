@@ -153,7 +153,7 @@ public class SchoolPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Toast.makeText(SchoolPage.this, "GID", Toast.LENGTH_SHORT).show();
+
                 GroupRef.whereArrayContains("ListofStudents",UserId)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

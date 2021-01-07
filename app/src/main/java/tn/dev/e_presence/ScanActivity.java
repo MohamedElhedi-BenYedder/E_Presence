@@ -10,35 +10,44 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 
 public class ScanActivity extends AppCompatActivity {
     private SurfaceView cameraPreview;
-    private String SchoolId,GroupId,SessionId,DataBaseQRcode;
+    private String SchoolId,SessionId,GroupId,Qrdb;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        listenForIncommingMessages();
         setContentView(R.layout.activity_scan);
+        listenForIncommingMessages();
         cameraPreview = (SurfaceView) findViewById(R.id.camera_preview);
         createCameraSource();
+    }
+    void listenForIncommingMessages()
+    {
+        //listen for incoming messages
+        Bundle incommingMessages =getIntent().getExtras();
+        SchoolId =incommingMessages.getString("SchoolID","0");
+        GroupId=incommingMessages.getString("GroupID","0");
+        SessionId=incommingMessages.getString("GroupID","0");
+        Qrdb=incommingMessages.getString("Qrdb","0");
+        Toast.makeText(ScanActivity.this,
+                Qrdb,
+                Toast.LENGTH_SHORT).show();
     }
 
     private void createCameraSource() {
@@ -93,13 +102,11 @@ public class ScanActivity extends AppCompatActivity {
             public void receiveDetections(@NonNull Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size()>0){
-                    String Sc_QR_code=barcodes.valueAt(0).displayValue;
-                    Intent intent = new Intent()
-                            .putExtra("barcode",barcodes.valueAt(0))
-                            .putExtra("DataBaseQRcode",DataBaseQRcode)
-                            .putExtra("SchoolID",SchoolId)
-                            .putExtra("GroupID",GroupId)
-                            .putExtra("SessionID",SessionId);
+                   // Toast.makeText(ScanActivity.this,barcodes.valueAt(0).displayValue, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.putExtra("barcode",barcodes.valueAt(0)).putExtra("Qrdb","supchess");
+
+
                     setResult(CommonStatusCodes.SUCCESS,intent);
                     finish();
                 }
@@ -107,38 +114,5 @@ public class ScanActivity extends AppCompatActivity {
         });
     }
 
-    void listenForIncommingMessages()
-    {
-        //listen for incoming messages
-        Bundle incommingMessages =getIntent().getExtras();
-        SchoolId =incommingMessages.getString("SchoolID","0");
-        GroupId=incommingMessages.getString("GroupID","0");
-        SessionId=incommingMessages.getString("SessionID","0");
-        DataBaseQRcode=incommingMessages.getString("DataBaseQRcode","0");
-    }
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent =new Intent(ScanActivity.this,Dashboard.class)
-                .putExtra("SchoolID",SchoolId)
-                .putExtra("GroupID",GroupId);
-        startActivity(intent);
-        finish();
 
-    }
-    public void updateDocumentArray() {
-        //SchoolId //SessionId
-        FirebaseFirestore db=FirebaseFirestore.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String UserId = user.getUid();
-        DocumentReference RF = db.collection("School")
-                .document(SchoolId)
-                .collection("Session")
-                .document(SessionId);
-
-
-        RF.update("listOfPresence", FieldValue.arrayUnion(UserId));
-
-
-    }
 }

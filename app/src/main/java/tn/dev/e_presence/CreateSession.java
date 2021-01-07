@@ -143,7 +143,7 @@ public class CreateSession extends AppCompatActivity {
         tv_qrlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 Uri="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+et_qrcode.getText().toString();
+                 Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
                 Intent i = new Intent(CreateSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
                         .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
@@ -209,7 +209,7 @@ public class CreateSession extends AppCompatActivity {
                                     Compteur+=1;
                                     Log.d(TAG, "Session successfully added!");
                                     Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
-                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+et_qrcode.getText().toString();
+                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
 
                                      i.putExtra("Qrurl",Uri)
                                             .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
@@ -259,24 +259,9 @@ public class CreateSession extends AppCompatActivity {
         finish();
     }
 
-    @Override
-    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
-        super.onSaveInstanceState(outState, outPersistentState);
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
+
 
 
 }

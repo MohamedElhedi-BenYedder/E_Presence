@@ -71,6 +71,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String SchoolId;
     private String GroupId;
     private String day;
+    private String Qrdb;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -141,28 +142,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
         });
     }
-    //Scan Fonction
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 0) {
-            if (resultCode == CommonStatusCodes.SUCCESS) {
-                if (data != null) {
-                    Barcode barcode = data.getParcelableExtra("barcode");
 
-                    Scane_res = barcode.displayValue;
-                    Log.v("qr_res", Scane_res);
-                    if (Scane_res.equals(data.getStringExtra("DataBaseQRcode"))) {
-                        Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
-
-                    }
-                    else  Toast.makeText(this, "erreur", Toast.LENGTH_SHORT).show();
-
-                }
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 
     //Camera Permission Function
     @Override
@@ -184,7 +164,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
-        Toast.makeText(this, dateSelected.toString("dd/MM/yyyy"), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, dateSelected.toString("dd/MM/yyyy"), Toast.LENGTH_SHORT).show();
         setUpRecyclerView(dateSelected.toString("dd/MM/yyyy"));
         sessionAdapter.startListening();
 
@@ -221,14 +201,17 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Cur_pos=position;
                 String SID = documentSnapshot.getId();
                 String db_QR_Code=documentSnapshot.getString("qrcode");
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    Intent intent = new Intent(Dashboard.this,ScanActivity.class)
-                            .putExtra("SchoolID",SchoolId)
-                            .putExtra("GroupID",GroupId)
-                            .putExtra("SessionID",SID)
-                            .putExtra("DataBaseQRcode",db_QR_Code);
+                    Intent intent = new Intent(Dashboard.this,ScanActivity.class).putExtra("SchoolID",SchoolId)
+                    .putExtra("GroupID",GroupId).putExtra("SessionID",SID).putExtra("Qrdb",db_QR_Code);
+                    Toast.makeText(Dashboard.this,
+                            SID,
+                            Toast.LENGTH_SHORT).show();
+
+
                     startActivityForResult(intent, 0);
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -238,69 +221,21 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     }
                     ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
                 }
-                finish();
+
             }
         });
     }
 
-      /* GroupRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List listG = new ArrayList<String>();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-                                List  list = (List) document.getData().get("ListofStudents");
-                                if (list.contains(UserId)) listG.add(document.getId());
-                            }
-                            Toast.makeText(Dashboard.this, listG.toString(), Toast.LENGTH_SHORT).show();
+      void listenForIncommingMessages()
+      {
+          //listen for incoming messages
+          Bundle incommingMessages =getIntent().getExtras();
+          SchoolId =incommingMessages.getString("SchoolID","0");
+          GroupId=incommingMessages.getString("GroupID","0");
+          Qrdb =incommingMessages.getString("Qrdb","0");
+          Log.d("qrtesting",incommingMessages.getString("Qrtest","0"));
+      }
 
-                            Query query = SessionRef.whereArrayContainsAny("group",listG );
-                            StorageReference path = FirebaseStorage.getInstance().getReference();
-                            FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
-                                    .setQuery(query, Session.class)
-                                    .build();
-                            sessionAdapter = new SessionAdapter(options);
-                            RecyclerView recyclerView = findViewById(R.id.rv_session);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-                            recyclerView.setAdapter(sessionAdapter);
-                            sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
-                                @RequiresApi(api = Build.VERSION_CODES.M)
-                                @Override
-                                public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                                    String SID = documentSnapshot.getId();
-                                    if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                                        Intent intent = new Intent(Dashboard.this, ScanActivity.class);
-
-                                        Adapter.notifyDataSetChanged();
-                                        startActivityForResult(intent, 0);
-                                    } else {
-                                        if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                                            Toast.makeText(Dashboard.this,
-                                                    "Camera permission is needed",
-                                                    Toast.LENGTH_SHORT).show();
-                                        }
-                                        ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                                    }
-                                    finish();
-                                }
-                            });
-                        } else {
-                            Log.w(TAG, "Error getting Sessions.", task.getException());
-                        }
-                    }});
-
-                    }*/
-
-    void listenForIncommingMessages()
-    {
-        //listen for incoming messages
-        Bundle incommingMessages =getIntent().getExtras();
-        SchoolId =incommingMessages.getString("SchoolID","0");
-        GroupId=incommingMessages.getString("GroupID","0");
-    }
     void initSessionAndGroupRef()
     {
 
@@ -327,4 +262,27 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         super.onStop();
         sessionAdapter.stopListening();
     }
+    //Scan Fonction
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 0) {
+            if (resultCode == CommonStatusCodes.SUCCESS) {
+                if (data != null) {
+                    Barcode barcode = data.getParcelableExtra("barcode");
+                    Scane_res = barcode.displayValue;
+                    Log.d("qr_res", Scane_res);
+                    Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
+                    if (Scane_res.equals("supcom")) {
+                        Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
+
+                    }
+                    else  Toast.makeText(this, "qrcode invalide", Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
 }
