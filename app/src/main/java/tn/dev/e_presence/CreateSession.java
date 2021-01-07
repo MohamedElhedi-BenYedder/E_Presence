@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -43,6 +44,7 @@ public class CreateSession extends AppCompatActivity {
     final String TAG="CreateNewSession";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private  int Compteur=0;
 
     Switch sw_presential;
     @Override
@@ -170,6 +172,7 @@ public class CreateSession extends AppCompatActivity {
         btn_ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                if(Compteur==0){
                 //get data
                 String new_start= time_start;
                 String new_end= time_end;
@@ -182,7 +185,7 @@ public class CreateSession extends AppCompatActivity {
                 boolean new_presential=sw_presential.isChecked();
                 // Start Dashborad Activity again
                 if (NewSession) {
-                    Intent i = new Intent(v.getContext(), Dashboard.class);
+                    Intent i = new Intent(CreateSession.this,QrwebpageActivity.class);
                     //put Data into a message for DashboradActivty
 
                     Map<String, Object> session = new HashMap<>();
@@ -203,9 +206,14 @@ public class CreateSession extends AppCompatActivity {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
+                                    Compteur+=1;
                                     Log.d(TAG, "Session successfully added!");
                                     Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
-                                    Intent i = new Intent(v.getContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+et_qrcode.getText().toString();
+
+                                     i.putExtra("Qrurl",Uri)
+                                            .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+
                                     startActivity(i);
                                     finish();
 
@@ -226,6 +234,9 @@ public class CreateSession extends AppCompatActivity {
 
                 //
 
+            }else{
+                    Toast.makeText(CreateSession.this, "Loading...", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -233,7 +244,7 @@ public class CreateSession extends AppCompatActivity {
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
-        //NewSession =incommingMessages.getBoolean("NewSession",true);
+        NewSession =incommingMessages.getBoolean("NewSession",true);
         SchoolId =incommingMessages.getString("SchoolID","0");
         GroupId=incommingMessages.getString("GroupID","0");
 
@@ -247,5 +258,25 @@ public class CreateSession extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState, @NonNull PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
 
 }

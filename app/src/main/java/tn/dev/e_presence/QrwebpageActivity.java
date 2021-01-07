@@ -30,7 +30,7 @@ public class QrwebpageActivity extends AppCompatActivity {
             webView.goBack();
         } else {
             super.onBackPressed();
-            Intent i = new Intent(QrwebpageActivity.this,CreateSession.class)
+            Intent i = new Intent(QrwebpageActivity.this,Dashboard.class)
                     .putExtra("SchoolID",SchoolID).putExtra("GroupID",GroupID);
             startActivity(i);
             finish();
