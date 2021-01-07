@@ -44,7 +44,10 @@ import com.google.firebase.storage.StorageReference;
 
 import org.joda.time.DateTime;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Dashboard extends AppCompatActivity implements DatePickerListener {
@@ -65,6 +68,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String Scane_res = "chaine";
     private String SchoolId;
     private String GroupId;
+    private String day;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -75,9 +79,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         listenForIncommingMessages();
         initSessionAndGroupRef();
         SetUpBottomAppBarMenu();
-        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         SetDatePicker();
+        setUpRecyclerView(getTodayDate());
+        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this::AddSession);
+
 
 
     }
@@ -177,10 +183,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     @Override
     public void onDateSelected(DateTime dateSelected) {
         Toast.makeText(this, dateSelected.toString("dd/MM/yyyy"), Toast.LENGTH_SHORT).show();
-        listenForIncommingMessages();
-        initSessionAndGroupRef();
-        setUpRecyclerView();
-
+        setUpRecyclerView(dateSelected.toString("dd/MM/yyyy"));
+        sessionAdapter.startListening();
 
     }
 
@@ -197,10 +201,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         startActivity(new Intent(getApplicationContext(),ScanActivity.class));
 
     }*/
-    public void setUpRecyclerView()
+    public void setUpRecyclerView(String day)
     {
 
-        Query query = SessionRef.whereEqualTo("group",GroupId);
+        Query query = SessionRef.whereEqualTo("group",GroupId).whereEqualTo("date",day);
         StorageReference path = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                 .setQuery(query, Session.class)
@@ -299,6 +303,12 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         GroupRef=db.collection("School").document(SchoolId).collection("Group");
         Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
 
+    }
+    String getTodayDate()
+    {
+        SimpleDateFormat dateFor = new SimpleDateFormat("dd/MM/yyyy");
+        String stringDate= dateFor.format(new Date());
+        return stringDate;
     }
 
     @Override
