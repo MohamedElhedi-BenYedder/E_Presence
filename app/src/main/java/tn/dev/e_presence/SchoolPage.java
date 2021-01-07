@@ -178,7 +178,7 @@ public class SchoolPage extends AppCompatActivity {
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
-       SchoolId =incommingMessages.getString("ID","0");
+       SchoolId =incommingMessages.getString("SchoolID","0");
     }
     void displaySchoolInformations()
     {

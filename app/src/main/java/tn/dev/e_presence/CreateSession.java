@@ -251,4 +251,14 @@ public class CreateSession extends AppCompatActivity {
         startActivity(i);
         finish();
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
