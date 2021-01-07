@@ -237,4 +237,12 @@ public class CreateSession extends AppCompatActivity {
         GroupId=incommingMessages.getString("GroupID","0");
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent i = new Intent(CreateSession.this,Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+        startActivity(i);
+        finish();
+    }
 }
