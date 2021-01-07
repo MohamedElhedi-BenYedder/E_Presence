@@ -16,10 +16,12 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserHolder> {
+    private UserAdapter.OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
     static int count = 0;
     final static int ColorList[] = {0, 1, 3};
@@ -101,7 +103,26 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
             tv_email = oneUserItem.findViewById(R.id.tv_email);
             iv_photo = oneUserItem.findViewById(R.id.iv_photo);
             ll_bg = oneUserItem.findViewById(R.id.ll_bg);
+            oneUserItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    int pos=getAdapterPosition();
+                    if(pos!=RecyclerView.NO_POSITION && listener!=null)
+                    {
+                        listener.onItemClick(getSnapshots().getSnapshot(pos),pos);
+                    }
+                }
+            });
         }
 
+    }
+    public interface OnItemClickListener
+    {
+        void onItemClick(DocumentSnapshot documentSnapshot, int pos);
+    }
+    public void setOnItemClickListener(UserAdapter.OnItemClickListener listener)
+    {
+        this.listener =listener;
     }
 }

@@ -44,7 +44,7 @@ public class CreateSession extends AppCompatActivity {
     final String TAG="CreateNewSession";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    private  int Compteur=0;
+    private  int Compteur;
 
     Switch sw_presential;
     @Override
@@ -52,6 +52,7 @@ public class CreateSession extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_session);
         listenForIncommingMessages();
+        Compteur=0;
         findViews();
         setStart();
         setEnd();

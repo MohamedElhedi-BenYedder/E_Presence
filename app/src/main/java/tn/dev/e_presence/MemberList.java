@@ -19,11 +19,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
 
 import static tn.dev.e_presence.GV.getUser;
 
@@ -106,54 +110,64 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
     }
+    void setUpRecyclerViewAdmin()
+    {
+        Query query = UserRef.orderBy("displayName");
+        Toast.makeText(MemberList.this, "AddingNewMembers" , Toast.LENGTH_SHORT).show();
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                .setQuery(query,User.class)
+                .build();
+        UserAdapter=new UserAdapter(options,storageReference);
+        RecyclerView recyclerView = findViewById(R.id.rv_user);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(UserAdapter);
+        UserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                String clickedUserId =documentSnapshot.getId();
+                String ClickedUserName=documentSnapshot.getString("displayName");
+                DocumentReference clickedUserDocRef=db.collection("User").document(clickedUserId);
+                DocumentReference SchoolDocRef=db.collection("School").document(SchoolId);
+                if(key.equals("studentIN"))
+                {
+                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion("School/"+SchoolId));
+                    SchoolDocRef.update("Students",FieldValue.arrayUnion(clickedUserId));
+                }
+                else if(key.equals("teacherIN"))
+                {
+                    clickedUserDocRef.update("teacherIN", FieldValue.arrayUnion("School/"+SchoolId));
+                    SchoolDocRef.update("Teachers",FieldValue.arrayUnion(clickedUserId));
+                }
+                Toast.makeText(MemberList.this, ClickedUserName+" is added" , Toast.LENGTH_SHORT).show();
+
+
+
+            }
+        });UserAdapter.startListening();
+
+
+
+    }
     private void floatingActionButtonClick()
     {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(getApplicationContext(),SchoolPage.class).putExtra("ID",SchoolId);
+               //admin
+                if(priority==3)
+                {
+                    // add User;
+                    setUpRecyclerViewAdmin();
+                }
+                //Student or Teacher
+                else
+                {Intent intent =new Intent(getApplicationContext(),SchoolPage.class).putExtra("ID",SchoolId);
                 startActivity(intent);
-                finish();
+                finish();}
 
-                /*getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-                                                  {
-                                                      @Override
-                                                      public void onSuccess(DocumentSnapshot documentSnapshot)
-                                                      {
-                                                          User modelCurrentUser = documentSnapshot.toObject(User.class);
-                                                          boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
-                                                          boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
-                                                          boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
-                                                          if(isAdmin)
-                                                          {
-                                                              //Admin
 
-                                                          }
-                                                          else if(isTeacher)
-                                                          {
-                                                              //Teacher
-                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                              startActivity(intent);
-                                                              finish();
-                                                          }
-                                                          else if(isStudent)
-                                                          {
-                                                              //Student
-                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                              startActivity(intent);
-                                                              finish();
-                                                          }
-                                                          else
-                                                          {
-                                                              //Public
-                                                              Intent intent =new Intent(getApplicationContext(),SchoolPage.class);
-                                                              startActivity(intent);
-                                                              finish();
-                                                          }
-
-                                                      }
-                                                  }
-                );*/
             }
         });
 
@@ -169,6 +183,7 @@ public class MemberList extends AppCompatActivity {
     void AddNewPerson() {
 
     }
+
     void listenForIncommingMessages()
     {
         //listen for incoming messages
