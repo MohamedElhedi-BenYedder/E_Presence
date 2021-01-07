@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,9 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         holder.tv_teacher.setText(model.getTeacher());
         holder.tv_subject.setText(model.getSubject());
         holder.tv_group.setText(model.getGroup());
+        if(model.isFlag()) {
+            holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.c2));
+        }
         if (model.isPresential()) holder.tv_presential.setText("Yes");
 
         else holder.tv_presential.setText("No");
@@ -101,6 +105,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                     if(pos!=RecyclerView.NO_POSITION && listener!=null)
                     {
                         listener.onItemClick(getSnapshots().getSnapshot(pos),pos);
+                        ll.setBackgroundColor(Color.BLUE);
                     }
                 }
             });

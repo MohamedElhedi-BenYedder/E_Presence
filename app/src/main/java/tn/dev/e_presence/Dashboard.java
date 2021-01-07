@@ -72,6 +72,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String GroupId;
     private String day;
     private String Qrdb;
+    private RecyclerView recyclerView;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -192,7 +193,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .setQuery(query, Session.class)
                 .build();
         sessionAdapter = new SessionAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.rv_session);
+        recyclerView = findViewById(R.id.rv_session);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
         recyclerView.setAdapter(sessionAdapter);
@@ -274,6 +275,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
                     if (Scane_res.equals("supcom")) {
                         Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
+
 
                     }
                     else  Toast.makeText(this, "qrcode invalide", Toast.LENGTH_SHORT).show();
