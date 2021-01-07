@@ -38,7 +38,6 @@ import com.squareup.picasso.Picasso;
 public class Home extends AppCompatActivity {
     private StorageReference mStorageRef;
     private BottomAppBar bottomAppBar;
-    private BottomNavigationView bottomNavigationView;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference SchoolRef =db.collection("School");
     private SchoolAdapter schoolAdapter;

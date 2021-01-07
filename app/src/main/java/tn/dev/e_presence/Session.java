@@ -1,130 +1,110 @@
 package tn.dev.e_presence;
 
 public class Session {
-    private int SID;
-    private String Day;
-    private String Start;
-    private String End;
-    private String Classroom;
-    private String Group;
-    private String Teacher;
-    private String Qrstring;
-    private String Subject;
-    private boolean Presential;
-    private boolean Flag;
+    private String date;
+    private String start;
+    private String end;
+    private String classroom;
+    private String group;
+    private String teacher;
+    private String qrstring;
+    private String subject;
+    private boolean presential;
+    private boolean flag;
 
-    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential, boolean flag,String qrstring) {
-        this.SID = SID;
-        Day = day;
-        Start = start;
-        End = end;
-        Classroom = classroom;
-        Group = group;
-        Teacher = teacher;
-        Subject = subject;
-        Presential = presential;
-        Flag = flag;
-        Qrstring=qrstring;
-    }
-    public Session(int SID, String day, String start, String end, String classroom, String group, String teacher, String subject, boolean presential,String qrstring) {
-        this.SID = SID;
-        Day = day;
-        Start = start;
-        End = end;
-        Classroom = classroom;
-        Group = group;
-        Teacher = teacher;
-        Subject = subject;
-        Presential = presential;
-        Flag =false;
-        Qrstring=qrstring;
+    public Session() { //needed
     }
 
-    public int getSID() {
-        return SID;
-    }
-
-    public String getQrstring() {
-        return Qrstring;
-    }
-
-    public void setQrstring(String qrstring) {
-        Qrstring = qrstring;
-    }
-
-    public void setSID(int SID) {
-        this.SID = SID;
+    public Session(String day, String start, String end, String classroom, String group, String teacher, String qrstring, String subject, boolean presential, boolean flag) {
+        this.date = day;
+        this.start = start;
+        this.end = end;
+        this.classroom = classroom;
+        this.group = group;
+        this.teacher = teacher;
+        this.qrstring = qrstring;
+        this.subject = subject;
+        this.presential = presential;
+        this.flag = flag;
     }
 
     public String getDay() {
-        return Day;
-    }
-
-    public void setDay(String day) {
-        Day = day;
+        return date;
     }
 
     public String getStart() {
-        return Start;
-    }
-
-    public void setStart(String start) {
-        Start = start;
+        return start;
     }
 
     public String getEnd() {
-        return End;
-    }
-
-    public void setEnd(String end) {
-        End = end;
+        return end;
     }
 
     public String getClassroom() {
-        return Classroom;
-    }
-
-    public void setClassroom(String classroom) {
-        Classroom = classroom;
+        return classroom;
     }
 
     public String getGroup() {
-        return Group;
-    }
-
-    public void setGroup(String group) {
-        Group = group;
+        return group;
     }
 
     public String getTeacher() {
-        return Teacher;
+        return teacher;
     }
 
-    public void setTeacher(String teacher) {
-        Teacher = teacher;
+    public String getQrstring() {
+        return qrstring;
     }
 
     public String getSubject() {
-        return Subject;
-    }
-
-    public void setSubject(String subject) {
-        Subject = subject;
+        return subject;
     }
 
     public boolean isPresential() {
-        return Presential;
-    }
-
-    public void setPresential(boolean presential) {
-        Presential = presential;
+        return presential;
     }
 
     public boolean isFlag() {
-        return Flag;
+        return flag;
+    }
+
+    public void setDay(String day) {
+        this.date = day;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    public void setClassroom(String classroom) {
+        this.classroom = classroom;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public void setTeacher(String teacher) {
+        this.teacher = teacher;
+    }
+
+    public void setQrstring(String qrstring) {
+        this.qrstring = qrstring;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public void setPresential(boolean presential) {
+        this.presential = presential;
     }
 
     public void setFlag(boolean flag) {
-        Flag = flag;
+        this.flag = flag;
     }
 }

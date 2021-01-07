@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +15,21 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CreateSession extends AppCompatActivity {
     Button btn_ok,btn_cancel;
@@ -26,12 +37,30 @@ public class CreateSession extends AppCompatActivity {
     TextView tv_qrlink,et_start,et_end;
     int hour_start,min_start,hour_end,min_end;;
     String time_start,time_end;
+    boolean NewSession;
+    String SchoolId;
+    String GroupId;
+    final String TAG="CreateNewSession";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     Switch sw_presential;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_session);
+        listenForIncommingMessages();
+        findViews();
+        setStart();
+        setEnd();
+        tv_qrlink.setText("Click to generate QR code");
+        setLink();
+        setCancel();
+        setOk();
+    }
+
+    public void findViews()
+    {
         btn_ok=findViewById(R.id.btn_ok);
         btn_cancel=findViewById(R.id.btn_cancel);
         et_start=findViewById(R.id.et_start);
@@ -44,7 +73,9 @@ public class CreateSession extends AppCompatActivity {
         et_qrcode=findViewById(R.id.et_qrcode);
         sw_presential=findViewById(R.id.sw_presential);
         tv_qrlink=findViewById(R.id.tv_qrlink);
-        tv_qrlink.setText("Click to generate QR code");
+    }
+    public void setStart()
+    {
         et_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +104,9 @@ public class CreateSession extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
-        //android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+    }
+    public void setEnd()
+    {
         et_end.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,6 +135,9 @@ public class CreateSession extends AppCompatActivity {
                 timePickerDialog.show();
             }
         });
+    }
+    public void setLink()
+    {
         tv_qrlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,10 +145,27 @@ public class CreateSession extends AppCompatActivity {
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
                 Intent i = new Intent();
                 i.setData(Uri.parse(uri));
-                //Toast.makeText(CreateSession.this, "testclick", Toast.LENGTH_SHORT).show();
                 startActivity(i);
+                finish();
             }
         });
+    }
+    public void setCancel()
+    {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(v.getContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+
+                startActivity(i);
+                finish();
+
+            }
+        });
+
+    }
+    public void setOk()
+    {
         btn_ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -127,31 +180,61 @@ public class CreateSession extends AppCompatActivity {
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
                 // Start Dashborad Activity again
-                Intent i = new Intent(v.getContext(),Dashboard.class);
-                //put Data into a message for DashboradActivty
-                i.putExtra("start",new_start);
-                i.putExtra("end",new_end);
-                i.putExtra("date",new_date);
-                i.putExtra("classroom",new_classroom);
-                i.putExtra("group",new_group);
-                i.putExtra("teacher",new_teacher);
-                i.putExtra("subject",new_subject);
-                i.putExtra("presential",new_presential);
-                i.putExtra("qrcode",new_qrcode);
+                if (NewSession) {
+                    Intent i = new Intent(v.getContext(), Dashboard.class);
+                    //put Data into a message for DashboradActivty
+
+                    Map<String, Object> session = new HashMap<>();
+                    session.put("start", new_start);
+                    session.put("end", new_end);
+                    session.put("date", new_date);
+                    session.put("classroom", new_classroom);
+                    session.put("group", new_group);
+                    session.put("teacher", new_teacher);
+                    session.put("subject", new_subject);
+                    session.put("presential", new_presential);
+                    session.put("qrcode", new_qrcode);
+                    session.put("listOfPresence",new ArrayList<String>());
+                    String timeC=""+System.currentTimeMillis();
+
+                    db.collection("School").document(SchoolId).collection("Session").document(timeC)
+                            .set(session)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "Session successfully added!");
+                                    Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
+                                    Intent i = new Intent(v.getContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+                                    startActivity(i);
+                                    finish();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding session", e);
+                                    Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+                else
+                {
+
+                }
 
                 //
-                startActivity(i);
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),Dashboard.class);
-                startActivity(i);
 
             }
         });
-
+    }
+    void listenForIncommingMessages()
+    {
+        //listen for incoming messages
+        Bundle incommingMessages =getIntent().getExtras();
+        NewSession =incommingMessages.getBoolean("NewSession",true);
+        SchoolId =incommingMessages.getString("SchoolID","0");
+        GroupId=incommingMessages.getString("GroupID","0");
 
     }
 }

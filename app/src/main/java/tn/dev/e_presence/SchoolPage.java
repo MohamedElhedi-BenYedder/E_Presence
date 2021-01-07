@@ -2,6 +2,8 @@ package tn.dev.e_presence;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,18 +11,28 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import static tn.dev.e_presence.GV.getSchool;
 import static tn.dev.e_presence.GV.getUser;
 
 public class SchoolPage extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
+    private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private CollectionReference GroupRef;
     private String SchoolId;
     private TextView tv_display_name;
     private TextView tv_description;
@@ -30,6 +42,7 @@ public class SchoolPage extends AppCompatActivity {
     private ImageView iv_teacher;
     private ImageView iv_student;
     private ImageView iv_group;
+    private ImageView iv_session;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,13 +50,16 @@ public class SchoolPage extends AppCompatActivity {
         findViews();
         welcomeUser();
         listenForIncommingMessages();
+        initReferences();
         displaySchoolInformations();
         setUpBottomAppBarMenu();
         onStudentClick();
         onTeacherClick();
         onGroupClick();
+        onSessionClick();
 
     }
+
     private void setUpBottomAppBarMenu()
     {
         //find id
@@ -131,6 +147,33 @@ public class SchoolPage extends AppCompatActivity {
             }
         });
     }
+    private void onSessionClick()
+    {
+        iv_session.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                GroupRef.whereArrayContains("ListofStudents",UserId)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                                {
+                                    String GID=queryDocumentSnapshots.getDocuments().get(0).getId();
+                                    Intent intent=new Intent(getApplicationContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GID);
+                                    Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+
+
+            }
+        });
+    }
     void listenForIncommingMessages()
     {
         //listen for incoming messages
@@ -159,5 +202,11 @@ public class SchoolPage extends AppCompatActivity {
         iv_teacher=findViewById(R.id.iv_teacher);
         iv_student=findViewById(R.id.iv_student);
         iv_group=findViewById(R.id.iv_group);
+        iv_session=findViewById(R.id.iv_session);
+    }
+    void initReferences()
+    {
+        GroupRef=db.collection("School").document(SchoolId).collection("Group");
+        Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
     }
 }

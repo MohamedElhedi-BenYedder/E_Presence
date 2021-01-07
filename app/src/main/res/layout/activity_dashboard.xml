@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-
+    tools:context=".AddSchool"
     android:fadingEdge="none"
     android:orientation="horizontal">
 
@@ -28,8 +28,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="0dp">
 
-        <ListView
-            android:id="@+id/lv_session"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_session"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
 

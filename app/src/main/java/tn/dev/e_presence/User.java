@@ -12,11 +12,13 @@ public class User {
     private List<String> adminIN;
     private List<String> studentIN;
     private List<String> teacherIN;
+    private List<String> allSessions;
+
     public User() {
         //public no-arg constructor needed
     }
 
-    public User(String displayName, String email, String phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN) {
+    public User(String displayName, String email, String phoneNumber, String gender, String photo, List<String> adminIN, List<String> studentIN, List<String> teacherIN,List<String> allSessions) {
         this.displayName = displayName;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -25,6 +27,7 @@ public class User {
         this.adminIN = adminIN;
         this.studentIN = studentIN;
         this.teacherIN = teacherIN;
+        this.allSessions=allSessions;
     }
 
 
@@ -61,6 +64,8 @@ public class User {
         return teacherIN;
     }
 
+    public List<String> getAllSessions() {        return allSessions;    }
+
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
@@ -91,6 +96,10 @@ public class User {
 
     public void setTeacherIN(List<String> teacherIN) {
         this.teacherIN = teacherIN;
+    }
+
+    public void setAllSessions(List<String> allSessions) {
+        this.allSessions = allSessions;
     }
 
     public void Copy(User other)
