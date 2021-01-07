@@ -32,6 +32,7 @@ public class SchoolPage extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private int priority;
     private CollectionReference GroupRef;
     private String SchoolId;
     private TextView tv_display_name;
@@ -105,54 +106,67 @@ public class SchoolPage extends AppCompatActivity {
         });
     }
 
-    void onStudentClick()
-    {
-        iv_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    void onStudentClick() {
 
-                Intent intent=new Intent(getApplicationContext(),MemberList.class).putExtra("ID",SchoolId);
-                startActivity(intent);
-                intent.putExtra("key","studentIN");
-                intent.putExtra("path","School/"+SchoolId);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-    void onTeacherClick()
-    {
-        iv_teacher.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent intent=new Intent(getApplicationContext(),MemberList.class).putExtra("ID",SchoolId);
-                intent.putExtra("key","teacherIN");
-                intent.putExtra("path","School/"+SchoolId);
-                startActivity(intent);
-                finish();
-            }
-        });
-    }
-    void onGroupClick()
-    {
+            iv_student.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (priority > 0) {
+                    Intent intent = new Intent(getApplicationContext(), MemberList.class).putExtra("ID", SchoolId);
+                    startActivity(intent);
+                    intent.putExtra("key", "studentIN")
+                            .putExtra("path", "School/" + SchoolId)
+                            .putExtra("Priority",priority);
+                    startActivity(intent);
+                    finish();}
+                    else Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    void onTeacherClick() {
+
+            iv_teacher.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (priority > 0) {
+                    Intent intent = new Intent(getApplicationContext(), MemberList.class).putExtra("ID", SchoolId);
+                    intent.putExtra("key", "teacherIN")
+                            .putExtra("path", "School/" + SchoolId)
+                            .putExtra("Priority",priority);
+                    startActivity(intent);
+                    finish();
+                    }
+                    else  Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    void onGroupClick() {
+
         iv_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Intent intent=new Intent(getApplicationContext(),GroupList.class).putExtra("ID",SchoolId);
-                intent.putExtra("path","School/"+SchoolId+"Group");
-                startActivity(intent);
-                finish();
+                if (priority > 0) {
+                    Intent intent = new Intent(getApplicationContext(), GroupList.class)
+                            .putExtra("ID", SchoolId)
+                            .putExtra("path", "School/" + SchoolId + "Group")
+                            .putExtra("Priority",priority);
+                    startActivity(intent);
+                    finish();
+                } else Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
             }
         });
     }
+
     private void onSessionClick()
     {
         iv_session.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(priority>0)
+                {
                 Toast.makeText(SchoolPage.this, "GID", Toast.LENGTH_SHORT).show();
                 GroupRef.whereArrayContains("ListofStudents",UserId)
                         .get()
@@ -162,7 +176,10 @@ public class SchoolPage extends AppCompatActivity {
                                 if(!queryDocumentSnapshots.getDocuments().isEmpty())
                                 {
                                     String GID=queryDocumentSnapshots.getDocuments().get(0).getId();
-                                    Intent intent=new Intent(getApplicationContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GID);
+                                    Intent intent=new Intent(getApplicationContext(),Dashboard.class)
+                                            .putExtra("SchoolID",SchoolId)
+                                            .putExtra("GroupID",GID)
+                                            .putExtra("Priority",priority);
                                     Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
                                     startActivity(intent);
                                     finish();
@@ -172,13 +189,17 @@ public class SchoolPage extends AppCompatActivity {
 
 
             }
+                else Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
+            }
         });
+
     }
     void listenForIncommingMessages()
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
        SchoolId =incommingMessages.getString("SchoolID","0");
+       priority=incommingMessages.getInt("Priority",0);
     }
     void displaySchoolInformations()
     {

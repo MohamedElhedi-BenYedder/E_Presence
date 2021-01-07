@@ -41,6 +41,7 @@ public class MemberList extends AppCompatActivity {
     private boolean all;
     private String SchoolId;
     private FloatingActionButton fab;
+    private int priority;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +52,7 @@ public class MemberList extends AppCompatActivity {
 
         setUpRecyclerView();
         fab =(FloatingActionButton) findViewById(R.id.fab);
+        setFloatingAppButtonIcon();
         floatingActionButtonClick();
     }
     private void setUpBottomAppBarMenu( )
@@ -103,35 +105,6 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
-       /* getUser(uid).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>()
-            {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot)
-                    {
-                        User modelCurrentUser = documentSnapshot.toObject(User.class);
-                        boolean isAdmin=modelCurrentUser.getAdminIN().contains(path);
-                        boolean isTeacher=modelCurrentUser.getTeacherIN().contains(path);
-                        boolean isStudent=modelCurrentUser.getStudentIN().contains(path);
-                                if(isAdmin)
-                                {
-                                    // Admin
-                                }
-                                else if(isTeacher)
-                                {
-                                    //Teacher
-                                }
-                                else if(isStudent)
-                                {
-                                    //Student
-                                }
-                                else
-                                {
-                                    //Public
-                                }
-
-                    }
-            }
-            );*/
     }
     private void floatingActionButtonClick()
     {
@@ -204,6 +177,11 @@ public class MemberList extends AppCompatActivity {
         key =incommingMessages.getString("key","0");
         all=incommingMessages.getBoolean("all",false);
         SchoolId =incommingMessages.getString("ID","0");
+        priority=incommingMessages.getInt("Priority",0);
+    }
+    void setFloatingAppButtonIcon()
+    {
+        if (priority==3) fab.setImageResource(R.drawable.ic_add_person);
     }
 
     @Override
