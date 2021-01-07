@@ -3,6 +3,7 @@
     package="tn.dev.e_presence">
 
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPresence">
-        <activity android:name=".AddGroup"></activity>
+        <activity android:name=".QrwebpageActivity"></activity>
+        <activity android:name=".AddGroup" />
         <activity android:name=".GroupList" />
         <activity android:name=".MemberList" />
         <activity android:name=".AddSchool" />

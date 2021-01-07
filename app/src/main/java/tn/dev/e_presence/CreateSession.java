@@ -39,7 +39,7 @@ public class CreateSession extends AppCompatActivity {
     String time_start,time_end;
     boolean NewSession;
     String SchoolId;
-    String GroupId;
+    String GroupId,Uri;
     final String TAG="CreateNewSession";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -141,10 +141,11 @@ public class CreateSession extends AppCompatActivity {
         tv_qrlink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
+                 Uri="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+et_qrcode.getText().toString();
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
-                Intent i = new Intent();
-                i.setData(Uri.parse(uri));
+                Intent i = new Intent(CreateSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
+                        .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+
                 startActivity(i);
                 finish();
             }
@@ -232,15 +233,20 @@ public class CreateSession extends AppCompatActivity {
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
-        NewSession =incommingMessages.getBoolean("NewSession",true);
+        //NewSession =incommingMessages.getBoolean("NewSession",true);
         SchoolId =incommingMessages.getString("SchoolID","0");
         GroupId=incommingMessages.getString("GroupID","0");
 
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        //super.onBackPressed();
         Intent i = new Intent(CreateSession.this,Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
         startActivity(i);
         finish();
