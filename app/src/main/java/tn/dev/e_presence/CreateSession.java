@@ -48,6 +48,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     private static String group_sess,teacher_sess,cours_sess;
     boolean NewSession;
     String SchoolId;
+    ArrayAdapter<String> group_adapter;
     String GroupId,Uri;
     private TextView mDisplayDate;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
@@ -85,6 +86,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         group_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_group.setAdapter(group_adapter);
         spinner_group.setOnItemSelectedListener(this);
+        group_sess=spinner_group.getSelectedItem().toString();
     }
     public void setteacher(){
         List<String> teacherstatique= new ArrayList<String>();
@@ -93,6 +95,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         teacher_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_teacher.setAdapter(teacher_adapter);
         spinner_teacher.setOnItemSelectedListener(this);
+        teacher_sess=spinner_group.getSelectedItem().toString();
+
     }
     public void setcours(){
         List<String> coursstatique= new ArrayList<String>();
@@ -101,6 +105,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         cours_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_cours.setAdapter(cours_adapter);
         spinner_cours.setOnItemSelectedListener(this);
+        cours_sess=spinner_group.getSelectedItem().toString();
     }
     public void setdate(){
 
@@ -338,13 +343,23 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
       if(position!=0) {
-          group_sess=parent.getItemAtPosition(position).toString();
-          teacher_sess=parent.getItemAtPosition(position).toString();
-          cours_sess=parent.getItemAtPosition(position).toString();
+
+          switch(parent.getId()){
+              case R.id.sp_group:
+                  group_sess=parent.getItemAtPosition(position).toString();
+                  break;
+              case R.id.sp_teacher:
+                  teacher_sess=parent.getItemAtPosition(position).toString();
+                  break;
+              case R.id.sp_cours:
+                  cours_sess=parent.getItemAtPosition(position).toString();
+                  break;
+          }
       }
 
 
     }
+
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
