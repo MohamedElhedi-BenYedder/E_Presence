@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,8 +10,12 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -28,23 +33,29 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class CreateSession extends AppCompatActivity {
+public class CreateSession extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Button btn_ok,btn_cancel;
-    EditText et_classroom,et_teacher,et_subject,et_group,et_date,et_qrcode;
+    EditText et_classroom,et_teacher,et_subject,et_qrcode;
     TextView tv_qrlink,et_start,et_end;
     int hour_start,min_start,hour_end,min_end;;
-    String time_start,time_end;
+    String time_start,time_end,date_sess;
+    private static String group_sess;
     boolean NewSession;
     String SchoolId;
     String GroupId,Uri;
+    private TextView mDisplayDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
     final String TAG="CreateNewSession";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private  int Compteur;
+    private Spinner spinner_group;
 
     Switch sw_presential;
     @Override
@@ -52,16 +63,57 @@ public class CreateSession extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_session);
         listenForIncommingMessages();
+
         Compteur=0;
         findViews();
+        setdate();
         setStart();
         setEnd();
+        setgroup();
+
         tv_qrlink.setText("Click to generate QR code");
         setLink();
         setCancel();
         setOk();
     }
+    public void setgroup(){
+        List<String> groupestatique= new ArrayList<String>();
+        groupestatique.add("");groupestatique.add("INDP2A");groupestatique.add("INDP2B");groupestatique.add("INDP2C");groupestatique.add("INDP2D");groupestatique.add("INDP2E");groupestatique.add("INDP2F");
+        ArrayAdapter<String> group_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,groupestatique);
+        group_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_group.setAdapter(group_adapter);
+        spinner_group.setOnItemSelectedListener(this);
+    }
+    public void setdate(){
 
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int day = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        CreateSession.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month + 1;
+
+
+                String date = day + "/" + month + "/" + year;
+                mDisplayDate.setText(date);
+            }
+        };
+    }
     public void findViews()
     {
         btn_ok=findViewById(R.id.btn_ok);
@@ -71,11 +123,11 @@ public class CreateSession extends AppCompatActivity {
         et_classroom=findViewById(R.id.et_classroom);
         et_teacher=findViewById(R.id.et_teacher);
         et_subject=findViewById(R.id.et_subject);
-        et_group=findViewById(R.id.et_group);
-        et_date=findViewById(R.id.et_date);
+        mDisplayDate = (TextView) findViewById(R.id.et_date);
         et_qrcode=findViewById(R.id.et_qrcode);
         sw_presential=findViewById(R.id.sw_presential);
         tv_qrlink=findViewById(R.id.tv_qrlink);
+        spinner_group=findViewById(R.id.sp_group);
     }
     public void setStart()
     {
@@ -180,8 +232,8 @@ public class CreateSession extends AppCompatActivity {
                 String new_classroom=et_classroom.getText().toString();
                 String new_teacher=et_teacher.getText().toString();
                 String new_subject=et_subject.getText().toString();
-                String new_group=et_group.getText().toString();
-                String new_date=et_date.getText().toString();
+                String new_group=group_sess;
+                String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
                 // Start Dashborad Activity again
@@ -261,8 +313,15 @@ public class CreateSession extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+      if(position!=0)
+        group_sess=parent.getItemAtPosition(position).toString();
 
+    }
 
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-
+    }
 }

@@ -68,8 +68,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String TAG="Dashbord";
     private static int Cur_pos;
     private String Scane_res = "chaine";
-    private String SchoolId;
-    private String GroupId;
+    private static String SchoolId;
+    private static String GroupId,SessionId;
     private String day;
     private static String Qrdb;
     private RecyclerView recyclerView;
@@ -202,7 +202,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                 .setQuery(query, Session.class)
                 .build();
-        sessionAdapter = new SessionAdapter(options);
+        sessionAdapter = new SessionAdapter(options,UserId);
         recyclerView = findViewById(R.id.rv_session);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
@@ -212,21 +212,17 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                if(sessionAdapter.isClickable()){
                 Cur_pos=position;
                 Log.d("qrtesting",""+Cur_pos);
-                /*if (Scan_verdict){
-                    sessionAdapter.getItem(Cur_pos).setFlag(true);
-                }*/
                 String SID = documentSnapshot.getId();
+                SessionId=SID;
                 String db_QR_Code=documentSnapshot.getString("qrcode");
                 Qrdb=documentSnapshot.getString("qrcode");
                 Log.d("qrtesting",Qrdb);
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Dashboard.this,ScanActivity.class).putExtra("SchoolID",SchoolId)
                     .putExtra("GroupID",GroupId).putExtra("SessionID",SID).putExtra("Qrdb",db_QR_Code);
-
-
-
                     startActivityForResult(intent, 0);
                 } else {
                     if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
@@ -237,7 +233,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
                 }
 
-            }
+            }}
         });
     }
 
@@ -277,19 +273,16 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 if (data != null) {
                     Log.d("curpos",""+Cur_pos);
                     //Log.d("curpost",sessionAdapter.getItem(Cur_pos).getQrstring());
-                    //Toast.makeText(this, ""+Cur_pos, Toast.LENGTH_SHORT).show();
                     Barcode barcode = data.getParcelableExtra("barcode");
                     Scane_res = barcode.displayValue;
-                    Log.d("qr_res", Scane_res);
+
                     Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
                     if (Scane_res.equals(Qrdb)) {
                         Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
-                        //Scan_verdict=true;
-                        //Log.d("curpos",""+Cur_pos);
 
-                        /*Adapter.getItem(Cur_pos).setFlag(true);
-                        Adapter.notifyDataSetChanged();*/
-
+                        DocumentReference SessionDocRef=db.collection("School").document(SchoolId).
+                                collection("Session").document(SessionId);
+                        SessionDocRef.update("listOfPresence", FieldValue.arrayUnion(UserId));
                     }
                     else  Toast.makeText(this, "qrcode invalide", Toast.LENGTH_SHORT).show();
 

@@ -16,10 +16,16 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdapter.SessionHolder> {
     private OnItemClickListener listener;
+    private boolean Clickable=true;
+    private static String UserId;
     static StorageReference STORAGE_REFERENCE;
     static int count = 0;
     final static int ColorList[] = {0, 1, 3};
@@ -28,37 +34,48 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
     final static int ImageNumber = 3;
 
 
+
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
      *
      * @param options
      */
-    public SessionAdapter(@NonNull FirestoreRecyclerOptions<Session> options) {
+    public SessionAdapter(@NonNull FirestoreRecyclerOptions<Session> options,String userId) {
         super(options);
+        this.UserId=userId;
     }
     public SessionAdapter(@NonNull FirestoreRecyclerOptions<Session> options, StorageReference s) {
         super(options);
         STORAGE_REFERENCE = s;
     }
 
+    public boolean isClickable() {
+        return Clickable;
+    }
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onBindViewHolder(@NonNull SessionHolder holder, int position, @NonNull Session model) {
+        Clickable=true;
         holder.tv_start.setText(model.getStart());
         holder.tv_end.setText(model.getEnd());
         holder.tv_classroom.setText(model.getClassroom());
         holder.tv_teacher.setText(model.getTeacher());
         holder.tv_subject.setText(model.getSubject());
         holder.tv_group.setText(model.getGroup());
-        if(model.isFlag()) {
-            holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.c2));
-        }
         if (model.isPresential()) holder.tv_presential.setText("Yes");
-
         else holder.tv_presential.setText("No");
-        //if(model.isFlag()) holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        /*if (!(model.getEnd().compareTo(currentTime)>0 && model.getStart().compareTo(currentTime)<0 && model.getDate().equals(currentDate) )){
+            Clickable=false;
+        }*/
 
+        if(model.getListOfPresence().contains(UserId)){
+            holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+            Clickable=false;
+        }
 
     }
 
@@ -97,7 +114,8 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
              tv_presential=oneSessionItem.findViewById(R.id.tv_presential);
              iv_qrc=oneSessionItem.findViewById(R.id.iv_qrc);
              ll =oneSessionItem.findViewById(R.id.ll);
-            iv_qrc.setOnClickListener(new View.OnClickListener() {
+
+             iv_qrc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
@@ -105,7 +123,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                     if(pos!=RecyclerView.NO_POSITION && listener!=null)
                     {
                         listener.onItemClick(getSnapshots().getSnapshot(pos),pos);
-                        //ll.setBackgroundColor(Color.BLUE);
+
                     }
                 }
             });

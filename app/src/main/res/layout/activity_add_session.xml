@@ -60,15 +60,15 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 
-            <EditText
+            <TextView
                 android:id="@+id/et_date"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/rectengular_field"
-                android:hint="Select Date"
-                android:inputType="date"
+                android:text="Select Date"
+                android:textSize="20sp"
                 android:paddingVertical="15dp"
                 android:paddingLeft="15dp"
                 android:textColor="#000000" />
@@ -104,8 +104,8 @@
                 android:layout_marginHorizontal="30dp"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/rectengular_field"
-                android:hint="Select Time"
-
+                android:text="Select Time"
+                android:textSize="18sp"
                 android:paddingVertical="15dp"
                 android:paddingLeft="15dp"
                 android:textColor="#000000" />
@@ -133,8 +133,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:background="@drawable/rectengular_field"
-                android:hint="Select Time"
-
+                android:text="Select Time"
+                android:textSize="18sp"
                 android:paddingVertical="15dp"
                 android:paddingLeft="15dp"
                 android:layout_marginHorizontal="30dp"
@@ -163,7 +163,7 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="20sp" />
 
-            <EditText
+            <!--<EditText
                 android:id="@+id/et_group"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
@@ -171,6 +171,16 @@
                 android:layout_marginTop="15dp"
                 android:background="@drawable/rectengular_field"
 
+                android:paddingVertical="15dp"
+                android:paddingLeft="15dp"
+                android:textColor="#000000" />-->
+            <Spinner
+                android:id="@+id/sp_group"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/style_spinner"
                 android:paddingVertical="15dp"
                 android:paddingLeft="15dp"
                 android:textColor="#000000" />
@@ -247,7 +257,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1.2"
+            android:layout_weight="2"
             android:orientation="vertical"
             >
 

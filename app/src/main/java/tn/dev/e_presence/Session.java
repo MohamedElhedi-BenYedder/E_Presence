@@ -13,12 +13,12 @@ public class Session {
     private String subject;
     private boolean presential;
     private List<String> listOfPresence;
-    private boolean flag;
+
 
     public Session() { //needed
     }
 
-    public Session(String date, String start, String end, String classroom, String group, String teacher, String qrstring, String subject, boolean presential, List<String> listOfPresence, boolean flag) {
+    public Session(String date, String start, String end, String classroom, String group, String teacher, String qrstring, String subject, boolean presential, List<String> listOfPresence) {
         this.date = date;
         this.start = start;
         this.end = end;
@@ -29,7 +29,7 @@ public class Session {
         this.subject = subject;
         this.presential = presential;
         this.listOfPresence = listOfPresence;
-        this.flag = flag;
+
     }
 
     public String getDate() {
@@ -110,13 +110,5 @@ public class Session {
 
     public void setListOfPresence(List<String> listOfPresence) {
         this.listOfPresence = listOfPresence;
-    }
-
-    public boolean isFlag() {
-        return flag;
-    }
-
-    public void setFlag(boolean flag) {
-        this.flag = flag;
     }
 }
