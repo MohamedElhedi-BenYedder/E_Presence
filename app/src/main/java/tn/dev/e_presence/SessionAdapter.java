@@ -68,9 +68,16 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         else holder.tv_presential.setText("No");
         String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
         String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+        //(model.getDate().isEmpty()||model.getStart().isEmpty()||model.getEnd().isEmpty() )){
+
         /*if (!(model.getEnd().compareTo(currentTime)>0 && model.getStart().compareTo(currentTime)<0 && model.getDate().equals(currentDate) )){
+
+
             Clickable=false;
         }*/
+        if(!model.isPresential()){
+            Clickable=false;
+        }
 
         if(model.getListOfPresence().contains(UserId)){
             holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));

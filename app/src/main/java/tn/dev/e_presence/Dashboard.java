@@ -207,11 +207,14 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
         recyclerView.setAdapter(sessionAdapter);
+
         /*------------------set click--------------*/
         sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                Toast.makeText(Dashboard.this, ""+sessionAdapter.isClickable(), Toast.LENGTH_SHORT).show();
+
                 if(sessionAdapter.isClickable()){
                 Cur_pos=position;
                 Log.d("qrtesting",""+Cur_pos);

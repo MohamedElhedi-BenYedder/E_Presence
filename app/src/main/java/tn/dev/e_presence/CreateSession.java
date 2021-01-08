@@ -44,7 +44,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     EditText et_classroom,et_qrcode;
     TextView tv_qrlink,et_start,et_end;
     int hour_start,min_start,hour_end,min_end;;
-    String time_start,time_end,date_sess;
+    String time_start="",time_end="",date_sess="";
     private static String group_sess,teacher_sess,cours_sess;
     boolean NewSession;
     String SchoolId;
@@ -289,7 +289,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                     Compteur+=1;
                                     Log.d(TAG, "Session successfully added!");
                                     Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
-                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
+                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
 
                                      i.putExtra("Qrurl",Uri)
                                             .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
