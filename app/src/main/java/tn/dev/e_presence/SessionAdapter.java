@@ -105,7 +105,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                     if(pos!=RecyclerView.NO_POSITION && listener!=null)
                     {
                         listener.onItemClick(getSnapshots().getSnapshot(pos),pos);
-                        ll.setBackgroundColor(Color.BLUE);
+                        //ll.setBackgroundColor(Color.BLUE);
                     }
                 }
             });

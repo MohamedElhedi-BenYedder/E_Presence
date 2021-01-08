@@ -167,7 +167,7 @@ public class SchoolPage extends AppCompatActivity {
             public void onClick(View v) {
                 if(priority>0)
                 {
-                Toast.makeText(SchoolPage.this, "GID", Toast.LENGTH_SHORT).show();
+
                 GroupRef.whereArrayContains("ListofStudents",UserId)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -180,7 +180,8 @@ public class SchoolPage extends AppCompatActivity {
                                             .putExtra("SchoolID",SchoolId)
                                             .putExtra("GroupID",GID)
                                             .putExtra("Priority",priority);
-                                    Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                                    //
+                                    // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
                                     startActivity(intent);
                                     finish();
                                 }
@@ -228,6 +229,6 @@ public class SchoolPage extends AppCompatActivity {
     void initReferences()
     {
         GroupRef=db.collection("School").document(SchoolId).collection("Group");
-        Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
     }
 }

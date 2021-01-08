@@ -60,19 +60,20 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private final String UserId = user.getUid();
     private CollectionReference SessionRef ;
     private CollectionReference GroupRef;
-    private SessionAdapter sessionAdapter;
+    private static SessionAdapter sessionAdapter;
     private HorizontalPicker picker;
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
     private int REQUEST_CAMERA = 1;
     private String TAG="Dashbord";
-    private int Cur_pos;
+    private static int Cur_pos;
     private String Scane_res = "chaine";
     private String SchoolId;
     private String GroupId;
     private String day;
-    private String Qrdb;
+    private static String Qrdb;
     private RecyclerView recyclerView;
+    private static boolean Scan_verdict;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -89,6 +90,15 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         fab.setOnClickListener(this::AddSession);
 
 
+
+    }
+    void listenForIncommingMessages()
+    {
+        //listen for incoming messages
+        Bundle incommingMessages =getIntent().getExtras();
+        SchoolId =incommingMessages.getString("SchoolID","0");
+        GroupId=incommingMessages.getString("GroupID","0");
+        //Qrdb =incommingMessages.getString("Qrdb","0");
 
     }
     private void SetDatePicker() {
@@ -203,14 +213,18 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                 Cur_pos=position;
+                Log.d("qrtesting",""+Cur_pos);
+                /*if (Scan_verdict){
+                    sessionAdapter.getItem(Cur_pos).setFlag(true);
+                }*/
                 String SID = documentSnapshot.getId();
                 String db_QR_Code=documentSnapshot.getString("qrcode");
+                Qrdb=documentSnapshot.getString("qrcode");
+                Log.d("qrtesting",Qrdb);
                 if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     Intent intent = new Intent(Dashboard.this,ScanActivity.class).putExtra("SchoolID",SchoolId)
                     .putExtra("GroupID",GroupId).putExtra("SessionID",SID).putExtra("Qrdb",db_QR_Code);
-                    Toast.makeText(Dashboard.this,
-                            SID,
-                            Toast.LENGTH_SHORT).show();
+
 
 
                     startActivityForResult(intent, 0);
@@ -227,15 +241,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         });
     }
 
-      void listenForIncommingMessages()
-      {
-          //listen for incoming messages
-          Bundle incommingMessages =getIntent().getExtras();
-          SchoolId =incommingMessages.getString("SchoolID","0");
-          GroupId=incommingMessages.getString("GroupID","0");
-          Qrdb =incommingMessages.getString("Qrdb","0");
-          Log.d("qrtesting",incommingMessages.getString("Qrtest","0"));
-      }
+
 
     void initSessionAndGroupRef()
     {
@@ -269,13 +275,20 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         if (requestCode == 0) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
+                    Log.d("curpos",""+Cur_pos);
+                    //Log.d("curpost",sessionAdapter.getItem(Cur_pos).getQrstring());
+                    //Toast.makeText(this, ""+Cur_pos, Toast.LENGTH_SHORT).show();
                     Barcode barcode = data.getParcelableExtra("barcode");
                     Scane_res = barcode.displayValue;
                     Log.d("qr_res", Scane_res);
                     Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
-                    if (Scane_res.equals("supcom")) {
+                    if (Scane_res.equals(Qrdb)) {
                         Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
+                        //Scan_verdict=true;
+                        //Log.d("curpos",""+Cur_pos);
 
+                        /*Adapter.getItem(Cur_pos).setFlag(true);
+                        Adapter.notifyDataSetChanged();*/
 
                     }
                     else  Toast.makeText(this, "qrcode invalide", Toast.LENGTH_SHORT).show();
