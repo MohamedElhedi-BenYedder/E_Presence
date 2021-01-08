@@ -41,11 +41,11 @@ import java.util.Map;
 
 public class CreateSession extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     Button btn_ok,btn_cancel;
-    EditText et_classroom,et_teacher,et_subject,et_qrcode;
+    EditText et_classroom,et_qrcode;
     TextView tv_qrlink,et_start,et_end;
     int hour_start,min_start,hour_end,min_end;;
     String time_start,time_end,date_sess;
-    private static String group_sess;
+    private static String group_sess,teacher_sess,cours_sess;
     boolean NewSession;
     String SchoolId;
     String GroupId,Uri;
@@ -55,7 +55,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private  int Compteur;
-    private Spinner spinner_group;
+    private Spinner spinner_group,spinner_teacher,spinner_cours;
 
     Switch sw_presential;
     @Override
@@ -70,6 +70,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         setStart();
         setEnd();
         setgroup();
+        setteacher();
+        setcours();
 
         tv_qrlink.setText("Click to generate QR code");
         setLink();
@@ -83,6 +85,22 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         group_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_group.setAdapter(group_adapter);
         spinner_group.setOnItemSelectedListener(this);
+    }
+    public void setteacher(){
+        List<String> teacherstatique= new ArrayList<String>();
+        teacherstatique.add("");teacherstatique.add("Maher Hani");teacherstatique.add("Sihem Gmara");teacherstatique.add("Amin Ben Salem");
+        ArrayAdapter<String> teacher_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,teacherstatique);
+        teacher_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_teacher.setAdapter(teacher_adapter);
+        spinner_teacher.setOnItemSelectedListener(this);
+    }
+    public void setcours(){
+        List<String> coursstatique= new ArrayList<String>();
+        coursstatique.add("");coursstatique.add("UML");coursstatique.add("ML");coursstatique.add("Théorie d'information");
+        ArrayAdapter<String> cours_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,coursstatique);
+        cours_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_cours.setAdapter(cours_adapter);
+        spinner_cours.setOnItemSelectedListener(this);
     }
     public void setdate(){
 
@@ -107,9 +125,13 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 month = month + 1;
-
-
-                String date = day + "/" + month + "/" + year;
+                String Sday,smonth,date;
+                if (day<10) Sday="0"+day;
+                else Sday=""+day;
+                if (month<10) smonth="0"+month;
+                else smonth=""+month;
+                date = Sday+"/"+smonth+"/" + year;
+                date_sess=date;
                 mDisplayDate.setText(date);
             }
         };
@@ -121,8 +143,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         et_start=findViewById(R.id.et_start);
         et_end=findViewById(R.id.et_End);
         et_classroom=findViewById(R.id.et_classroom);
-        et_teacher=findViewById(R.id.et_teacher);
-        et_subject=findViewById(R.id.et_subject);
+        spinner_cours=findViewById(R.id.sp_cours);
+        spinner_teacher=findViewById(R.id.sp_teacher);
         mDisplayDate = (TextView) findViewById(R.id.et_date);
         et_qrcode=findViewById(R.id.et_qrcode);
         sw_presential=findViewById(R.id.sw_presential);
@@ -230,8 +252,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 String new_start= time_start;
                 String new_end= time_end;
                 String new_classroom=et_classroom.getText().toString();
-                String new_teacher=et_teacher.getText().toString();
-                String new_subject=et_subject.getText().toString();
+                String new_teacher=teacher_sess;
+                String new_subject=cours_sess;
                 String new_group=group_sess;
                 String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
@@ -315,8 +337,12 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-      if(position!=0)
-        group_sess=parent.getItemAtPosition(position).toString();
+      if(position!=0) {
+          group_sess=parent.getItemAtPosition(position).toString();
+          teacher_sess=parent.getItemAtPosition(position).toString();
+          cours_sess=parent.getItemAtPosition(position).toString();
+      }
+
 
     }
 
