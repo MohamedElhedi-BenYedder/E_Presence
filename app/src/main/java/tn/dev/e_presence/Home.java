@@ -130,7 +130,7 @@ public class Home extends AppCompatActivity {
         {
 
             Intent intent =new Intent(Home.this,AddSchool.class);
-            intent.putExtra("first",true);
+            intent.putExtra("NewSchool",true);
             startActivity(intent);
             finish();
         }

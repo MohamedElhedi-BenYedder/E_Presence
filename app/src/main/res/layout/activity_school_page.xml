@@ -62,11 +62,13 @@
         android:layout_marginRight="16sp">
 
         <LinearLayout
+            android:id="@+id/ll_information"
             android:layout_width="match_parent"
-            android:layout_height="211dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/rectengular_field_scanned"
-            android:orientation="vertical"
+            android:clickable="true"
             android:elevation="0sp"
+            android:orientation="vertical"
             android:padding="16dp">
 
             <LinearLayout
