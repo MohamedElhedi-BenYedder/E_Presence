@@ -5,9 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,9 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -36,8 +32,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -49,7 +43,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     TextView tv_qrlink,et_start,et_end;
     int hour_start,min_start,hour_end,min_end;;
     String time_start="",time_end="",date_sess="";
-    private static String group_sess,teacher_sess,cours_sess,teacher_sess_id;
+    private static String group_sess,teacher_sess,cours_sess,teacher_sess_id,group_sess_id;
     boolean NewSession;
     private String NewSessionID;
     String SchoolId;
@@ -63,6 +57,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     private  int Compteur;
     private Spinner spinner_group,spinner_teacher,spinner_cours;
     private ArrayList<String> teacherIdList,teacherNameList;
+    private ArrayList<String> groupIdList,groupNameList;
 
     Switch sw_presential;
     @Override
@@ -73,30 +68,30 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
 
         Compteur=0;
         findViews();
-        setdate();
+        setDate();
         setStart();
         setEnd();
-        setgroup();
-        setteacher();
-        setcours();
+        setGroup();
+        setTeacher();
+        setCourse();
 
         tv_qrlink.setText("Click to generate QR code");
         setLink();
         setCancel();
         setOk();
     }
-    public void setgroup(){
-        List<String> groupestatique= new ArrayList<String>();
-        groupestatique.add("");groupestatique.add("INDP2A");groupestatique.add("INDP2B");groupestatique.add("INDP2C");groupestatique.add("INDP2D");groupestatique.add("INDP2E");groupestatique.add("INDP2F");
+    public void setGroup(){
+        List<String> groupestatique= new ArrayList<String>();groupestatique.add("Select a Group");
+        groupestatique.addAll(groupNameList);
         ArrayAdapter<String> group_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,groupestatique);
         group_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_group.setAdapter(group_adapter);
         spinner_group.setOnItemSelectedListener(this);
         group_sess=spinner_group.getSelectedItem().toString();
     }
-    public void setteacher(){
+    public void setTeacher(){
         List<String> teacherstatique= new ArrayList<String>();teacherstatique.add("Select a Teacher");
-        teacherstatique.addAll(teacherNameList);
+        //teacherstatique.addAll(teacherNameList);
         ArrayAdapter<String> teacher_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,teacherstatique);
         teacher_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_teacher.setAdapter(teacher_adapter);
@@ -104,7 +99,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         teacher_sess=spinner_group.getSelectedItem().toString();
 
     }
-    public void setcours(){
+    public void setCourse(){
         List<String> coursstatique= new ArrayList<String>();
         coursstatique.add("");coursstatique.add("UML");coursstatique.add("ML");coursstatique.add("Théorie d'information");
         ArrayAdapter<String> cours_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,coursstatique);
@@ -113,7 +108,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         spinner_cours.setOnItemSelectedListener(this);
         cours_sess=spinner_group.getSelectedItem().toString();
     }
-    public void setdate(){
+    public void setDate(){
 
         mDisplayDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,6 +261,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 String new_teacherId=teacher_sess_id;
                 String new_subject=cours_sess;
                 String new_group=group_sess;
+                String new_groupId=group_sess_id;
                 String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
@@ -286,6 +282,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                     session.put("qrcode", new_qrcode);
                     session.put("listOfPresence",new ArrayList<String>());
                     session.put("teacherId",new_teacherId);
+                    session.put("groupId",new_groupId);
 
                     db.collection("School")
                             .document(SchoolId)
@@ -352,6 +349,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         GroupId=incommingMessages.getString("GroupID","0");
         teacherIdList=incommingMessages.getStringArrayList("teacherIdList");
         teacherNameList=incommingMessages.getStringArrayList("teacherNameList");
+        groupIdList=incommingMessages.getStringArrayList("groupIdList");
+        groupNameList=incommingMessages.getStringArrayList("groupNameList");
 
 
     }
@@ -373,6 +372,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
           switch(parent.getId()){
               case R.id.sp_group:
                   group_sess=parent.getItemAtPosition(position).toString();
+                  group_sess_id=groupIdList.get(position-1);
                   break;
               case R.id.sp_teacher:
                   teacher_sess=parent.getItemAtPosition(position).toString();

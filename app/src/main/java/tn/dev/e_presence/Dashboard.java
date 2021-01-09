@@ -191,49 +191,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         switch (priority) {
             case 3:
             case 2: {
-                String path="School/"+SchoolId;
-                ArrayList<String> teacherNameList=new ArrayList<String>();
-                UserRef.whereArrayContains("teacherIN",path)
-                        .get()
-                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                            @Override
-                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                if(!queryDocumentSnapshots.getDocuments().isEmpty())
-                                {
-                                    ArrayList<String> teacherNameList=new ArrayList<String>();
-                                    ArrayList<String> teacherIdList=new ArrayList<String>();
-                                    List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
-                                    for(DocumentSnapshot doc: GID)
-                                    {
-                                        teacherNameList.add(doc.getString("displayName"));
-                                        teacherIdList.add(doc.getId());
-                                    }
-
-                                    Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                            .putExtra("SchoolID",SchoolId)
-                                            .putExtra("GroupID",GroupId)
-                                            .putStringArrayListExtra("teacherIdList",teacherIdList)
-                                            .putStringArrayListExtra("teacherNameList",teacherNameList)
-                                            .putExtra("NewSessionID","Session"+System.currentTimeMillis());
-                                            ;
-                                    //
-                                    // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                        .putExtra("SchoolID",SchoolId)
-                                        .putExtra("GroupID",GroupId)
-                                        .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
-                                        .putStringArrayListExtra("teacherNameList",new ArrayList<String>());
-                            }
-                        })
-                ;}
+                String Schoolpath="School/"+SchoolId;
+                getListOfGroups_Coures();
+                }
             break;
             case 1:
             case 0:
@@ -414,4 +374,97 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         startActivity(intent);
         finish();
     }
+    void getListOfTeachers_Groups_Courses(String path)
+    {
+
+        ArrayList<String> teacherNameList=new ArrayList<String>();
+        UserRef.whereArrayContains("teacherIN",path)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                        {
+                            ArrayList<String> teacherNameList=new ArrayList<String>();
+                            ArrayList<String> teacherIdList=new ArrayList<String>();
+                            List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
+                            for(DocumentSnapshot doc: GID)
+                            {
+                                teacherNameList.add(doc.getString("displayName"));
+                                teacherIdList.add(doc.getId());
+                            }
+
+                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                    .putExtra("SchoolID",SchoolId)
+                                    .putExtra("GroupID",GroupId)
+                                    .putStringArrayListExtra("teacherIdList",teacherIdList)
+                                    .putStringArrayListExtra("teacherNameList",teacherNameList)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                            ;
+                            //
+                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                .putExtra("SchoolID",SchoolId)
+                                .putExtra("GroupID",GroupId)
+                                .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
+                                .putStringArrayListExtra("teacherNameList",new ArrayList<String>());
+                    }
+                })
+        ;
+    }
+    void getListOfGroups_Coures()
+    {
+        GroupRef.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                        {
+                            ArrayList<String> GroupNameList=new ArrayList<String>();
+                            ArrayList<String> GroupIdList=new ArrayList<String>();
+                            List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
+                            for(DocumentSnapshot doc: GID)
+                            {
+                                GroupNameList.add(doc.getString("displayName"));
+                                Toast.makeText(Dashboard.this,doc.getString("displayName") , Toast.LENGTH_SHORT).show();
+                                GroupIdList.add(doc.getId());
+                            }
+
+                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                    .putExtra("SchoolID",SchoolId)
+                                    .putExtra("GroupID",GroupId)
+                                    .putStringArrayListExtra("GroupIdList",GroupIdList)
+                                    .putStringArrayListExtra("GroupNameList",GroupNameList)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                            ;
+                            //
+                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                            finish();
+                        }
+                        else Toast.makeText(Dashboard.this,"Empty", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                .putExtra("SchoolID",SchoolId)
+                                .putExtra("GroupID",GroupId)
+                                .putStringArrayListExtra("GroupIdList",new ArrayList<String>())
+                                .putStringArrayListExtra("GroupNameList",new ArrayList<String>())
+                                .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                    }
+                })
+        ;
+    }
+    //void getListOfCoures(String path,List<String>teacherIdList,List<String>teacherNameList)
 }

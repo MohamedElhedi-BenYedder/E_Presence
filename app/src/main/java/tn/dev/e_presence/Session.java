@@ -8,27 +8,31 @@ public class Session {
     private String end;
     private String classroom;
     private String group;
+    private String groupId;
     private String teacher;
     private String teacherId;
     private String qrstring;
     private String subject;
+    private String subjectId;
     private boolean presential;
     private List<String> listOfPresence;
 
 
-    public Session() { //needed
+    public Session() { //needed for firestrore Database
     }
 
-    public Session(String date, String start, String end, String classroom, String group, String teacher, String teacherId, String qrstring, String subject, boolean presential, List<String> listOfPresence) {
+    public Session(String date, String start, String end, String classroom, String group, String groupId, String teacher, String teacherId, String qrstring, String subject, String subjectId, boolean presential, List<String> listOfPresence) {
         this.date = date;
         this.start = start;
         this.end = end;
         this.classroom = classroom;
         this.group = group;
+        this.groupId = groupId;
         this.teacher = teacher;
         this.teacherId = teacherId;
         this.qrstring = qrstring;
         this.subject = subject;
+        this.subjectId = subjectId;
         this.presential = presential;
         this.listOfPresence = listOfPresence;
     }
@@ -114,4 +118,12 @@ public class Session {
     public String getTeacherId() { return teacherId; }
 
     public void setTeacherId(String teacherId) { this.teacherId = teacherId; }
+
+    public String getGroupId() {  return groupId;  }
+
+    public void setGroupId(String groupId) { this.groupId = groupId;    }
+
+    public String getSubjectId() {  return subjectId; }
+
+    public void setSubjectId(String subjectId) {  this.subjectId = subjectId;  }
 }
