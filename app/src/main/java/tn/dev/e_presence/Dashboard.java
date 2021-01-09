@@ -189,40 +189,38 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     {
         switch (priority) {
             case 3:
-            case 2:
-                {
-                    String path="Schoo/"+SchoolId;
-                    ArrayList<String> teacherNameList=new ArrayList<String>();
-                    UserRef.whereArrayContains("teacherIN","School/"+SchoolId)
-                            .orderBy("displayName")
-                            .get()
-                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                                @Override
-                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                    if(!queryDocumentSnapshots.getDocuments().isEmpty())
+            case 2: {
+                String path="Schoo/"+SchoolId;
+                ArrayList<String> teacherNameList=new ArrayList<String>();
+                UserRef.whereArrayContains("teacherIN",path)
+                        .get()
+                        .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                            @Override
+                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                                {
+                                    ArrayList<String> teacherNameList=new ArrayList<String>();
+                                    ArrayList<String> teacherIdList=new ArrayList<String>();
+                                    List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
+                                    for(DocumentSnapshot doc: GID)
                                     {
-                                        ArrayList<String> teacherNameList=new ArrayList<String>();
-                                        ArrayList<String> teacherIdList=new ArrayList<String>();
-                                        List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
-                                        for(DocumentSnapshot doc: GID)
-                                        {
-                                            teacherNameList.add(doc.getString("displayName"));
-                                            teacherIdList.add(doc.getId());
-                                        }
-
-                                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                                .putExtra("SchoolID",SchoolId)
-                                                .putExtra("GroupID",GroupId)
-                                                .putStringArrayListExtra("teacherIdList",teacherIdList)
-                                                .putStringArrayListExtra("teacherNameList",teacherNameList);
-                                        //
-                                        // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
-                                        startActivity(intent);
-                                        finish();
+                                        teacherNameList.add(doc.getString("displayName"));
+                                        teacherIdList.add(doc.getId());
                                     }
+
+                                    Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                            .putExtra("SchoolID",SchoolId)
+                                            .putExtra("GroupID",GroupId)
+                                            .putStringArrayListExtra("teacherIdList",teacherIdList)
+                                            .putStringArrayListExtra("teacherNameList",teacherNameList);
+                                    //
+                                    // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                                    startActivity(intent);
+                                    finish();
                                 }
-                            });}
-                break;
+                            }
+                        });}
+            break;
             case 1:
             case 0:
             {
