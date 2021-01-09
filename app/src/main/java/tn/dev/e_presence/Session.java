@@ -9,6 +9,7 @@ public class Session {
     private String classroom;
     private String group;
     private String teacher;
+    private String teacherId;
     private String qrstring;
     private String subject;
     private boolean presential;
@@ -18,18 +19,18 @@ public class Session {
     public Session() { //needed
     }
 
-    public Session(String date, String start, String end, String classroom, String group, String teacher, String qrstring, String subject, boolean presential, List<String> listOfPresence) {
+    public Session(String date, String start, String end, String classroom, String group, String teacher, String teacherId, String qrstring, String subject, boolean presential, List<String> listOfPresence) {
         this.date = date;
         this.start = start;
         this.end = end;
         this.classroom = classroom;
         this.group = group;
         this.teacher = teacher;
+        this.teacherId = teacherId;
         this.qrstring = qrstring;
         this.subject = subject;
         this.presential = presential;
         this.listOfPresence = listOfPresence;
-
     }
 
     public String getDate() {
@@ -108,7 +109,9 @@ public class Session {
         return listOfPresence;
     }
 
-    public void setListOfPresence(List<String> listOfPresence) {
-        this.listOfPresence = listOfPresence;
-    }
+    public void setListOfPresence(List<String> listOfPresence) { this.listOfPresence = listOfPresence; }
+
+    public String getTeacherId() { return teacherId; }
+
+    public void setTeacherId(String teacherId) { this.teacherId = teacherId; }
 }
