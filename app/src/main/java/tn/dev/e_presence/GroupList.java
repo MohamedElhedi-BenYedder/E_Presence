@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,16 +36,59 @@ public class GroupList extends AppCompatActivity {
     private GroupAdapter groupAdapter;
     private int priority;
     String path;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
+        finfViews();
         listenForIncommingMessages();
+        setFloatingActionButtonIcon();
         setUpBottomAppBarMenu();
         initGroupref();
+        setUpRecyclerView();
+        onFloatingActionButtonClick();
+
 
     }
+    void finfViews()
+    {
+        fab =(FloatingActionButton) findViewById(R.id.fab);
+    }
+    void  onFloatingActionButtonClick()
+    {
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (priority)
+                {
+                    case 3:
+                    {
+                        Intent intent=new Intent(GroupList.this,AddGroup.class)
+                                .putExtra("SchoolID",SchoolId)
+                                .putExtra("Priority",priority);
+                        startActivity(intent);
+                        finish();
+                    }
+                    case 2:
+                    case 1:
+                    case 0:
+                    {
+                        //back
+                    }
+                }
+            }
+        });
+    }
+    void setFloatingActionButtonIcon()
+    {
+        if (priority==3)
+        {
+            fab.setImageResource(R.drawable.ic_add_group);
+        }
+    }
+
     void listenForIncommingMessages()
     {
         //listen for incoming messages
@@ -119,5 +164,17 @@ public class GroupList extends AppCompatActivity {
         }
     });
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        groupAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        groupAdapter.stopListening();
     }
 }

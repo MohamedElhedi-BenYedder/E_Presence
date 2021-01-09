@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,8 +34,8 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
 
 
         holder.tv_display_name.setText(model.getDisplayName());
-        holder.tv_student_number.setText(model.getStudentList().size());
-        switch(model.getLevel()) {
+        holder.tv_student_number.setText("Count"+model.getNum());
+       try{ switch(model.getLevel()) {
             case "Level1":
                 holder.iv_level.setImageResource(ImageList[0]);
                 holder.ll_bg.setBackgroundColor(ColorList[0]);
@@ -69,7 +70,9 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
                 break;
 
 
-        }
+        }}catch(Exception e){
+           Log.e("error",e.toString()+"|"+e.getMessage());
+       }
 
 
     }
@@ -77,7 +80,7 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
     @NonNull
     @Override
     public GroupAdapter.GroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View oneGroupItem=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_school, parent, false);
+        View oneGroupItem=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_group, parent, false);
         return new GroupAdapter.GroupHolder(oneGroupItem);
     }
 
