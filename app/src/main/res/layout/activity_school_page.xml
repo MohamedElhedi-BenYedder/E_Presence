@@ -176,9 +176,9 @@
             <ScrollView
                 android:id="@+id/sv"
                 android:layout_width="match_parent"
-                android:layout_height="310dp"
+                android:layout_height="match_parent"
                 android:layout_above="@+id/cl"
-                android:layout_marginBottom="-10sp">
+                >
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -189,6 +189,7 @@
                     android:layout_marginRight="16sp"
                     android:isScrollContainer="true"
                     android:orientation="vertical"
+                    android:layout_marginBottom="50dp"
                     android:overScrollMode="always">
 
                     <LinearLayout
@@ -456,7 +457,6 @@
                 app:fabCradleRoundedCornerRadius="20dp"
                 app:fabCradleVerticalOffset="10dp"
                 app:hideOnScroll="true"
-                app:layout_scrollFlags="scroll|enterAlways"
                 app:menu="@menu/bottom_app_bar_main_menu" />
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
