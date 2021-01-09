@@ -7,8 +7,21 @@ import java.util.List;
 public class Group {
     private String displayName;
     private int num;
+    private String description;
     private List<String> studentList;
-    private int Level;
+    private String level;
+
+    public Group() {
+        // needed for fireestore
+    }
+
+    public Group(String displayName, int num, String description, List<String> studentList, String level) {
+        this.displayName = displayName;
+        this.num = num;
+        this.description = description;
+        this.studentList = studentList;
+        this.level = level;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -26,6 +39,14 @@ public class Group {
         this.num = num;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public List<String> getStudentList() {
         return studentList;
     }
@@ -34,11 +55,11 @@ public class Group {
         this.studentList = studentList;
     }
 
-    public int getLevel() {
-        return Level;
+    public String getLevel() {
+        return level;
     }
 
-    public void setLevel(int level) {
-        Level = level;
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
