@@ -25,6 +25,7 @@ import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.vision.barcode.Barcode;
@@ -219,7 +220,18 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                     finish();
                                 }
                             }
-                        });}
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                        .putExtra("SchoolID",SchoolId)
+                                        .putExtra("GroupID",GroupId)
+                                        .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
+                                        .putStringArrayListExtra("teacherNameList",new ArrayList<String>());
+                            }
+                        })
+                ;}
             break;
             case 1:
             case 0:
