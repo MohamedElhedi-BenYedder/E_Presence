@@ -64,15 +64,7 @@ public class AddSchool extends AppCompatActivity {
         setContentView(R.layout.activity_add_school);
         SetUpBottomAppBarMenu();
         Bundle incommingMessages =getIntent().getExtras();
-         et_display_name =findViewById(R.id.et_display_name);
-         et_full_name=findViewById(R.id.et_full_name);
-         et_description=findViewById(R.id.et_description);
-         et_location=findViewById(R.id.et_location);
-         tv_welcome_user=findViewById(R.id.tv_welcome_user);
-
-         ib_photo = findViewById(R.id.ib_photo);
-         fab=findViewById(R.id.fab);
-
+        findViews();
         welcomeUser();
 
         ib_photo.setOnClickListener(new View.OnClickListener(){
@@ -122,9 +114,10 @@ public class AddSchool extends AppCompatActivity {
                                            .set(school);
                                    updateDocumentArray();
 
-                                   Intent intent = new Intent(AddSchool.this,SchoolPage.class);
-                                   intent.putExtra("ID",displayName);
-                                   intent.putExtra("first",true);
+                                   Intent intent = new Intent(AddSchool.this,SchoolPage.class)
+                                           .putExtra("SchoolID",displayName)
+                                           .putExtra("first",true)
+                                           .putExtra("Priority",3);
                                    startActivity(intent);
                                    finish();
                                }
@@ -253,6 +246,16 @@ public class AddSchool extends AppCompatActivity {
 
 
         });
+    }
+    void findViews()
+    {
+        et_display_name =findViewById(R.id.et_display_name);
+        et_full_name=findViewById(R.id.et_full_name);
+        et_description=findViewById(R.id.et_description);
+        et_location=findViewById(R.id.et_location);
+        tv_welcome_user=findViewById(R.id.tv_welcome_user);
+        ib_photo = findViewById(R.id.ib_photo);
+        fab=findViewById(R.id.fab);
     }
 
 

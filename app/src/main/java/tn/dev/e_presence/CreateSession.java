@@ -358,7 +358,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                   break;
               case R.id.sp_teacher:
                   teacher_sess=parent.getItemAtPosition(position).toString();
-                  teacher_sess_id=teacherIdList.get(position);
+                  teacher_sess_id=teacherIdList.get(position-1);
                   break;
               case R.id.sp_cours:
                   cours_sess=parent.getItemAtPosition(position).toString();

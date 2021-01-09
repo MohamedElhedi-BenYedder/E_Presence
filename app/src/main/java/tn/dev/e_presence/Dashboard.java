@@ -74,6 +74,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String day;
     private static String Qrdb;
     private RecyclerView recyclerView;
+    private FloatingActionButton fab;
     private int priority;
     private static boolean Scan_verdict;
 
@@ -85,10 +86,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         setContentView(R.layout.activity_dashboard);
         listenForIncommingMessages();
         initSessionAndGroupRef();
+        setFloatingAppButtonIcon();
         SetUpBottomAppBarMenu();
         SetDatePicker();
         setUpRecyclerView(getTodayDate());
-        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this::AddSession);
 
 
@@ -186,36 +187,50 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     private  void AddSession(View v)
     {
-        String path="Schoo/"+SchoolId;
-        ArrayList<String> teacherNameList=new ArrayList<String>();
-        UserRef.whereArrayContains("teacherIN","School/"+SchoolId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(!queryDocumentSnapshots.getDocuments().isEmpty())
-                        {
-                            ArrayList<String> teacherNameList=new ArrayList<String>();
-                            ArrayList<String> teacherIdList=new ArrayList<String>();
-                            List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
-                            for(DocumentSnapshot doc: GID)
-                            {
-                                teacherNameList.add(doc.getString("displayName"));
-                                teacherIdList.add(doc.getId());
-                            }
+        switch (priority) {
+            case 3:
+            case 2:
+                {
+                    String path="Schoo/"+SchoolId;
+                    ArrayList<String> teacherNameList=new ArrayList<String>();
+                    UserRef.whereArrayContains("teacherIN","School/"+SchoolId)
+                            .orderBy("displayName")
+                            .get()
+                            .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                @Override
+                                public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                    if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                                    {
+                                        ArrayList<String> teacherNameList=new ArrayList<String>();
+                                        ArrayList<String> teacherIdList=new ArrayList<String>();
+                                        List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
+                                        for(DocumentSnapshot doc: GID)
+                                        {
+                                            teacherNameList.add(doc.getString("displayName"));
+                                            teacherIdList.add(doc.getId());
+                                        }
 
-                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                    .putExtra("SchoolID",SchoolId)
-                                    .putExtra("GroupID",GroupId)
-                                    .putStringArrayListExtra("teacherIdList",teacherIdList)
-                                    .putStringArrayListExtra("teacherNameList",teacherNameList);
-                            //
-                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
-                            finish();
-                        }
-                    }
-                });
+                                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                                .putExtra("SchoolID",SchoolId)
+                                                .putExtra("GroupID",GroupId)
+                                                .putStringArrayListExtra("teacherIdList",teacherIdList)
+                                                .putStringArrayListExtra("teacherNameList",teacherNameList);
+                                        //
+                                        // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }
+                            });}
+                break;
+            case 1:
+            case 0:
+            {
+
+            }
+                break;
+        }
+    }
 
         /*ArrayList<String> teacherIdList=(ArrayList<String>)db.collection("School").document(SchoolId).get().getResult().get("Teachers");
         for (String id :teacherIdList)
@@ -229,7 +244,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .putStringArrayListExtra("teacherNameList",teacherNameList);
         startActivity(intent);
         finish();*/
-    }
+
    /* protected void onListItemClick(ListView l, View v, int position, long id) {
         startActivity(new Intent(getApplicationContext(),ScanActivity.class));
 
@@ -372,5 +387,19 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+   void setFloatingAppButtonIcon()
+   {
+       fab=(FloatingActionButton) findViewById(R.id.fab);
+       if (priority==1) fab.setImageResource(R.drawable.ic_school);
+   }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(Dashboard.this,SchoolPage.class)
+                .putExtra("SchoolID",SchoolId)
+                .putExtra("Priority",priority);
+        startActivity(intent);
+        finish();
+    }
 }
