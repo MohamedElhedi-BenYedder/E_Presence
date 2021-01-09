@@ -192,7 +192,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             case 3:
             case 2: {
                 String Schoolpath="School/"+SchoolId;
-                getListOfGroups_Coures();
+
+                getListOfTeachers_Groups_Courses(Schoolpath);
                 }
             break;
             case 1:
@@ -376,8 +377,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     }
     void getListOfTeachers_Groups_Courses(String path)
     {
-
-        ArrayList<String> teacherNameList=new ArrayList<String>();
         UserRef.whereArrayContains("teacherIN",path)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -394,17 +393,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 teacherIdList.add(doc.getId());
                             }
 
-                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                    .putExtra("SchoolID",SchoolId)
-                                    .putExtra("GroupID",GroupId)
-                                    .putStringArrayListExtra("teacherIdList",teacherIdList)
-                                    .putStringArrayListExtra("teacherNameList",teacherNameList)
-                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
-                            ;
-                            //
-                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
-                            finish();
+                            getListOfGroups_Coures(teacherIdList,teacherNameList);
                         }
                     }
                 })
@@ -420,7 +409,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 })
         ;
     }
-    void getListOfGroups_Coures()
+    void getListOfGroups_Coures(List<String>teacherIdList,List<String>teacherNameList)
     {
         GroupRef.get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -434,15 +423,16 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                             for(DocumentSnapshot doc: GID)
                             {
                                 GroupNameList.add(doc.getString("displayName"));
-                                Toast.makeText(Dashboard.this,doc.getString("displayName") , Toast.LENGTH_SHORT).show();
                                 GroupIdList.add(doc.getId());
                             }
 
                             Intent intent =new Intent(Dashboard.this,CreateSession.class)
                                     .putExtra("SchoolID",SchoolId)
                                     .putExtra("GroupID",GroupId)
-                                    .putStringArrayListExtra("GroupIdList",GroupIdList)
-                                    .putStringArrayListExtra("GroupNameList",GroupNameList)
+                                    .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
+                                    .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
+                                    .putStringArrayListExtra("groupIdList",GroupIdList)
+                                    .putStringArrayListExtra("groupNameList",GroupNameList)
                                     .putExtra("NewSessionID","Session"+System.currentTimeMillis());
                             ;
                             //
@@ -450,7 +440,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                             startActivity(intent);
                             finish();
                         }
-                        else Toast.makeText(Dashboard.this,"Empty", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -459,8 +448,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         Intent intent =new Intent(Dashboard.this,CreateSession.class)
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("GroupID",GroupId)
-                                .putStringArrayListExtra("GroupIdList",new ArrayList<String>())
-                                .putStringArrayListExtra("GroupNameList",new ArrayList<String>())
+                                .putStringArrayListExtra("groupIdList",new ArrayList<String>())
+                                .putStringArrayListExtra("groupNameList",new ArrayList<String>())
+                                .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
+                                .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
                                 .putExtra("NewSessionID","Session"+System.currentTimeMillis());
                     }
                 })

@@ -91,7 +91,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     }
     public void setTeacher(){
         List<String> teacherstatique= new ArrayList<String>();teacherstatique.add("Select a Teacher");
-        //teacherstatique.addAll(teacherNameList);
+        teacherstatique.addAll(teacherNameList);
         ArrayAdapter<String> teacher_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,teacherstatique);
         teacher_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_teacher.setAdapter(teacher_adapter);
