@@ -70,11 +70,11 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
         //(model.getDate().isEmpty()||model.getStart().isEmpty()||model.getEnd().isEmpty() )){
 
-        /*if (!(model.getEnd().compareTo(currentTime)>0 && model.getStart().compareTo(currentTime)<0 && model.getDate().equals(currentDate) )){
+        if (!(model.getEnd().compareTo(currentTime)>0 && model.getStart().compareTo(currentTime)<0 && model.getDate().equals(currentDate) )){
 
 
             Clickable=false;
-        }*/
+        }
         if(!model.isPresential()){
             Clickable=false;
         }

@@ -104,7 +104,7 @@ public class ScanActivity extends AppCompatActivity {
                 if (barcodes.size()>0){
                    // Toast.makeText(ScanActivity.this,barcodes.valueAt(0).displayValue, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent();
-                    intent.putExtra("barcode",barcodes.valueAt(0)).putExtra("Qrdb","supchess");
+                    intent.putExtra("barcode",barcodes.valueAt(0));
 
 
                     setResult(CommonStatusCodes.SUCCESS,intent);
