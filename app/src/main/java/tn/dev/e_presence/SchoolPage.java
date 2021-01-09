@@ -215,6 +215,8 @@ public class SchoolPage extends AppCompatActivity {
                 Intent intent=new Intent(SchoolPage.this,AddSchool.class)
                         .putExtra("NewSchool",false)
                         .putExtra("SchoolID",SchoolId);
+                startActivity(intent);
+                finish();
                 return false;
             }
         });
@@ -254,7 +256,9 @@ public class SchoolPage extends AppCompatActivity {
     }
     void initReferences()
     {
-        GroupRef=db.collection("School").document(SchoolId).collection("Group");
+        try{
+        GroupRef=db.collection("School").document(SchoolId).collection("Group");}
+        catch (Exception e){}
         //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
     }
 }

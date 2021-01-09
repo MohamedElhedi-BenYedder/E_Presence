@@ -71,9 +71,27 @@ public class AddSchool extends AppCompatActivity {
 
 
         UploadPhoto();
+        setDisplay();
+        addEditSchool();
+        }
+        void setDisplay()
+        {
+            if(!NewSchool)
+            {
+                et_display_name.setVisibility(View.GONE);
+                db.document("School/" + SchoolId)
+                        .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        et_location.setText(documentSnapshot.getString("Location"));
+                        et_description.setText(documentSnapshot.getString("Description"));
+                        et_full_name.setText(documentSnapshot.getString("FullName"));
+                        String photo=documentSnapshot.getString("Photo");
+                    }
+                });
+            }
 
-        if(!NewSchool) et_display_name.setVisibility(View.GONE);
-            addEditSchool();
+
         }
         void UploadPhoto()
         {
@@ -152,17 +170,29 @@ public class AddSchool extends AppCompatActivity {
                     }
                     else
                     {
-                        if((displayName.length()>4)&&(fullName.length()>4)&&(Description.length()>4)&&(location.length()>4))
+                        if((fullName.length()>4)&&(Description.length()>4)&&(location.length()>4))
                         {
                             db.document("School/" + SchoolId)
-                                    .update(school);
+                                    .update(school)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Intent intent = new Intent(AddSchool.this, SchoolPage.class)
+                                                    .putExtra("SchoolID", SchoolId)
+                                                    .putExtra("NewSchool", false)
+                                                    .putExtra("Priority", 3);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(AddSchool.this, "Error ", Toast.LENGTH_SHORT).show();
 
-                            Intent intent = new Intent(AddSchool.this, SchoolPage.class)
-                                    .putExtra("SchoolID", displayName)
-                                    .putExtra("NewSchool", false)
-                                    .putExtra("Priority", 3);
-                            startActivity(intent);
-                            finish();
+                                }
+                            });
+
+
                         }
                         else
                         {

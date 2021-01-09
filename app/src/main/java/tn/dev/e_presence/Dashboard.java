@@ -191,7 +191,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         switch (priority) {
             case 3:
             case 2: {
-                String path="Schoo/"+SchoolId;
+                String path="School/"+SchoolId;
                 ArrayList<String> teacherNameList=new ArrayList<String>();
                 UserRef.whereArrayContains("teacherIN",path)
                         .get()
@@ -213,7 +213,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                             .putExtra("SchoolID",SchoolId)
                                             .putExtra("GroupID",GroupId)
                                             .putStringArrayListExtra("teacherIdList",teacherIdList)
-                                            .putStringArrayListExtra("teacherNameList",teacherNameList);
+                                            .putStringArrayListExtra("teacherNameList",teacherNameList)
+                                            .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                                            ;
                                     //
                                     // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
                                     startActivity(intent);

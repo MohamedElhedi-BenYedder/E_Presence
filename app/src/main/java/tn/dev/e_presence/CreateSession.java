@@ -26,8 +26,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.SuccessContinuation;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
@@ -49,6 +51,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     String time_start="",time_end="",date_sess="";
     private static String group_sess,teacher_sess,cours_sess,teacher_sess_id;
     boolean NewSession;
+    private String NewSessionID;
     String SchoolId;
     ArrayAdapter<String> group_adapter;
     String GroupId,Uri;
@@ -255,7 +258,6 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         btn_ok.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(Compteur==0){
                 //get data
                 String new_start= time_start;
                 String new_end= time_end;
@@ -284,33 +286,50 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                     session.put("qrcode", new_qrcode);
                     session.put("listOfPresence",new ArrayList<String>());
                     session.put("teacherId",new_teacherId);
-                    String timeC=""+System.currentTimeMillis();
 
-                    db.collection("School").document(SchoolId).collection("Session").document(timeC)
-                            .set(session)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    db.collection("School")
+                            .document(SchoolId)
+                            .collection("Session")
+                            .document(NewSessionID)
+                            .get().
+                            addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                 @Override
-                                public void onSuccess(Void aVoid) {
-                                    Compteur+=1;
-                                    Log.d(TAG, "Session successfully added!");
-                                    Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
-                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if(documentSnapshot.exists())
+                                    {
+                                        Toast.makeText(CreateSession.this, "Loading . . .", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else
+                                    {
+                                        db.collection("School").document(SchoolId).collection("Session").document(NewSessionID)
+                                                .set(session)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        Log.d(TAG, "Session successfully added!");
+                                                        Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
+                                                        Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
 
-                                     i.putExtra("Qrurl",Uri)
-                                            .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+                                                        i.putExtra("Qrurl",Uri)
+                                                                .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
 
-                                    startActivity(i);
-                                    finish();
+                                                        startActivity(i);
+                                                        finish();
 
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w(TAG, "Error adding session", e);
-                                    Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.w(TAG, "Error adding session", e);
+                                                        Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+
                                 }
                             });
+
                 }
                 else
                 {
@@ -319,9 +338,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
 
                 //
 
-            }else{
-                    Toast.makeText(CreateSession.this, "Loading...", Toast.LENGTH_SHORT).show();
-                }
+
             }
         });
     }
@@ -331,6 +348,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         Bundle incommingMessages =getIntent().getExtras();
         NewSession =incommingMessages.getBoolean("NewSession",true);
         SchoolId =incommingMessages.getString("SchoolID","0");
+        NewSessionID=incommingMessages.getString("NewSessionID","0");
         GroupId=incommingMessages.getString("GroupID","0");
         teacherIdList=incommingMessages.getStringArrayList("teacherIdList");
         teacherNameList=incommingMessages.getStringArrayList("teacherNameList");
