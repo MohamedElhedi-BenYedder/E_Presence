@@ -80,7 +80,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         }
 
         if(model.getListOfPresence().contains(UserId)){
-            holder.ll.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+            holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field_scanned));
             Clickable=false;
         }
 

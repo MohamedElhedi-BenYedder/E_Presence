@@ -288,7 +288,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     @Override
                     public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                         Toast.makeText(Dashboard.this, ""+sessionAdapter.isClickable(), Toast.LENGTH_SHORT).show();
-
                         if(sessionAdapter.isClickable()){
                         Cur_pos=position;
                         Log.d("qrtesting",""+Cur_pos);

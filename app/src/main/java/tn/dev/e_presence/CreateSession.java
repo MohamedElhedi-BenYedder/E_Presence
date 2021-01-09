@@ -34,6 +34,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +92,9 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         group_sess=spinner_group.getSelectedItem().toString();
     }
     public void setteacher(){
-        ArrayAdapter<String> teacher_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,teacherNameList);
+        List<String> teacherstatique= new ArrayList<String>();teacherstatique.add("Select a Teacher");
+        teacherstatique.addAll(teacherNameList);
+        ArrayAdapter<String> teacher_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,teacherstatique);
         teacher_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_teacher.setAdapter(teacher_adapter);
         spinner_teacher.setOnItemSelectedListener(this);
