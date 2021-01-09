@@ -95,9 +95,6 @@ public class MemberList extends AppCompatActivity {
     }
     private void setUpRecyclerView()
     {
-        /*Query query = UserRef.orderBy("DisplayName");
-
-         */
         Query query = UserRef.whereArrayContains(key,path);
         Toast.makeText(MemberList.this, key+"/"+path, Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -145,7 +142,7 @@ public class MemberList extends AppCompatActivity {
 
 
             }
-        });UserAdapter.startListening();
+        });
 
 
 
@@ -160,6 +157,7 @@ public class MemberList extends AppCompatActivity {
                 {
                     // add User;
                     setUpRecyclerViewAdmin();
+                    UserAdapter.startListening();
                 }
                 //Student or Teacher
                 else

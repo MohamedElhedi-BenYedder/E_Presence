@@ -14,7 +14,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
@@ -27,8 +29,10 @@ public class GroupList extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private String SchoolId;
+    private String GroupId;
     private CollectionReference GroupsRef;
     private GroupAdapter groupAdapter;
+    private int priority;
     String path;
 
     @Override
@@ -44,7 +48,8 @@ public class GroupList extends AppCompatActivity {
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
-        SchoolId =incommingMessages.getString("ID","0");
+        SchoolId =incommingMessages.getString("SchoolID","0");
+        priority=incommingMessages.getInt("Priority",0);
 
     }
     void initGroupref()
@@ -88,20 +93,31 @@ public class GroupList extends AppCompatActivity {
     }
     private void setUpRecyclerView()
     {
-        /*Query query = UserRef.orderBy("DisplayName");
 
-         */
         Query query = GroupsRef.orderBy("displayName");
         Toast.makeText(GroupList.this, "School/"+SchoolId+"/Group", Toast.LENGTH_SHORT).show();
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<Group> options = new FirestoreRecyclerOptions.Builder<Group>()
                 .setQuery(query,Group.class)
                 .build();
-        groupAdapter=new GroupAdapter(options,storageReference);
+        groupAdapter=new GroupAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.rv_group);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(groupAdapter);
+        groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+            String clickedGrouprId =documentSnapshot.getId();
+            Intent intent =new Intent(GroupList.this,MemberList.class)
+                    .putExtra("GroupID",clickedGrouprId)
+                    .putExtra("key","studentIN")
+                    .putExtra("path","School/"+SchoolId+"/Group/"+clickedGrouprId);
+            Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
+
+
+
+        }
+    });
 
     }
 }

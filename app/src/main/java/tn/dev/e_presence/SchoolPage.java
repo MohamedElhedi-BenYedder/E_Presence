@@ -150,7 +150,7 @@ public class SchoolPage extends AppCompatActivity {
             public void onClick(View v) {
                 if (priority > 0) {
                     Intent intent = new Intent(getApplicationContext(), GroupList.class)
-                            .putExtra("ID", SchoolId)
+                            .putExtra("SchoolID", SchoolId)
                             .putExtra("path", "School/" + SchoolId + "Group")
                             .putExtra("Priority",priority);
                     startActivity(intent);
