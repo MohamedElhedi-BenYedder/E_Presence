@@ -18,10 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.text.Line;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -44,7 +41,6 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter
      */
     public SchoolAdapter(@NonNull FirestoreRecyclerOptions<School> options,StorageReference s) {
         super(options);
-
         STORAGE_REFERENCE=s;
     }
     public void deleteItem(int position,String UserId,FirebaseFirestore db) {
@@ -84,7 +80,6 @@ catch (Exception e){count=count%ImageNumber;holder.iv_photo.setImageResource(Ima
 holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
 
-
     @NonNull
     @Override
     public SchoolHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -97,7 +92,6 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
         return super.getItemCount();
 
     }
-
 
 
     /***************School Holder Class*********************/
