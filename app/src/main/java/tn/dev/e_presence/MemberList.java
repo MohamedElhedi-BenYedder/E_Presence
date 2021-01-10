@@ -109,7 +109,18 @@ public class MemberList extends AppCompatActivity {
     }
     void setUpRecyclerViewAdmin()
     {
-        Query query = UserRef.orderBy("displayName");
+        Query query;
+        if((path.split("/").length<3))
+        {
+             query = UserRef.orderBy("displayName");
+        }
+        else
+        {
+             query = UserRef.whereArrayContains("studentIN","School/"+SchoolId);
+            Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
+
+        }
+
         Toast.makeText(MemberList.this, "AddingNewMembers" , Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
@@ -126,10 +137,11 @@ public class MemberList extends AppCompatActivity {
                 String clickedUserId =documentSnapshot.getId();
                 String ClickedUserName=documentSnapshot.getString("displayName");
                 DocumentReference clickedUserDocRef=db.collection("User").document(clickedUserId);
-                DocumentReference SchoolDocRef=db.collection("School").document(SchoolId);
+                DocumentReference SchoolDocRef=db.document(path);
                 if(key.equals("studentIN"))
                 {
-                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion("School/"+SchoolId));
+
+                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion(path));
                     SchoolDocRef.update("Students",FieldValue.arrayUnion(clickedUserId));
                 }
                 else if(key.equals("teacherIN"))
@@ -189,7 +201,7 @@ public class MemberList extends AppCompatActivity {
         path=incommingMessages.getString("path","0");
         key =incommingMessages.getString("key","0");
         all=incommingMessages.getBoolean("all",false);
-        SchoolId =incommingMessages.getString("ID","0");
+        SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
     }
     void setFloatingAppButtonIcon()
