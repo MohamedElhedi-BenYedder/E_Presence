@@ -8,18 +8,18 @@ public class Group {
     private String displayName;
     private int num;
     private String description;
-    private List<String> studentList;
+    private List<String> Students;
     private String level;
 
     public Group() {
         // needed for fireestore
     }
 
-    public Group(String displayName, int num, String description, List<String> studentList, String level) {
+    public Group(String displayName, int num, String description, List<String> students, String level) {
         this.displayName = displayName;
         this.num = num;
         this.description = description;
-        this.studentList = studentList;
+        Students = students;
         this.level = level;
     }
 
@@ -47,12 +47,12 @@ public class Group {
         this.description = description;
     }
 
-    public List<String> getStudentList() {
-        return studentList;
+    public List<String> getStudents() {
+        return Students;
     }
 
-    public void setStudentList(List<String> studentList) {
-        this.studentList = studentList;
+    public void setStudents(List<String> students) {
+        Students = students;
     }
 
     public String getLevel() {

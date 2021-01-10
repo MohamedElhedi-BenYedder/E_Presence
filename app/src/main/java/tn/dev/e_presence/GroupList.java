@@ -152,12 +152,17 @@ public class GroupList extends AppCompatActivity {
         groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-            String clickedGrouprId =documentSnapshot.getId();
+            String clickedGroupId =documentSnapshot.getId();
             Intent intent =new Intent(GroupList.this,MemberList.class)
-                    .putExtra("GroupID",clickedGrouprId)
+                    .putExtra("GroupID",clickedGroupId)
                     .putExtra("key","studentIN")
-                    .putExtra("path","School/"+SchoolId+"/Group/"+clickedGrouprId);
+                    .putExtra("Priority",priority)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("path","School/"+SchoolId+"/Group/"+clickedGroupId);
+
             Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
+            startActivity(intent);
+            finish();
 
 
 

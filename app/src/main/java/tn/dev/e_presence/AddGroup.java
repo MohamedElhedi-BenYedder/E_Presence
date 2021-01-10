@@ -98,7 +98,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                         group.put("level", new_Category);
                         group.put("description",new_Description);
                         group.put("num",0);
-                        group.put("studentList",new ArrayList<String>());
+                        group.put("Students",new ArrayList<String>());
 
                         { db.collection("School").document(SchoolId).collection("Group").document(new_Name)
                                 .get()

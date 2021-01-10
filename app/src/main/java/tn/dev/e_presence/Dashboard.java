@@ -224,85 +224,118 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     }*/
     public void setUpRecyclerView(String day)
      {
-        switch (priority)
-        {
-            case 3://Admin
+        if( (SchoolId=="0")&&(GroupId=="0")&&(priority==0))
+         {
+             Query query = SessionRef.whereEqualTo("date", day);
+             StorageReference path = FirebaseStorage.getInstance().getReference();
+             FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
+                     .setQuery(query, Session.class)
+                     .build();
+             sessionAdapter = new SessionAdapter(options, UserId);
+             recyclerView = findViewById(R.id.rv_session);
+             recyclerView.setHasFixedSize(true);
+             recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
+             recyclerView.setAdapter(sessionAdapter);
+         }
+        else {
+            switch (priority) {
+                case 3://Admin
                 {
-                Query query = SessionRef.whereEqualTo("date", day);
-                StorageReference path = FirebaseStorage.getInstance().getReference();
-                FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
-                        .setQuery(query, Session.class)
-                        .build();
-                sessionAdapter = new SessionAdapter(options, UserId);
-                recyclerView = findViewById(R.id.rv_session);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-                recyclerView.setAdapter(sessionAdapter);
-            }
-            break;
-            case 2://Teacher
-                {
-                Query query = SessionRef.whereEqualTo("date", day).whereEqualTo("teacherId",UserId);
-                StorageReference path = FirebaseStorage.getInstance().getReference();
-                FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
-                        .setQuery(query, Session.class)
-                        .build();
-                sessionAdapter = new SessionAdapter(options, UserId);
-                recyclerView = findViewById(R.id.rv_session);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-                recyclerView.setAdapter(sessionAdapter);
-                }
-            break;
+                    Query query = SessionRef.whereEqualTo("date", day);
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
+                            .setQuery(query, Session.class)
+                            .build();
+                    sessionAdapter = new SessionAdapter(options, UserId);
+                    recyclerView = findViewById(R.id.rv_session);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
+                    recyclerView.setAdapter(sessionAdapter);
+                    sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(DocumentSnapshot documentSnapshot, int pos) {
+                            String SessionId =documentSnapshot.getId();
+                            ArrayList<String> listOfPresence= (ArrayList<String>)documentSnapshot.get("listOfPresence");
+                            Intent intent = new Intent(Dashboard.this,MemberList.class)
+                                    .putStringArrayListExtra("listOfPresence",listOfPresence)
+                                    .putExtra("Pres",true)
+                                    .putExtra("SchoolID",SchoolId);
+                            startActivity(intent);
+                            finish();
 
 
-            case 1://Student
-                {
-                Query query = SessionRef.whereEqualTo("group", GroupId).whereEqualTo("date", day);
-                StorageReference path = FirebaseStorage.getInstance().getReference();
-                FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
-                        .setQuery(query, Session.class)
-                        .build();
-                sessionAdapter = new SessionAdapter(options, UserId);
-                recyclerView = findViewById(R.id.rv_session);
-                recyclerView.setHasFixedSize(true);
-                recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-                recyclerView.setAdapter(sessionAdapter);
 
-                /*------------------set click--------------*/
-                    /*-------Scan QR-Code--------------------*/
-                sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
-                    @RequiresApi(api = Build.VERSION_CODES.M)
-                    @Override
-                    public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                        Toast.makeText(Dashboard.this, ""+sessionAdapter.isClickable(), Toast.LENGTH_SHORT).show();
-                        if(sessionAdapter.isClickable()){
-                        Cur_pos=position;
-                        Log.d("qrtesting",""+Cur_pos);
-                        String SID = documentSnapshot.getId();
-                        SessionId=SID;
-                        String db_QR_Code=documentSnapshot.getString("qrcode");
-                        Qrdb=documentSnapshot.getString("qrcode");
-                        Log.d("qrtesting",Qrdb);
-                        if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                            Intent intent = new Intent(Dashboard.this,ScanActivity.class).putExtra("SchoolID",SchoolId)
-                            .putExtra("GroupID",GroupId).putExtra("SessionID",SID).putExtra("Qrdb",db_QR_Code);
-                            startActivityForResult(intent, 0);
-                        } else {
-                            if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
-                                Toast.makeText(Dashboard.this,
-                                        "Camera permission is needed",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                            ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+
                         }
-
-                }}
-            });}
+                    });
+                }
+                break;
+                case 2://Teacher
+                {
+                    Query query = SessionRef.whereEqualTo("date", day).whereEqualTo("teacherId", UserId);
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
+                            .setQuery(query, Session.class)
+                            .build();
+                    sessionAdapter = new SessionAdapter(options, UserId);
+                    recyclerView = findViewById(R.id.rv_session);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
+                    recyclerView.setAdapter(sessionAdapter);
+                }
                 break;
 
 
-         }
+                case 1://Student
+                {
+                    Query query = SessionRef.whereEqualTo("group", GroupId).whereEqualTo("date", day);
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
+                            .setQuery(query, Session.class)
+                            .build();
+                    sessionAdapter = new SessionAdapter(options, UserId);
+                    recyclerView = findViewById(R.id.rv_session);
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
+                    recyclerView.setAdapter(sessionAdapter);
+
+                    /*------------------set click--------------*/
+                    /*-------Scan QR-Code--------------------*/
+                    sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                            Toast.makeText(Dashboard.this, "" + sessionAdapter.isClickable(), Toast.LENGTH_SHORT).show();
+                            if (sessionAdapter.isClickable()) {
+                                Cur_pos = position;
+                                Log.d("qrtesting", "" + Cur_pos);
+                                String SID = documentSnapshot.getId();
+                                SessionId = SID;
+                                String db_QR_Code = documentSnapshot.getString("qrcode");
+                                Qrdb = documentSnapshot.getString("qrcode");
+                                Log.d("qrtesting", Qrdb);
+                                if (ActivityCompat.checkSelfPermission(Dashboard.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                                    Intent intent = new Intent(Dashboard.this, ScanActivity.class).putExtra("SchoolID", SchoolId)
+                                            .putExtra("GroupID", GroupId).putExtra("SessionID", SID).putExtra("Qrdb", db_QR_Code);
+                                    startActivityForResult(intent, 0);
+                                } else {
+                                    if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                                        Toast.makeText(Dashboard.this,
+                                                "Camera permission is needed",
+                                                Toast.LENGTH_SHORT).show();
+                                    }
+                                    ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+                                }
+
+                            }
+                        }
+                    });
+                }
+                break;
+
+
+            }
+        }
     }
 
 

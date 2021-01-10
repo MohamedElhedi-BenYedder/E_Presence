@@ -26,7 +26,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.protobuf.Empty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static tn.dev.e_presence.GV.getUser;
@@ -46,15 +48,17 @@ public class MemberList extends AppCompatActivity {
     private String SchoolId;
     private FloatingActionButton fab;
     private int priority;
+    private ArrayList<String> listOfPresence;
+    private boolean Pres;
+    private boolean listenAdapter=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_list);
         listenForIncommingMessages();
         setUpBottomAppBarMenu();
-
-
-        setUpRecyclerView();
+        if (Pres) setUpRecyclerViewPres();
+        else  setUpRecyclerView();
         fab =(FloatingActionButton) findViewById(R.id.fab);
         setFloatingAppButtonIcon();
         floatingActionButtonClick();
@@ -107,9 +111,42 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
     }
+    private void setUpRecyclerViewPres()
+    {
+        try
+        {
+        Query query = UserRef.whereIn("userID", listOfPresence);
+            Toast.makeText(MemberList.this, SchoolId, Toast.LENGTH_SHORT).show();
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+            FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                    .setQuery(query, User.class)
+                    .build();
+            UserAdapter = new UserAdapter(options, storageReference);
+            RecyclerView recyclerView = findViewById(R.id.rv_user);
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(UserAdapter);}
+        catch(Exception e)
+        {
+            listenAdapter=false;
+            Toast.makeText(MemberList.this, "Empty List Of Presence", Toast.LENGTH_SHORT).show();
+        }
+
+    }
     void setUpRecyclerViewAdmin()
     {
-        Query query = UserRef.orderBy("displayName");
+        Query query;
+        if((path.split("/").length<3))
+        {
+             query = UserRef.orderBy("displayName");
+        }
+        else
+        {
+             query = UserRef.whereArrayContains("studentIN","School/"+SchoolId);
+            Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
+
+        }
+
         Toast.makeText(MemberList.this, "AddingNewMembers" , Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
@@ -126,10 +163,11 @@ public class MemberList extends AppCompatActivity {
                 String clickedUserId =documentSnapshot.getId();
                 String ClickedUserName=documentSnapshot.getString("displayName");
                 DocumentReference clickedUserDocRef=db.collection("User").document(clickedUserId);
-                DocumentReference SchoolDocRef=db.collection("School").document(SchoolId);
+                DocumentReference SchoolDocRef=db.document(path);
                 if(key.equals("studentIN"))
                 {
-                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion("School/"+SchoolId));
+
+                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion(path));
                     SchoolDocRef.update("Students",FieldValue.arrayUnion(clickedUserId));
                 }
                 else if(key.equals("teacherIN"))
@@ -189,8 +227,10 @@ public class MemberList extends AppCompatActivity {
         path=incommingMessages.getString("path","0");
         key =incommingMessages.getString("key","0");
         all=incommingMessages.getBoolean("all",false);
-        SchoolId =incommingMessages.getString("ID","0");
+        SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
+        Pres=incommingMessages.getBoolean("Pres",false);
+        listOfPresence=incommingMessages.getStringArrayList("listOfPresence");
     }
     void setFloatingAppButtonIcon()
     {
@@ -200,7 +240,7 @@ public class MemberList extends AppCompatActivity {
     @Override
    protected void onStart() {
         super.onStart();
-        UserAdapter.startListening();
+        if(listenAdapter) UserAdapter.startListening();
     }
 
     @Override
