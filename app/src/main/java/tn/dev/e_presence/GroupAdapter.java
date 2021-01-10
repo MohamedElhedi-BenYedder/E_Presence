@@ -129,6 +129,6 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
         this.listener =listener;
     }
 
-    }
+}
 
 

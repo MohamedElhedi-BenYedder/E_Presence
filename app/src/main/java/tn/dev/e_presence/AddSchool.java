@@ -309,8 +309,15 @@ public class AddSchool extends AppCompatActivity {
  void listenForIncommingMessages()
  {
      Bundle incommingMessages =getIntent().getExtras();
-    NewSchool=incommingMessages.getBoolean("NewSchool");
-    SchoolId=incommingMessages.getString("SchoolID");
+    NewSchool=incommingMessages.getBoolean("NewSchool",false);
+    SchoolId=incommingMessages.getString("SchoolID","0");
  }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(AddSchool.this,Home.class);
+        startActivity(intent);
+        finish();
+    }
 
 }

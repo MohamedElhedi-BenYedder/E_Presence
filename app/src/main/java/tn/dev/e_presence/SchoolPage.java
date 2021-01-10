@@ -134,7 +134,8 @@ public class SchoolPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (priority > 0) {
-                    Intent intent = new Intent(getApplicationContext(), MemberList.class).putExtra("ID", SchoolId);
+                    Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                            .putExtra("SchoolID", SchoolId);
                     intent.putExtra("key", "teacherIN")
                             .putExtra("path", "School/" + SchoolId)
                             .putExtra("Priority",priority);
@@ -171,7 +172,7 @@ public class SchoolPage extends AppCompatActivity {
                 if(priority>0)
                 {
 
-                GroupRef.whereArrayContains("ListofStudents",UserId)
+                GroupRef.whereArrayContains("Students",UserId)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -260,5 +261,13 @@ public class SchoolPage extends AppCompatActivity {
         GroupRef=db.collection("School").document(SchoolId).collection("Group");}
         catch (Exception e){}
         //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(SchoolPage.this,Home.class);
+        startActivity(intent);
+        finish();
     }
 }
