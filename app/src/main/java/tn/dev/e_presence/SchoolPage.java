@@ -45,6 +45,7 @@ public class SchoolPage extends AppCompatActivity {
     private ImageView iv_student;
     private ImageView iv_group;
     private ImageView iv_session;
+    private ImageView iv_course;
     private LinearLayout ll_information;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class SchoolPage extends AppCompatActivity {
         onStudentClick();
         onTeacherClick();
         onGroupClick();
+        onCourseClick();
         onSessionClick();
 
     }
@@ -163,6 +165,20 @@ public class SchoolPage extends AppCompatActivity {
             }
         });
     }
+    void onCourseClick() {
+
+        iv_course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CourseList.class)
+                        .putExtra("SchoolID", SchoolId)
+                        .putExtra("path", "School/" + SchoolId + "Course")
+                        .putExtra("Priority",priority);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
     private void onSessionClick()
     {
@@ -254,6 +270,7 @@ public class SchoolPage extends AppCompatActivity {
         iv_group=findViewById(R.id.iv_group);
         iv_session=findViewById(R.id.iv_session);
         ll_information=findViewById(R.id.ll_information);
+        iv_course=findViewById(R.id.iv_course);
     }
     void initReferences()
     {

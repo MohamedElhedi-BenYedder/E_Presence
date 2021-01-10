@@ -38,9 +38,8 @@ public class CourseAdapter extends FirestoreRecyclerAdapter<Course,CourseAdapter
     protected void onBindViewHolder(@NonNull CourseAdapter.CourseHolder holder, int position, @NonNull Course model) {
 
 
-        holder.tv_course_name.setText(model.getCourseName());
-        holder.tv_semster.setText(model.getCourseName());
-        holder.tv_level.setText(model.getCourseName());
+        holder.tv_course_name.setText(model.getSubject());
+
 
 
     }
@@ -63,16 +62,14 @@ public class CourseAdapter extends FirestoreRecyclerAdapter<Course,CourseAdapter
     /***************Course Holder Class*********************/
     public class CourseHolder extends RecyclerView.ViewHolder {
         TextView tv_course_name;
-        TextView tv_semster;
-        TextView tv_level;
+
         LinearLayout ll_bg;
 
 
         public CourseHolder(@NonNull View oneCourseItem) {
             super(oneCourseItem);
             tv_course_name = oneCourseItem.findViewById(R.id.tv_course_name);
-            tv_semster = oneCourseItem.findViewById(R.id.tv_semster);
-            tv_level = oneCourseItem.findViewById(R.id.tv_level);
+
             ll_bg = oneCourseItem.findViewById(R.id.ll_bg);
 
 

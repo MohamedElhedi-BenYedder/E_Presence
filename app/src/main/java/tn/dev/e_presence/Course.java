@@ -3,41 +3,53 @@ package tn.dev.e_presence;
 
 
 public class Course {
-    private String courseName;
-    private String semstre;
-    private String level;
+    private String subject;
+
+    private String subjectId;
+    private String description;
+    private  String departement;
+
 
     public Course() {
         // needed for fireestore
     }
 
-    public Course(String courseName, String semstre, String level) {
-        this.courseName = courseName;
-        this.semstre = semstre;
-        this.level = level;
+    public Course(String subject, String subjectId, String description, String departement) {
+        this.subject = subject;
+        this.subjectId = subjectId;
+        this.description = description;
+        this.departement = departement;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setCourseName(String courseName) {
-        this.courseName = courseName;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public String getSemstre() {
-        return semstre;
+    public String getSubjectId() {
+        return subjectId;
     }
 
-    public void setSemstre(String semstre) {
-        this.semstre = semstre;
+    public void setSubjectId(String subjectId) {
+        this.subjectId = subjectId;
     }
 
-    public String getLevel() {
-        return level;
+    public String getDescription() {
+        return description;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(String departement) {
+        this.departement = departement;
     }
 }

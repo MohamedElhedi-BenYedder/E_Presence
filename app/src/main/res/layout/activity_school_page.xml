@@ -340,7 +340,7 @@
                                     android:textSize="18dp" />
 
                                 <ImageView
-                                    android:id="@+id/iv"
+                                    android:id="@+id/iv_course"
                                     android:layout_width="153dp"
                                     android:layout_height="78dp"
                                     android:layout_alignParentRight="true"

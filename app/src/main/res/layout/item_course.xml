@@ -36,24 +36,8 @@
                 android:textStyle="bold" />
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_level"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="level"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-        <TextView
-            android:id="@+id/tv_semster"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="semster"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+
+
 
     </LinearLayout>
 

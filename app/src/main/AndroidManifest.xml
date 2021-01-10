@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EPresence">
-        <activity android:name=".CourseItem"></activity>
+        <activity android:name=".AddCourse"></activity>
+        <activity android:name=".CourseItem" />
         <activity android:name=".CourseList" />
         <activity android:name=".QrwebpageActivity" />
         <activity android:name=".AddGroup" />

@@ -25,9 +25,9 @@ public class CourseList extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private String SchoolId;
-    private String GroupId;
-    private CollectionReference GroupsRef;
-    private GroupAdapter groupAdapter;
+    private String CourseId;
+    private CollectionReference CoursesRef;
+    private CourseAdapter courseAdapter;
     private int priority;
     String path;
     private FloatingActionButton fab;
@@ -40,7 +40,7 @@ public class CourseList extends AppCompatActivity {
         listenForIncommingMessages();
         setFloatingActionButtonIcon();
         setUpBottomAppBarMenu();
-        initGroupref();
+        initCourseref();
         setUpRecyclerView();
         onFloatingActionButtonClick();
 
@@ -59,12 +59,12 @@ public class CourseList extends AppCompatActivity {
                 {
                     case 3:
                     {
-                        Intent intent=new Intent(GroupList.this,AddGroup.class)
+                        Intent intent=new Intent(CourseList.this,AddCourse.class)
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("Priority",priority);
                         startActivity(intent);
                         finish();
-                    }
+                    }break;
                     case 2:
                     case 1:
                     case 0:
@@ -79,7 +79,7 @@ public class CourseList extends AppCompatActivity {
     {
         if (priority==3)
         {
-            fab.setImageResource(R.drawable.ic_add_group);
+            fab.setImageResource(R.drawable.ic_add_course);
         }
     }
 
@@ -91,9 +91,9 @@ public class CourseList extends AppCompatActivity {
         priority=incommingMessages.getInt("Priority",0);
 
     }
-    void initGroupref()
+    void initCourseref()
     {
-        GroupsRef=db.collection("School").document(SchoolId).collection("Group");
+        CoursesRef=db.collection("School").document(SchoolId).collection("Course");
     }
     private void setUpBottomAppBarMenu()
     {
@@ -133,47 +133,47 @@ public class CourseList extends AppCompatActivity {
     private void setUpRecyclerView()
     {
 
-        Query query = GroupsRef.orderBy("displayName");
-        Toast.makeText(GroupList.this, "School/"+SchoolId+"/Group", Toast.LENGTH_SHORT).show();
-        FirestoreRecyclerOptions<Group> options = new FirestoreRecyclerOptions.Builder<Group>()
-                .setQuery(query,Group.class)
+        Query query = CoursesRef.orderBy("displayName");
+        Toast.makeText(CourseList.this, "School/"+SchoolId+"/Course", Toast.LENGTH_SHORT).show();
+        FirestoreRecyclerOptions<Course> options = new FirestoreRecyclerOptions.Builder<Course>()
+                .setQuery(query,Course.class)
                 .build();
-        groupAdapter=new GroupAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.rv_group);
+        courseAdapter=new CourseAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.rv_course);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(groupAdapter);
-        groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
+        recyclerView.setAdapter(courseAdapter);
+        /*courseAdapter.setOnItemClickListener(new CourseAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String clickedGroupId =documentSnapshot.getId();
-                Intent intent =new Intent(GroupList.this,MemberList.class)
-                        .putExtra("GroupID",clickedGroupId)
+                String clickedCourseId =documentSnapshot.getId();
+                Intent intent =new Intent(CourseList.this,MemberList.class)
+                        .putExtra("CourseID",clickedCourseId)
                         .putExtra("key","studentIN")
                         .putExtra("Priority",priority)
                         .putExtra("SchoolID",SchoolId)
-                        .putExtra("path","School/"+SchoolId+"/Group/"+clickedGroupId);
+                        .putExtra("path","School/"+SchoolId+"/Course/"+clickedCourseId);
 
-                Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
+                Toast.makeText(CourseList.this, "Course Memeber List" , Toast.LENGTH_SHORT).show();
                 startActivity(intent);
                 finish();
 
 
 
             }
-        });
+        });*/
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        groupAdapter.startListening();
+        courseAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        groupAdapter.stopListening();
+        courseAdapter.stopListening();
     }
 }

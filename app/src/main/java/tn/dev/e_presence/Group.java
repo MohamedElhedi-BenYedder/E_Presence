@@ -15,11 +15,16 @@ public class Group {
         // needed for fireestore
     }
 
-    public Group(String displayName, int num, String description, List<String> students, String level) {
+    public Group(String displayName,String description, List<String> students, String level) {
         this.displayName = displayName;
-        this.num = num;
+
         this.description = description;
         Students = students;
+        if(Students.isEmpty())
+            this.num = 0;
+        else
+            this.num =Students.size();
+
         this.level = level;
     }
 
@@ -32,7 +37,10 @@ public class Group {
     }
 
     public int getNum() {
-        return num;
+        if(Students.isEmpty())
+            return 0;
+        else
+            return Students.size();
     }
 
     public void setNum(int num) {

@@ -70,7 +70,7 @@ public class GroupList extends AppCompatActivity {
                                 .putExtra("Priority",priority);
                         startActivity(intent);
                         finish();
-                    }
+                    }break;
                     case 2:
                     case 1:
                     case 0:
