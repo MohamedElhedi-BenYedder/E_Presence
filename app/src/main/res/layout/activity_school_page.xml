@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="0dp"
     android:orientation="vertical"
     android:paddingTop="16sp"
@@ -137,9 +137,9 @@
         android:layout_marginStart="16sp"
         android:layout_marginLeft="16sp"
         android:layout_marginTop="14dp"
-        android:backgroundTint="@color/fui_transparent"
         android:layout_marginEnd="16sp"
         android:layout_marginRight="16sp"
+        android:backgroundTint="@color/fui_transparent"
         android:orientation="horizontal">
 
         <TextView
@@ -161,8 +161,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/cl"
@@ -176,9 +175,8 @@
             <ScrollView
                 android:id="@+id/sv"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_above="@+id/cl"
-                >
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/cl">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -187,9 +185,9 @@
                     android:layout_marginLeft="16sp"
                     android:layout_marginEnd="16sp"
                     android:layout_marginRight="16sp"
+                    android:layout_marginBottom="50dp"
                     android:isScrollContainer="true"
                     android:orientation="vertical"
-                    android:layout_marginBottom="50dp"
                     android:overScrollMode="always">
 
                     <LinearLayout
@@ -426,6 +424,51 @@
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
                                     app:srcCompat="@drawable/ic_faq" />
+
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="160dp"
+                            android:layout_height="120dp"
+                            android:layout_marginVertical="5sp"
+                            android:layout_marginLeft="1sp"
+                            android:layout_weight="1"
+                            app:cardCornerRadius="8dp"
+                            app:cardElevation="2dp">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:padding="8dp">
+
+                                <View
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:textColor="#5E5E5E"
+                                    android:textSize="18dp" />
+
+                                <View
+
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="80dp"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="-16sp"
+                                    android:layout_marginLeft="-16sp"
+                                    android:layout_marginEnd="-16sp"
+                                    android:layout_marginRight="-16sp" />
 
                             </RelativeLayout>
 
