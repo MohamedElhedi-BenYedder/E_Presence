@@ -50,7 +50,18 @@
         android:layout_width="match_parent"
         android:layout_height="186dp"
         app:srcCompat="@drawable/ic_add_photo" />
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
 
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal|end"
+        android:layout_marginStart="-16sp"
+        android:layout_marginLeft="-16sp"
+        android:layout_marginEnd="-16sp"
+        android:layout_marginRight="-16sp"
+        android:layout_marginBottom="0dp">
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -59,8 +70,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="211dp"
-            android:background="@drawable/ic_bg"
+            android:background="@drawable/rectengular_field_scanned"
             android:orientation="vertical"
+            android:layout_marginHorizontal="16sp"
             android:padding="16dp">
 
             <LinearLayout
@@ -127,18 +139,7 @@
     </androidx.cardview.widget.CardView>
 
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
 
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal|end"
-        android:layout_marginStart="-16sp"
-        android:layout_marginLeft="-16sp"
-        android:layout_marginEnd="-16sp"
-        android:layout_marginRight="-16sp"
-        android:layout_marginBottom="0dp">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bnb"
@@ -157,6 +158,7 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:hideOnScroll="true"
             app:layout_anchor="@id/bnb"
             app:menu="@menu/bottom_app_bar_main_menu"
             app:srcCompat="@drawable/ic_next" />

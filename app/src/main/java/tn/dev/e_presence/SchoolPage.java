@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,8 @@ public class SchoolPage extends AppCompatActivity {
     private ImageView iv_student;
     private ImageView iv_group;
     private ImageView iv_session;
+    private ImageView iv_course;
+    private LinearLayout ll_information;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +57,11 @@ public class SchoolPage extends AppCompatActivity {
         initReferences();
         displaySchoolInformations();
         setUpBottomAppBarMenu();
+        onInfromationLongClick();
         onStudentClick();
         onTeacherClick();
         onGroupClick();
+        onCourseClick();
         onSessionClick();
 
     }
@@ -64,7 +69,7 @@ public class SchoolPage extends AppCompatActivity {
     private void setUpBottomAppBarMenu()
     {
         //find id
-        bottomAppBar=findViewById(R.id.bnb);
+
         // bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
 
         //click event over Bottom bar menu item
@@ -131,7 +136,8 @@ public class SchoolPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (priority > 0) {
-                    Intent intent = new Intent(getApplicationContext(), MemberList.class).putExtra("ID", SchoolId);
+                    Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                            .putExtra("SchoolID", SchoolId);
                     intent.putExtra("key", "teacherIN")
                             .putExtra("path", "School/" + SchoolId)
                             .putExtra("Priority",priority);
@@ -150,12 +156,26 @@ public class SchoolPage extends AppCompatActivity {
             public void onClick(View v) {
                 if (priority > 0) {
                     Intent intent = new Intent(getApplicationContext(), GroupList.class)
-                            .putExtra("ID", SchoolId)
+                            .putExtra("SchoolID", SchoolId)
                             .putExtra("path", "School/" + SchoolId + "Group")
                             .putExtra("Priority",priority);
                     startActivity(intent);
                     finish();
                 } else Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    void onCourseClick() {
+
+        iv_course.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CourseList.class)
+                        .putExtra("SchoolID", SchoolId)
+                        .putExtra("path", "School/" + SchoolId + "Course")
+                        .putExtra("Priority",priority);
+                startActivity(intent);
+                finish();
             }
         });
     }
@@ -168,7 +188,7 @@ public class SchoolPage extends AppCompatActivity {
                 if(priority>0)
                 {
 
-                GroupRef.whereArrayContains("ListofStudents",UserId)
+                GroupRef.whereArrayContains("Students",UserId)
                         .get()
                         .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                             @Override
@@ -204,6 +224,20 @@ public class SchoolPage extends AppCompatActivity {
         });
 
     }
+    void onInfromationLongClick()
+    {
+        ll_information.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Intent intent=new Intent(SchoolPage.this,AddSchool.class)
+                        .putExtra("NewSchool",false)
+                        .putExtra("SchoolID",SchoolId);
+                startActivity(intent);
+                finish();
+                return false;
+            }
+        });
+    }
     void listenForIncommingMessages()
     {
         //listen for incoming messages
@@ -225,6 +259,7 @@ public class SchoolPage extends AppCompatActivity {
     }
     void findViews()
     {
+        bottomAppBar=findViewById(R.id.bnb);
         tv_description=findViewById(R.id.tv_description);
         tv_display_name=findViewById(R.id.tv_display_name);
         tv_full_name=findViewById(R.id.tv_full_name);
@@ -234,10 +269,22 @@ public class SchoolPage extends AppCompatActivity {
         iv_student=findViewById(R.id.iv_student);
         iv_group=findViewById(R.id.iv_group);
         iv_session=findViewById(R.id.iv_session);
+        ll_information=findViewById(R.id.ll_information);
+        iv_course=findViewById(R.id.iv_course);
     }
     void initReferences()
     {
-        GroupRef=db.collection("School").document(SchoolId).collection("Group");
+        try{
+        GroupRef=db.collection("School").document(SchoolId).collection("Group");}
+        catch (Exception e){}
         //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent=new Intent(SchoolPage.this,Home.class);
+        startActivity(intent);
+        finish();
     }
 }
