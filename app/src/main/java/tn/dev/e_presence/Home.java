@@ -1,14 +1,20 @@
 package tn.dev.e_presence;
-
+import android.widget.EditText;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SearchView;
+import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,7 +43,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class Home extends AppCompatActivity {
+public class
+Home extends AppCompatActivity {
     private StorageReference mStorageRef;
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
@@ -54,7 +61,41 @@ public class Home extends AppCompatActivity {
         setUpRecyclerView();
         FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(this::AddSchool);
+        EditText searchBox = findViewById(R.id.searchBox);
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Query query;
+                if (s.toString().isEmpty())
+                {
+                    query = SchoolRef.orderBy("DisplayName");
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
+                            .setQuery(query,School.class)
+                            .build();
+                    schoolAdapter.updateOptions(options);
+                }
+                else {
+                 query = SchoolRef.orderBy("DisplayName").whereEqualTo("DisplayName",s.toString());
+                StorageReference path = FirebaseStorage.getInstance().getReference();
+                FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
+                        .setQuery(query,School.class)
+                        .build();
+                schoolAdapter.updateOptions(options);}
+            }
+        });
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpBottomAppBarMenu( )
@@ -147,5 +188,14 @@ public class Home extends AppCompatActivity {
         super.onStop();
         schoolAdapter.stopListening();
     }
+
+
+
+
+
+
+
+
+
 
 }

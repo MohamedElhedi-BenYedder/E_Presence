@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,7 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder> {
+public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder>  {
     private OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
     static int count=0;
@@ -32,6 +34,7 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter
     final static int ColorNumber=3;
     final static int ImageList[]={R.drawable.ic_school,R.drawable.ic_school1,R.drawable.ic_school2};
     final static int ImageNumber=3;
+    List<String> listfinal;
 
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
@@ -79,6 +82,10 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
 
 
+
+
+
+
     /***************School Holder Class*********************/
     public class SchoolHolder extends RecyclerView.ViewHolder {
         TextView tv_display_name;
@@ -116,5 +123,6 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     {
         this.listener =listener;
     }
+
 
 }
