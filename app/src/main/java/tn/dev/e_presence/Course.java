@@ -3,9 +3,7 @@ package tn.dev.e_presence;
 
 
 public class Course {
-    private String subject;
-
-    private String subjectId;
+    private String displayName;
     private String description;
     private  String departement;
 
@@ -14,27 +12,19 @@ public class Course {
         // needed for fireestore
     }
 
-    public Course(String subject, String subjectId, String description, String departement) {
-        this.subject = subject;
-        this.subjectId = subjectId;
+    public Course(String subject, String description, String departement) {
+        this.displayName = subject;
+
         this.description = description;
         this.departement = departement;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getSubjectId() {
-        return subjectId;
-    }
-
-    public void setSubjectId(String subjectId) {
-        this.subjectId = subjectId;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getDescription() {

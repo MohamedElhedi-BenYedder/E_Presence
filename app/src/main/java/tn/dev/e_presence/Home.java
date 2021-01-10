@@ -5,16 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -92,6 +95,11 @@ public class Home extends AppCompatActivity {
 
         });
     }
+    void test()
+    {
+
+    }
+
         private void setUpRecyclerView()
         {
             Query query = SchoolRef.orderBy("DisplayName");
@@ -104,6 +112,7 @@ public class Home extends AppCompatActivity {
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(schoolAdapter);
+            //----------------------setOnClickItem------------------------//
             schoolAdapter.setOnItemClickListener(new SchoolAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -124,6 +133,25 @@ public class Home extends AppCompatActivity {
                     finish();
                 }
             });
+            //---------------------------Swipe Item -------------------------//
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    schoolAdapter.deleteItem(viewHolder.getAdapterPosition(),UserId,db);
+                   // viewHolder.
+                   // recyclerView.setAdapter(schoolAdapter);
+
+                }
+
+            }).attachToRecyclerView(recyclerView);
+            {
+
+            }
 
         }
         private  void AddSchool(View v)
@@ -134,6 +162,8 @@ public class Home extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+
 
 
     @Override

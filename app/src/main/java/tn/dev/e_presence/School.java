@@ -49,4 +49,6 @@ public class School {
     public void setPhoto(String photo) {
         Photo = photo;
     }
+
+
 }

@@ -58,6 +58,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     private Spinner spinner_group,spinner_teacher,spinner_cours;
     private ArrayList<String> teacherIdList,teacherNameList;
     private ArrayList<String> groupIdList,groupNameList;
+    private ArrayList<String> courseNameList;
 
     Switch sw_presential;
     @Override
@@ -74,7 +75,6 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         setGroup();
         setTeacher();
         setCourse();
-
         tv_qrlink.setText("Click to generate QR code");
         setLink();
         setCancel();
@@ -100,8 +100,8 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
 
     }
     public void setCourse(){
-        List<String> coursstatique= new ArrayList<String>();
-        coursstatique.add("");coursstatique.add("UML");coursstatique.add("ML");coursstatique.add("Théorie d'information");
+        List<String> coursstatique=new ArrayList<String>();coursstatique.add("Select a Course");
+        coursstatique.addAll( courseNameList);
         ArrayAdapter<String> cours_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,coursstatique);
         cours_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_cours.setAdapter(cours_adapter);
@@ -351,6 +351,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         teacherNameList=incommingMessages.getStringArrayList("teacherNameList");
         groupIdList=incommingMessages.getStringArrayList("groupIdList");
         groupNameList=incommingMessages.getStringArrayList("groupNameList");
+        courseNameList=incommingMessages.getStringArrayList("courseNameList");
 
 
     }

@@ -143,25 +143,6 @@ public class CourseList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(courseAdapter);
-        /*courseAdapter.setOnItemClickListener(new CourseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String clickedCourseId =documentSnapshot.getId();
-                Intent intent =new Intent(CourseList.this,MemberList.class)
-                        .putExtra("CourseID",clickedCourseId)
-                        .putExtra("key","studentIN")
-                        .putExtra("Priority",priority)
-                        .putExtra("SchoolID",SchoolId)
-                        .putExtra("path","School/"+SchoolId+"/Course/"+clickedCourseId);
-
-                Toast.makeText(CourseList.this, "Course Memeber List" , Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                finish();
-
-
-
-            }
-        });*/
 
     }
 

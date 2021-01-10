@@ -62,6 +62,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private CollectionReference SessionRef ;
     private CollectionReference UserRef =db.collection("User");
     private CollectionReference GroupRef;
+    private CollectionReference CourseRef;
     private static SessionAdapter sessionAdapter;
     private HorizontalPicker picker;
     private BottomAppBar bottomAppBar;
@@ -77,6 +78,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int priority;
+
     private static boolean Scan_verdict;
 
 
@@ -345,6 +347,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
         SessionRef=db.collection("School").document(SchoolId).collection("Session");
         GroupRef=db.collection("School").document(SchoolId).collection("Group");
+        CourseRef=db.collection("School").document(SchoolId).collection("Course");
         //Toast.makeText(this, SchoolId, Toast.LENGTH_SHORT).show();
 
     }
@@ -458,20 +461,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 GroupNameList.add(doc.getString("displayName"));
                                 GroupIdList.add(doc.getId());
                             }
+                            getListOfCoures(teacherIdList,teacherNameList,GroupIdList,GroupNameList);
 
-                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                                    .putExtra("SchoolID",SchoolId)
-                                    .putExtra("GroupID",GroupId)
-                                    .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
-                                    .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
-                                    .putStringArrayListExtra("groupIdList",GroupIdList)
-                                    .putStringArrayListExtra("groupNameList",GroupNameList)
-                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
-                            ;
-                            //
-                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
-                            startActivity(intent);
-                            finish();
                         }
                     }
                 })
@@ -490,5 +481,53 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 })
         ;
     }
-    //void getListOfCoures(String path,List<String>teacherIdList,List<String>teacherNameList)
+    void getListOfCoures(List<String>teacherIdList,List<String>teacherNameList,List<String>groupIdList,List<String>groupNameList)
+    {
+        CourseRef.get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.getDocuments().isEmpty())
+                        {
+                            ArrayList<String> CourseNameList=new ArrayList<String>();
+                            List<DocumentSnapshot> GID=queryDocumentSnapshots.getDocuments();
+                            for(DocumentSnapshot doc: GID)
+                            {
+
+                                CourseNameList.add(doc.getId());
+                            }
+
+                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                    .putExtra("SchoolID",SchoolId)
+                                    .putExtra("GroupID",GroupId)
+                                    .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
+                                    .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
+                                    .putStringArrayListExtra("groupIdList",(ArrayList<String>)groupIdList)
+                                    .putStringArrayListExtra("groupNameList",(ArrayList<String>)groupNameList)
+                                    .putStringArrayListExtra("courseNameList",CourseNameList)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                            ;
+                            //
+                            // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                            startActivity(intent);
+                            finish();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                                .putExtra("SchoolID",SchoolId)
+                                .putExtra("GroupID",GroupId)
+                                .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
+                                .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
+                                .putStringArrayListExtra("groupIdList",(ArrayList<String>)groupIdList)
+                                .putStringArrayListExtra("groupNameList",(ArrayList<String>)groupNameList)
+                                .putStringArrayListExtra("courseNameList",new ArrayList<String>())
+                                .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                    }
+                });
+
+    }
 }

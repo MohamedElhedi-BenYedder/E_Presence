@@ -18,13 +18,16 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.text.Line;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder> {
+public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder>  {
     private OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
     static int count=0;
@@ -41,8 +44,24 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter
      */
     public SchoolAdapter(@NonNull FirestoreRecyclerOptions<School> options,StorageReference s) {
         super(options);
+
         STORAGE_REFERENCE=s;
     }
+    public void deleteItem(int position,String UserId,FirebaseFirestore db) {
+
+        if(((List<String>)(getSnapshots().getSnapshot(position).get("Admins"))).contains(UserId))
+        {
+            //delete School
+            getSnapshots().getSnapshot(position).getReference().delete();
+            //remove School from adminIN Array field in User Document
+            DocumentReference UserRef = db.collection("User").document(UserId);
+            UserRef.update("adminIN", FieldValue.arrayRemove(getSnapshots().getSnapshot(position).getId()));
+
+
+        }
+
+    }
+
 
     @Override
     protected void onBindViewHolder(@NonNull SchoolHolder holder, int position, @NonNull School model) {
@@ -65,6 +84,7 @@ catch (Exception e){count=count%ImageNumber;holder.iv_photo.setImageResource(Ima
 holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
 
+
     @NonNull
     @Override
     public SchoolHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -77,6 +97,7 @@ holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
         return super.getItemCount();
 
     }
+
 
 
     /***************School Holder Class*********************/

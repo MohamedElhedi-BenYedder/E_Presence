@@ -32,44 +32,25 @@ public class CourseAdapter extends FirestoreRecyclerAdapter<Course,CourseAdapter
     public CourseAdapter(@NonNull FirestoreRecyclerOptions<Course> options) {
         super(options);
     }
-
-
     @Override
     protected void onBindViewHolder(@NonNull CourseAdapter.CourseHolder holder, int position, @NonNull Course model) {
-
-
-        holder.tv_course_name.setText(model.getSubject());
-
-
-
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return super.getItemCount();
-
-    }
+        holder.tv_course_name.setText(model.getDisplayName()); }
 
     @NonNull
     @Override
     public CourseHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View oneCourseItem=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_course, parent, false);
-        return null;
+        return new CourseHolder(oneCourseItem);
     }
 
 
     /***************Course Holder Class*********************/
     public class CourseHolder extends RecyclerView.ViewHolder {
         TextView tv_course_name;
-
         LinearLayout ll_bg;
-
-
         public CourseHolder(@NonNull View oneCourseItem) {
             super(oneCourseItem);
             tv_course_name = oneCourseItem.findViewById(R.id.tv_course_name);
-
             ll_bg = oneCourseItem.findViewById(R.id.ll_bg);
 
 
