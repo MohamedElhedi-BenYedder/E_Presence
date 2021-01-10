@@ -18,7 +18,10 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.text.Line;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
@@ -43,7 +46,7 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter
         super(options);
         STORAGE_REFERENCE=s;
     }
-    public void deleteItem(int position,String UserId,FirebaseFirestore db) {
+    public void deleteItem(int position, String UserId, FirebaseFirestore db) {
 
         if(((List<String>)(getSnapshots().getSnapshot(position).get("Admins"))).contains(UserId))
         {
