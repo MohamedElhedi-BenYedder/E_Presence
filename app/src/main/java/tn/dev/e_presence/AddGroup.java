@@ -41,6 +41,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
     private int Compteur;
     private Button btn_ok;
     private Button btn_cancel;
+    private String NewGroupID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,7 +115,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                         group.put("num",0);
                         group.put("Students",new ArrayList<String>());
 
-                        { db.collection("School").document(SchoolId).collection("Group").document(new_Name)
+                        { db.collection("School").document(SchoolId).collection("Group").document(NewGroupID)
                                 .get()
                                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                                     @Override
@@ -123,12 +124,11 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                                             Toast.makeText(AddGroup.this, "Existing Group Name", Toast.LENGTH_SHORT).show();
 
                                         } else {
-                                            db.collection("School").document(SchoolId).collection("Group").document(new_Name)
+                                            db.collection("School").document(SchoolId).collection("Group").document(NewGroupID)
                                                     .set(group)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Compteur+=1;
                                                             Log.d(TAG, "Group successfully added!");
                                                             Toast.makeText(AddGroup.this, "Group successfully added!", Toast.LENGTH_SHORT).show();
                                                             Intent intent = new Intent(AddGroup.this,GroupList.class)
@@ -173,6 +173,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         Bundle incommingMessages =getIntent().getExtras();
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
+        NewGroupID=incommingMessages.getString("NewGroupID","0");
     }
     @Override
     public void onBackPressed() {

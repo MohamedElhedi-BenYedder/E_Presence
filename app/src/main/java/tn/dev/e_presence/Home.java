@@ -85,7 +85,8 @@ public class Home extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
-                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
+                        startActivity(new Intent(getApplicationContext(),Dashboard.class)
+                                .putExtra("bar",true));
                         overridePendingTransition(0,0);
                         return true;
                     case R.id.miProfile:

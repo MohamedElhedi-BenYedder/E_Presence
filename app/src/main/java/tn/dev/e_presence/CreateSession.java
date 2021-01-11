@@ -306,6 +306,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                     session.put("qrcode", new_qrcode);
                     session.put("listOfPresence",new ArrayList<String>());
                     session.put("teacherId",new_teacherId);
+                    session.put("schoolId",SchoolId);
                     session.put("groupId",new_groupId);
 
                     db.collection("School")

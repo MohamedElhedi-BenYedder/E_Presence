@@ -152,16 +152,18 @@ public class MemberList extends AppCompatActivity {
         Query query;
         if((path.split("/").length<3))
         {
+            // Add Student or teacher to school
              query = UserRef.orderBy("displayName");
         }
         else
         {
+            //Add Student To group
              query = UserRef.whereArrayContains("studentIN","School/"+SchoolId);
             Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
 
         }
 
-        Toast.makeText(MemberList.this, "AddingNewMembers" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(MemberList.this, "Adding New Members" , Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query,User.class)
@@ -181,8 +183,10 @@ public class MemberList extends AppCompatActivity {
                 DocumentReference SchoolDocRef=db.document(path);
                 if(key.equals("studentIN"))
                 {
+                    String p=path;
+                    if((path.split("/").length>3)) p=path.split("/")[3];
+                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion(p));
 
-                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion(path));
                     SchoolDocRef.update("Students",FieldValue.arrayUnion(clickedUserId));
                 }
                 else if(key.equals("teacherIN"))
@@ -202,37 +206,53 @@ public class MemberList extends AppCompatActivity {
     }
     private void floatingActionButtonClick()
     {
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //admin
-                if(priority==3)
-                {
-                    // add User;
-                    setUpRecyclerViewAdmin();
-                    UserAdapter.startListening();
-                    Intent intent =new Intent(getApplicationContext(),MemberList.class)
-                            .putExtra("path",path)
-                            .putExtra("key",key)
-                            .putExtra("all",all)
+                if(!Pres) {
+                    //admin
+                    if (priority == 3) {
+                        // add User;
+                        setUpRecyclerViewAdmin();
+                        UserAdapter.startListening();
+                        Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                                .putExtra("path", path)
+                                .putExtra("key", key)
+                                .putExtra("all", all)
+                                .putExtra("SchoolID", SchoolId)
+                                .putExtra("Priority", priority)
+                                .putExtra("TAG", "MemberList");
+                    }
+                    //Student or Teacher
+                    else {
+                        Intent intent = new Intent(getApplicationContext(), SchoolPage.class)
+                                .putExtra("path", path)
+                                .putExtra("key", key)
+                                .putExtra("all", all)
+                                .putExtra("SchoolID", SchoolId)
+                                .putExtra("Priority", priority);
+                        startActivity(intent);
+                        finish();
+                    }
+
+                }else{
+                    Intent intent=new Intent(MemberList.this,Dashboard.class)
                             .putExtra("SchoolID",SchoolId)
                             .putExtra("Priority",priority)
-                            .putExtra("TAG","MemberList");
+                            .putExtra("GroupID",GroupId)
+                            .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                            .putStringArrayListExtra("groupIdList",new ArrayList<String>())
+                            .putStringArrayListExtra("groupNameList",new ArrayList<String>())
+                            .putStringArrayListExtra("teacherIdList", teacherIdList)
+                            .putStringArrayListExtra("teacherNameList",  teacherNameList);
+
+                    startActivity(intent);
+                    finish();
+
                 }
-                //Student or Teacher
-                else
-                {Intent intent =new Intent(getApplicationContext(),SchoolPage.class)
-                        .putExtra("path",path)
-                        .putExtra("key",key)
-                        .putExtra("all",all)
-                        .putExtra("SchoolID",SchoolId)
-                        .putExtra("Priority",priority);
-                startActivity(intent);
-                finish();}
-
-
             }
-        });
+        });}
 
 
 
@@ -241,7 +261,7 @@ public class MemberList extends AppCompatActivity {
         intent.putExtra("first",true);
         startActivity(intent);
         finish();*/
-    }
+
 
     void AddNewPerson() {
 
@@ -269,7 +289,7 @@ public class MemberList extends AppCompatActivity {
     }
     void setFloatingAppButtonIcon()
     {
-        if (priority==3) fab.setImageResource(R.drawable.ic_add_person);
+        if ((priority==3)&&!Pres) fab.setImageResource(R.drawable.ic_add_person);
     }
 
     @Override
@@ -281,7 +301,7 @@ public class MemberList extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        UserAdapter.stopListening();
+       try{ UserAdapter.stopListening();}catch (Exception e){}
     }
 
 

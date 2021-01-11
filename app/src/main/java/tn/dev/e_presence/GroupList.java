@@ -67,7 +67,9 @@ public class GroupList extends AppCompatActivity {
                     {
                         Intent intent=new Intent(GroupList.this,AddGroup.class)
                                 .putExtra("SchoolID",SchoolId)
-                                .putExtra("Priority",priority);
+                                .putExtra("Priority",priority)
+                                .putExtra("NewGroup",true)
+                                .putExtra("NewGroupID","Group"+System.currentTimeMillis());
                         startActivity(intent);
                         finish();
                     }break;

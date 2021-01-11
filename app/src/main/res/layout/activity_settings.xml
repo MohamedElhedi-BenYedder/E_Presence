@@ -10,13 +10,36 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="30dp">
 
-        <TextView
-            style="@style/viewParent.headerText"
-            android:text="Settings" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingTop="10sp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto_bold"
+                android:text="Settings"
+                android:textColor="#5E5E5E"
+                android:textSize="24dp" />
+
+            <View
+                android:layout_width="40dp"
+                android:layout_height="6dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/ic_bg">
+
+            </View>
+
+        </LinearLayout>
+
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,33 +49,32 @@
                 android:id="@+id/profileCircleImageView"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                app:civ_border_width="2dp"
-                app:civ_border_color="@color/imageBorderColor"
-                android:src="@drawable/avatar"
                 android:layout_marginTop="15dp"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:src="@drawable/avatar"
+                app:civ_border_width="2dp" />
 
             <TextView
                 android:id="@+id/usernameTextView"
                 style="@style/viewParent.headerText"
-                android:text="Name Surname"
-                android:textSize="18sp"
+                android:layout_marginTop="20dp"
                 android:layout_toRightOf="@id/profileCircleImageView"
-                android:layout_marginTop="20dp"/>
+                android:text="Name Surname"
+                android:textSize="18sp" />
 
             <TextView
                 style="@style/viewParent.headerText"
-                android:text="Edit personal details"
-                android:textSize="16sp"
-                android:textColor="#5D5C5C"
                 android:layout_below="@id/usernameTextView"
-                android:layout_toRightOf="@id/profileCircleImageView"/>
+                android:layout_toRightOf="@id/profileCircleImageView"
+                android:text="Edit personal details"
+                android:textColor="#5D5C5C"
+                android:textSize="16sp" />
 
             <ImageView
                 style="@style/viewParent"
-                app:srcCompat="@drawable/ic_more"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true"
+                app:srcCompat="@drawable/ic_more" />
 
         </RelativeLayout>
 
@@ -64,7 +86,7 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="Profile"/>
+            android:text="Profile" />
 
         <TextView
             android:id="@+id/btn_editprofile"
@@ -76,13 +98,13 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsTextIcon"
-            android:drawableLeft="@drawable/ic_edit_password"
             android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/ic_edit_password"
             android:text="Change Password" />
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="Notifications"/>
+            android:text="Notifications" />
 
         <Switch
             style="@style/settingsText"
@@ -92,7 +114,7 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
-            android:text="Regional"/>
+            android:text="Regional" />
 
         <TextView
             style="@style/viewParent.headerText.settingsTextIcon"
@@ -110,9 +132,11 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsMiniTitle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
             android:text="@string/app_name"
-            android:textAlignment="center"
-            android:gravity="center_horizontal" />
+            android:textAlignment="center" />
 
     </LinearLayout>
 </ScrollView>

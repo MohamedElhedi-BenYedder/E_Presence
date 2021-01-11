@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -51,6 +52,7 @@ import org.joda.time.DateTime;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +63,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final String UserId = user.getUid();
     private CollectionReference SessionRef ;
+    private CollectionReference SchoolRef;
     private CollectionReference UserRef =db.collection("User");
     private CollectionReference GroupRef;
     private CollectionReference CourseRef;
@@ -80,8 +83,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int priority;
-
+    private static Boolean Student_Teacher=true;
     private static boolean Scan_verdict;
+    private boolean bar ;
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -89,6 +93,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
         listenForIncommingMessages();
         initSessionAndGroupRef();
         setFloatingAppButtonIcon();
@@ -105,10 +110,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     {
         //listen for incoming messages
         Bundle incommingMessages =getIntent().getExtras();
-        SchoolId =incommingMessages.getString("SchoolID","0");
-        GroupId=incommingMessages.getString("GroupID","0");
+       SchoolId =incommingMessages.getString("SchoolID","0");
+       GroupId=incommingMessages.getString("GroupID","0");
         priority=incommingMessages.getInt("Priority",0);
         TAG_rec=incommingMessages.getString("TAG","0");
+        bar=incommingMessages.getBoolean("bar",false);
         //Qrdb =incommingMessages.getString("Qrdb","0");
 
     }
@@ -186,14 +192,22 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
-        //Toast.makeText(this, dateSelected.toString("dd/MM/yyyy"), Toast.LENGTH_SHORT).show();
-        setUpRecyclerView(dateSelected.toString("dd/MM/yyyy"));
-        sessionAdapter.startListening();
 
-    }
+        setUpRecyclerView(dateSelected.toString("dd/MM/yyyy"));
+      try {
+          sessionAdapter.startListening();
+      }catch (Exception e){}
+      }
+
 
     private  void AddSession(View v)
     {
+        if( bar)
+        {
+           Student_Teacher=!Student_Teacher;
+           recreate();
+        }
+        else
         switch (priority) {
             case 3:
             case 2: {
@@ -211,48 +225,50 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         }
     }
 
-        /*ArrayList<String> teacherIdList=(ArrayList<String>)db.collection("School").document(SchoolId).get().getResult().get("Teachers");
-        for (String id :teacherIdList)
-        {
-            teacherIdList.add((String) db.collection("User").document(id).get().getResult().get("displayName"));
-        }
-        Intent intent =new Intent(Dashboard.this,CreateSession.class)
-                .putExtra("SchoolID",SchoolId)
-                .putExtra("GroupID",GroupId)
-                .putStringArrayListExtra("teacherIdList",teacherIdList)
-                .putStringArrayListExtra("teacherNameList",teacherNameList);
-        startActivity(intent);
-        finish();*/
 
-   /* protected void onListItemClick(ListView l, View v, int position, long id) {
-        startActivity(new Intent(getApplicationContext(),ScanActivity.class));
+    public void setUpRecyclerViewMenuBottomBar(String day)
+    {
 
-    }*/
-    public void setUpRecyclerView(String day)
+        UserRef.document(UserId).
+                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Query query;
+                ArrayList<String> Groups= (ArrayList<String>) documentSnapshot.get("studentIN");
+                Query firstQuery = db
+                        .collectionGroup("Session")
+                        .whereEqualTo("teacherId",user.getUid())
+                        .whereEqualTo("day",day);
+                Query secondQuery = db
+                        .collectionGroup("Session")
+                        .whereIn("groupId", Groups)
+                        .whereEqualTo("day",day);
+               if(Student_Teacher)query=firstQuery; else query=secondQuery;
+                        StorageReference sr = FirebaseStorage.getInstance().getReference();
+                FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
+                        .setQuery(query, Session.class)
+                        .build();
+                sessionAdapter = new SessionAdapter(options, UserId,db,sr);
+                recyclerView = findViewById(R.id.rv_session);
+                recyclerView.setHasFixedSize(true);
+                recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
+                recyclerView.setAdapter(sessionAdapter);
+
+            }
+        });
+    }
+    public void setUpRecyclerViewSchoolPage(String day)
      {
-        if( (SchoolId=="0")&&(GroupId=="0")&&(priority==0))
-         {
-             Query query = SessionRef.whereEqualTo("date", day);
-             StorageReference path = FirebaseStorage.getInstance().getReference();
-             FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
-                     .setQuery(query, Session.class)
-                     .build();
-             sessionAdapter = new SessionAdapter(options, UserId);
-             recyclerView = findViewById(R.id.rv_session);
-             recyclerView.setHasFixedSize(true);
-             recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
-             recyclerView.setAdapter(sessionAdapter);
-         }
-        else {
+
             switch (priority) {
                 case 3://Admin
                 {
                     Query query = SessionRef.whereEqualTo("date", day);
-                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    StorageReference sr = FirebaseStorage.getInstance().getReference();
                     FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                             .setQuery(query, Session.class)
                             .build();
-                    sessionAdapter = new SessionAdapter(options, UserId);
+                    sessionAdapter = new SessionAdapter(options, UserId,db,sr);
                     recyclerView = findViewById(R.id.rv_session);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
@@ -268,11 +284,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                     .putExtra("TAG",TAG)
                                     .putExtra("SchoolID",SchoolId)
                                     .putExtra("GroupID",GroupId)
-                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis())
-                                    .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
-                                    .putStringArrayListExtra("teacherNameList",new ArrayList<String>())
-                                    .putStringArrayListExtra("groupIdList",new ArrayList<String>())
-                                    .putStringArrayListExtra("groupNameList",new ArrayList<String>());
+                                    .putExtra("Priority",priority)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
                             startActivity(intent);
                             finish();
 
@@ -286,11 +299,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 case 2://Teacher
                 {
                     Query query = SessionRef.whereEqualTo("date", day).whereEqualTo("teacherId", UserId);
-                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    StorageReference sr = FirebaseStorage.getInstance().getReference();
                     FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                             .setQuery(query, Session.class)
                             .build();
-                    sessionAdapter = new SessionAdapter(options, UserId);
+                    sessionAdapter = new SessionAdapter(options, UserId,db,sr);
                     recyclerView = findViewById(R.id.rv_session);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
@@ -302,11 +315,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 case 1://Student
                 {
                     Query query = SessionRef.whereEqualTo("group", GroupId).whereEqualTo("date", day);
-                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    StorageReference sr = FirebaseStorage.getInstance().getReference();
                     FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                             .setQuery(query, Session.class)
                             .build();
-                    sessionAdapter = new SessionAdapter(options, UserId);
+                    sessionAdapter = new SessionAdapter(options, UserId,db,sr);
                     recyclerView = findViewById(R.id.rv_session);
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
@@ -338,7 +351,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                                 Toast.LENGTH_SHORT).show();
                                     }
                                     ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
-                                }
+                                }postponeEnterTransition();
 
                             }
                         }
@@ -347,9 +360,16 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 break;
 
 
-            }
+
         }
     }
+    void setUpRecyclerView(String day)
+    {
+        if(bar)setUpRecyclerViewMenuBottomBar(day);
+
+        else setUpRecyclerViewSchoolPage(day);
+       }
+
 
 
 
@@ -372,7 +392,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     @Override
     protected void onStart() {
         super.onStart();
-        sessionAdapter.startListening();
+       try{ sessionAdapter.startListening();}catch (Exception e){};
     }
 
     @Override
@@ -410,7 +430,17 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
    void setFloatingAppButtonIcon()
    {
        fab=(FloatingActionButton) findViewById(R.id.fab);
-       if (priority==1) fab.setImageResource(R.drawable.ic_school);
+      if( bar)
+       {
+           fab.setImageResource(R.drawable.ic_swap);
+       }
+       else
+
+       {
+
+           if (priority==1) fab.setImageResource(R.drawable.ic_school);
+       }
+
    }
 
     @Override

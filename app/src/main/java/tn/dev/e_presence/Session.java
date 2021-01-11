@@ -12,6 +12,7 @@ public class Session {
     private String teacher;
     private String teacherId;
     private String qrstring;
+    private String schoolId;
     private String subject;
     private String subjectId;
     private boolean presential;
@@ -21,7 +22,8 @@ public class Session {
     public Session() { //needed for firestrore Database
     }
 
-    public Session(String date, String start, String end, String classroom, String group, String groupId, String teacher, String teacherId, String qrstring, String subject, String subjectId, boolean presential, List<String> listOfPresence) {
+
+    public Session(String date, String start, String end, String classroom, String group, String groupId, String teacher, String teacherId, String qrstring, String schoolId, String subject, String subjectId, boolean presential, List<String> listOfPresence) {
         this.date = date;
         this.start = start;
         this.end = end;
@@ -31,6 +33,7 @@ public class Session {
         this.teacher = teacher;
         this.teacherId = teacherId;
         this.qrstring = qrstring;
+        this.schoolId = schoolId;
         this.subject = subject;
         this.subjectId = subjectId;
         this.presential = presential;
@@ -39,6 +42,14 @@ public class Session {
 
     public String getDate() {
         return date;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(String schoolId) {
+        this.schoolId = schoolId;
     }
 
     public void setDate(String date) {
