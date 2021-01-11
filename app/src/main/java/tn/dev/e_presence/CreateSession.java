@@ -228,7 +228,13 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                  Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
                 Intent i = new Intent(CreateSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
-                        .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+                        .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId)
+                        .putExtra("Priority",priority)
+                        .putStringArrayListExtra("groupIdList",groupIdList)
+                        .putStringArrayListExtra("groupNameList",groupNameList)
+                        .putStringArrayListExtra("teacherIdList", teacherIdList)
+                        .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                        .putExtra("NewSessionID",NewSessionID);
 
                 startActivity(i);
                 finish();
@@ -277,7 +283,15 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 boolean new_presential=sw_presential.isChecked();
                 // Start Dashborad Activity again
                 if (NewSession) {
-                    Intent i = new Intent(CreateSession.this,QrwebpageActivity.class);
+                    Intent i = new Intent(CreateSession.this,QrwebpageActivity.class)
+                            .putExtra("SchoolID",SchoolId)
+                            .putExtra("GroupID",GroupId)
+                            .putExtra("Priority",priority)
+                            .putStringArrayListExtra("groupIdList",groupIdList)
+                            .putStringArrayListExtra("groupNameList",groupNameList)
+                            .putStringArrayListExtra("teacherIdList", teacherIdList)
+                            .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                            .putExtra("NewSessionID",NewSessionID);;
                     //put Data into a message for DashboradActivty
 
                     Map<String, Object> session = new HashMap<>();

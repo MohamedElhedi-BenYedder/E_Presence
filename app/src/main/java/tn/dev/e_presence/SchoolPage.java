@@ -39,6 +39,7 @@ public class SchoolPage extends AppCompatActivity {
     private int priority;
     private CollectionReference GroupRef;
     private String SchoolId;
+    private String TAG="SchoolPage";
     private TextView tv_display_name;
     private TextView tv_description;
     private TextView tv_full_name;
@@ -121,10 +122,11 @@ public class SchoolPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (priority > 0) {
-                    Intent intent = new Intent(getApplicationContext(), MemberList.class).putExtra("ID", SchoolId);
-                    startActivity(intent);
-                    intent.putExtra("key", "studentIN")
+                    Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                            .putExtra("SchoolID", SchoolId)
+                            .putExtra("key", "studentIN")
                             .putExtra("path", "School/" + SchoolId)
+                            .putExtra("TAG",TAG)
                             .putExtra("Priority",priority);
                     startActivity(intent);
                     finish();}
@@ -143,7 +145,9 @@ public class SchoolPage extends AppCompatActivity {
                             .putExtra("SchoolID", SchoolId);
                     intent.putExtra("key", "teacherIN")
                             .putExtra("path", "School/" + SchoolId)
-                            .putExtra("Priority",priority);
+                            .putExtra("Priority",priority)
+                            .putExtra("TAG",TAG)
+                            .putExtra("Priority",priority);;
                     startActivity(intent);
                     finish();
                     }
@@ -229,6 +233,8 @@ public class SchoolPage extends AppCompatActivity {
     }
     void onInfromationLongClick()
     {
+        if(priority==3)
+        {
         ll_information.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -239,7 +245,7 @@ public class SchoolPage extends AppCompatActivity {
                 finish();
                 return false;
             }
-        });
+        });}
     }
     void listenForIncommingMessages()
     {
@@ -285,7 +291,9 @@ public class SchoolPage extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-       // Intent intent=new Intent(SchoolPage.this,super.getApplication().class)
-         //       .putExtra("")
+        Intent intent=new Intent(SchoolPage.this,Home.class);
+        startActivity(intent);
+        finish();
+
     }
 }

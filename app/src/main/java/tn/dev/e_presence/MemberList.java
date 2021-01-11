@@ -48,13 +48,18 @@ public class MemberList extends AppCompatActivity {
     private final String uid =user.getUid();
     private UserAdapter UserAdapter;
     private String path;
+    private ArrayList<String> groupIdList,groupNameList;
     private String key;
+    private static String TAG;
     private boolean all;
-    private String SchoolId;
+    private static String SchoolId;
     private FloatingActionButton fab;
-    private int priority;
+    private static int priority;
     private ArrayList<String> listOfPresence;
+    private ArrayList<String> teacherIdList,teacherNameList;
+    private static String GroupId;
     private boolean Pres;
+    private String NewSessionID;
     private boolean listenAdapter=true;
     private EditText searchBox;
     @Override
@@ -206,10 +211,22 @@ public class MemberList extends AppCompatActivity {
                     // add User;
                     setUpRecyclerViewAdmin();
                     UserAdapter.startListening();
+                    Intent intent =new Intent(getApplicationContext(),MemberList.class)
+                            .putExtra("path",path)
+                            .putExtra("key",key)
+                            .putExtra("all",all)
+                            .putExtra("SchoolID",SchoolId)
+                            .putExtra("Priority",priority)
+                            .putExtra("TAG","MemberList");
                 }
                 //Student or Teacher
                 else
-                {Intent intent =new Intent(getApplicationContext(),SchoolPage.class).putExtra("ID",SchoolId);
+                {Intent intent =new Intent(getApplicationContext(),SchoolPage.class)
+                        .putExtra("path",path)
+                        .putExtra("key",key)
+                        .putExtra("all",all)
+                        .putExtra("SchoolID",SchoolId)
+                        .putExtra("Priority",priority);
                 startActivity(intent);
                 finish();}
 
@@ -241,6 +258,14 @@ public class MemberList extends AppCompatActivity {
         priority=incommingMessages.getInt("Priority",0);
         Pres=incommingMessages.getBoolean("Pres",false);
         listOfPresence=incommingMessages.getStringArrayList("listOfPresence");
+        TAG=incommingMessages.getString("TAG","0");
+        GroupId=incommingMessages.getString("GroupID","0");
+        teacherIdList=incommingMessages.getStringArrayList("teacherIdList");
+        teacherNameList=incommingMessages.getStringArrayList("teacherNameList");
+        groupIdList=incommingMessages.getStringArrayList("groupIdList");
+        groupNameList=incommingMessages.getStringArrayList("groupNameList");
+        NewSessionID=incommingMessages.getString("NewSessionID","0");
+
     }
     void setFloatingAppButtonIcon()
     {
@@ -263,6 +288,41 @@ public class MemberList extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        Toast.makeText(MemberList.this, TAG+priority, Toast.LENGTH_SHORT).show();
+        if(TAG.equals("Dashbord")){
+            Intent intent=new Intent(MemberList.this,Dashboard.class)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority)
+                    .putExtra("GroupID",GroupId)
+                    .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                    .putStringArrayListExtra("groupIdList",new ArrayList<String>())
+                    .putStringArrayListExtra("groupNameList",new ArrayList<String>())
+                    .putStringArrayListExtra("teacherIdList", teacherIdList)
+                    .putStringArrayListExtra("teacherNameList",  teacherNameList);
+
+            startActivity(intent);
+            finish();
+        }
+        if(TAG.equals("SchoolPage")){
+            Intent intent=new Intent(MemberList.this,SchoolPage.class)
+                    .putExtra("path",path)
+                    .putExtra("key",key)
+                    .putExtra("all",all)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority);
+            startActivity(intent);
+            finish();
+        }
+        if(TAG.equals("MemberList")){
+            Intent intent=new Intent(MemberList.this,MemberList.class)
+                    .putExtra("path",path)
+                    .putExtra("key",key)
+                    .putExtra("all",all)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority);
+            startActivity(intent);
+            finish();
+        }
        /* Intent intent=new Intent(MemberList.this,)
                 .putExtra("path",path)
                 .putExtra("key",key)

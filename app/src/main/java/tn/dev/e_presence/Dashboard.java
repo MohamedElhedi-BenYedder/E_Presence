@@ -70,6 +70,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private BottomNavigationView bottomNavigationView;
     private int REQUEST_CAMERA = 1;
     private String TAG="Dashbord";
+    private String TAG_rec;
     private static int Cur_pos;
     private String Scane_res = "chaine";
     private static String SchoolId;
@@ -107,6 +108,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         SchoolId =incommingMessages.getString("SchoolID","0");
         GroupId=incommingMessages.getString("GroupID","0");
         priority=incommingMessages.getInt("Priority",0);
+        TAG_rec=incommingMessages.getString("TAG","0");
         //Qrdb =incommingMessages.getString("Qrdb","0");
 
     }
@@ -263,7 +265,14 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                             Intent intent = new Intent(Dashboard.this,MemberList.class)
                                     .putStringArrayListExtra("listOfPresence",listOfPresence)
                                     .putExtra("Pres",true)
-                                    .putExtra("SchoolID",SchoolId);
+                                    .putExtra("TAG",TAG)
+                                    .putExtra("SchoolID",SchoolId)
+                                    .putExtra("GroupID",GroupId)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                                    .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
+                                    .putStringArrayListExtra("teacherNameList",new ArrayList<String>())
+                                    .putStringArrayListExtra("groupIdList",new ArrayList<String>())
+                                    .putStringArrayListExtra("groupNameList",new ArrayList<String>());
                             startActivity(intent);
                             finish();
 
