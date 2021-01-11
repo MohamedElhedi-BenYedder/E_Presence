@@ -75,7 +75,11 @@ public class GroupList extends AppCompatActivity {
                     case 1:
                     case 0:
                     {
-                        //back
+                        Intent intent =new Intent(GroupList.this,SchoolPage.class).
+                                putExtra("SchoolID",SchoolId);
+                        intent.putExtra("Priority",priority);
+                        startActivity(intent);
+                        finish();
                     }
                 }
             }
@@ -163,9 +167,6 @@ public class GroupList extends AppCompatActivity {
             Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
-
-
-
         }
     });
 
@@ -181,5 +182,16 @@ public class GroupList extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         groupAdapter.stopListening();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent =new Intent(GroupList.this,SchoolPage.class).
+                putExtra("SchoolID",SchoolId);
+        intent.putExtra("Priority",priority);
+        startActivity(intent);
+        finish();
     }
 }

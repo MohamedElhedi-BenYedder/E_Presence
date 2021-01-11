@@ -44,14 +44,27 @@ public class AddCourse extends AppCompatActivity {
         findViews();
         listenForIncommingMessages();
         setOk();
+        setCancel();
     }
 
-
+    public void setCancel(){
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(AddCourse.this,CourseList.class).
+                        putExtra("SchoolID",SchoolId);
+                intent.putExtra("Priority",priority);
+                startActivity(intent);
+                finish();
+            }
+        });
+    }
 
     public void findViews()
     {
         et_departement=findViewById(R.id.et_departement);
         btn_ok=findViewById(R.id.btn_ok);
+        btn_cancel=findViewById(R.id.btn_cancel);
         et_cname=findViewById(R.id.et_cname);
         et_cdescription=findViewById(R.id.et_cdescription);
     }
@@ -131,6 +144,15 @@ public class AddCourse extends AppCompatActivity {
         Bundle incommingMessages =getIntent().getExtras();
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent =new Intent(AddCourse.this,CourseList.class).
+                putExtra("SchoolID",SchoolId);
+        intent.putExtra("Priority",priority);
+        startActivity(intent);
+        finish();
     }
 
 }

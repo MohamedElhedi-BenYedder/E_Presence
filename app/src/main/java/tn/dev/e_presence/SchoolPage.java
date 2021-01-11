@@ -283,7 +283,7 @@ public class SchoolPage extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(SchoolPage.this,Home.class);
+        Intent intent=new Intent(SchoolPage.this,super.getClass());
         startActivity(intent);
         finish();
     }

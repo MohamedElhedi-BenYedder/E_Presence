@@ -9,13 +9,21 @@
     tools:ignore="ContentDescription">
 
     <include layout="@layout/toolbar"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="134dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="20dp">
 
@@ -23,7 +31,7 @@
             android:layout_width="150dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            app:srcCompat="@drawable/ic_person" />
+            app:srcCompat="@drawable/ic_person2" />
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -32,8 +40,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="1dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:paddingVertical="23dp"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -41,18 +51,18 @@
         <ImageView
             android:id="@+id/icon5"
             android:layout_width="87dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:contentDescription="@string/todo"
             app:srcCompat="@drawable/ic_person2" />
 
         <EditText
             android:id="@+id/textnom5"
-            android:layout_width="317dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/ic_down3_background"
-            android:gravity="center|right|top"
+            android:gravity="left|center"
             android:hint="Full Name"
-            android:paddingRight="100dp"
+
             android:textSize="30sp" />
 
     </LinearLayout>
@@ -63,8 +73,10 @@
         android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:paddingVertical="23dp"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -73,18 +85,18 @@
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="87dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:contentDescription="@string/todo"
             app:srcCompat="@drawable/ic_person2" />
 
         <EditText
             android:id="@+id/textpr5"
-            android:layout_width="309dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/ic_down3_background"
-            android:gravity="center|right|top"
+            android:gravity="left|center"
             android:hint="Gender"
-            android:paddingRight="100dp"
+
             android:textSize="30sp" />
 
     </LinearLayout>
@@ -95,8 +107,10 @@
         android:background="@android:color/darker_gray"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:paddingVertical="23dp"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -113,8 +127,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/ic_down3_background"
-            android:gravity="center|right"
+            android:gravity="left|center"
             android:hint="Email"
+            android:inputType="textEmailAddress"
             android:paddingRight="100dp"
             android:textSize="30sp"
              />
@@ -126,8 +141,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginVertical="5dp"
+        android:paddingVertical="23dp"
         android:orientation="horizontal"
         android:paddingLeft="15dp"
         android:paddingRight="15dp">
@@ -144,8 +161,9 @@
             android:layout_width="313dp"
             android:layout_height="match_parent"
             android:background="@color/ic_down3_background"
-            android:gravity="center|right|top"
-            android:hint="Numéro"
+            android:gravity="left|center"
+            android:hint="Telephone Num"
+            android:inputType="phone"
             android:paddingRight="100dp"
             android:textSize="30sp" />
 
@@ -164,12 +182,14 @@
         android:layout_marginLeft="90dp"
         android:layout_marginRight="70dp"
         android:layout_marginStart="90dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="20dp"
         android:text="Enregistrer"
         android:textSize="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImageView" />
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>

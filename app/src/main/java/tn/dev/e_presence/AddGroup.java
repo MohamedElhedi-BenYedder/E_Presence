@@ -49,6 +49,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         listenForIncommingMessages();
         setCategory();
         setOk();
+        setCancel();
     }
     public void setCategory(){
         List<String> Category= new ArrayList<String>( Arrays.asList("Level1", "Level2","Level3","Level4","Level5","Level6","Club") );
@@ -76,8 +77,21 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
     {
         sp_category=findViewById(R.id.sp_category);
         btn_ok=findViewById(R.id.btn_ok);
+        btn_cancel=findViewById(R.id.btn_cancel);
         et_gname=findViewById(R.id.et_gname);
         et_gdescription=findViewById(R.id.et_gdescription);
+    }
+    public void setCancel(){
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =new Intent(AddGroup.this,GroupList.class).
+                        putExtra("SchoolID",SchoolId);
+                intent.putExtra("Priority",priority);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
     public void setOk()
     {
@@ -159,6 +173,15 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         Bundle incommingMessages =getIntent().getExtras();
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent =new Intent(AddGroup.this,GroupList.class).
+                putExtra("SchoolID",SchoolId);
+        intent.putExtra("Priority",priority);
+        startActivity(intent);
+        finish();
     }
 
 }

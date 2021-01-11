@@ -69,8 +69,12 @@ public class CourseList extends AppCompatActivity {
                     case 1:
                     case 0:
                     {
-                        //back
-                    }
+                        Intent intent =new Intent(CourseList.this,SchoolPage.class).
+                                putExtra("SchoolID",SchoolId);
+                        intent.putExtra("Priority",priority);
+                        startActivity(intent);
+                        finish();
+                    }break;
                 }
             }
         });
@@ -156,5 +160,14 @@ public class CourseList extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         courseAdapter.stopListening();
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent =new Intent(CourseList.this,SchoolPage.class).
+                putExtra("SchoolID",SchoolId);
+        intent.putExtra("Priority",priority);
+        startActivity(intent);
+        finish();
     }
 }

@@ -59,6 +59,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     private ArrayList<String> teacherIdList,teacherNameList;
     private ArrayList<String> groupIdList,groupNameList;
     private ArrayList<String> courseNameList;
+    private int priority;
 
     Switch sw_presential;
     @Override
@@ -239,7 +240,16 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+                Intent i = new Intent(CreateSession.this,Dashboard.class)
+                        .putExtra("SchoolID",SchoolId)
+                        .putExtra("GroupID",GroupId)
+                        .putExtra("Priority",priority)
+                        .putStringArrayListExtra("groupIdList",groupIdList)
+                        .putStringArrayListExtra("groupNameList",groupNameList)
+                        .putStringArrayListExtra("teacherIdList", teacherIdList)
+                        .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                        .putExtra("NewSessionID",NewSessionID);
+
 
                 startActivity(i);
                 finish();
@@ -352,6 +362,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         groupIdList=incommingMessages.getStringArrayList("groupIdList");
         groupNameList=incommingMessages.getStringArrayList("groupNameList");
         courseNameList=incommingMessages.getStringArrayList("courseNameList");
+        priority=incommingMessages.getInt("Priority",0);
 
 
     }
@@ -360,7 +371,17 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Intent i = new Intent(CreateSession.this,Dashboard.class).putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+        Intent i = new Intent(CreateSession.this,Dashboard.class)
+                .putExtra("SchoolID",SchoolId)
+                .putExtra("GroupID",GroupId)
+                .putExtra("Priority",priority)
+                .putStringArrayListExtra("groupIdList",groupIdList)
+                .putStringArrayListExtra("groupNameList",groupNameList)
+                .putStringArrayListExtra("teacherIdList", teacherIdList)
+                .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                .putExtra("NewSessionID",NewSessionID);
+
+
         startActivity(i);
         finish();
     }
