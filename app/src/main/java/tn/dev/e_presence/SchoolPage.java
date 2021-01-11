@@ -1,10 +1,13 @@
 package tn.dev.e_presence;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.ActivityChooserView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -282,9 +285,7 @@ public class SchoolPage extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent=new Intent(SchoolPage.this,super.getClass());
-        startActivity(intent);
-        finish();
+       // Intent intent=new Intent(SchoolPage.this,super.getApplication().class)
+         //       .putExtra("")
     }
 }

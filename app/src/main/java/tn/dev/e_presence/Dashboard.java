@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -93,6 +94,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         SetUpBottomAppBarMenu();
         SetDatePicker();
         setUpRecyclerView(getTodayDate());
+        OnSwipedItem();
         fab.setOnClickListener(this::AddSession);
 
 
@@ -532,5 +534,26 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     }
                 });
 
+    }
+    private void OnSwipedItem()
+    {
+        //---------------------------Swipe Item -------------------------//
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                sessionAdapter.deleteItem(viewHolder.getAdapterPosition(),UserId,db,priority);
+                recyclerView.setAdapter(sessionAdapter);
+
+            }
+
+        }).attachToRecyclerView(recyclerView);
+        {
+
+        }
     }
 }

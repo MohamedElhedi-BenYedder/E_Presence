@@ -54,55 +54,29 @@ public class Home extends AppCompatActivity {
     private SchoolAdapter schoolAdapter;
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final String UserId = user.getUid();
+    private FloatingActionButton fab;
+    private EditText searchBox;
+    private RecyclerView recyclerView;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        findViews();
         setUpBottomAppBarMenu();
         setUpRecyclerView();
-        FloatingActionButton fab =(FloatingActionButton) findViewById(R.id.fab);
+        OnSwipedItem();
         fab.setOnClickListener(this::AddSchool);
-        EditText searchBox = findViewById(R.id.searchBox);
-        searchBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        searchBar();
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                Query query;
-                if (s.toString().isEmpty())
-                {
-                    query = SchoolRef.orderBy("DisplayName");
-                    StorageReference path = FirebaseStorage.getInstance().getReference();
-                    FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
-                            .setQuery(query,School.class)
-                            .build();
-                    schoolAdapter.updateOptions(options);
-                }
-                else {
-                 query = SchoolRef.orderBy("DisplayName").whereEqualTo("DisplayName",s.toString());
-                StorageReference path = FirebaseStorage.getInstance().getReference();
-                FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
-                        .setQuery(query,School.class)
-                        .build();
-                schoolAdapter.updateOptions(options);}
-            }
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setUpBottomAppBarMenu( )
     {
         //find id
-        bottomAppBar=findViewById(R.id.bnb);
+
         //bottomAppBar.getMenu().getItem(0).setIconTintList(getColorStateList(R.color.c2));
 
         //click event over Bottom bar menu item
@@ -134,6 +108,41 @@ public class Home extends AppCompatActivity {
 
         });
     }
+        private void searchBar()
+        {
+            searchBox.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Query query;
+                    if (s.toString().isEmpty())
+                    {
+                        query = SchoolRef.orderBy("DisplayName");
+                        StorageReference path = FirebaseStorage.getInstance().getReference();
+                        FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
+                                .setQuery(query,School.class)
+                                .build();
+                        schoolAdapter.updateOptions(options);
+                    }
+                    else {
+                        query = SchoolRef.orderBy("DisplayName").startAt(s.toString()).endAt(s.toString()+'\uf8ff');
+                        StorageReference path = FirebaseStorage.getInstance().getReference();
+                        FirestoreRecyclerOptions<School> options = new FirestoreRecyclerOptions.Builder<School>()
+                                .setQuery(query,School.class)
+                                .build();
+                        schoolAdapter.updateOptions(options);}
+                }
+            });
+        }
         private void setUpRecyclerView()
         {
             Query query = SchoolRef.orderBy("DisplayName");
@@ -142,7 +151,7 @@ public class Home extends AppCompatActivity {
                     .setQuery(query,School.class)
                     .build();
             schoolAdapter=new SchoolAdapter(options,path);
-            RecyclerView recyclerView = findViewById(R.id.rv_school);
+
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(schoolAdapter);
@@ -167,25 +176,7 @@ public class Home extends AppCompatActivity {
                     finish();
                 }
             });
-            //---------------------------Swipe Item -------------------------//
-            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
-                @Override
-                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-                    return false;
-                }
 
-                @Override
-                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                    schoolAdapter.deleteItem(viewHolder.getAdapterPosition(),UserId,db);
-                   // viewHolder.
-                   // recyclerView.setAdapter(schoolAdapter);
-
-                }
-
-            }).attachToRecyclerView(recyclerView);
-            {
-
-            }
 
         }
         private  void AddSchool(View v)
@@ -198,6 +189,34 @@ public class Home extends AppCompatActivity {
         }
 
 
+        private void OnSwipedItem()
+        {
+            //---------------------------Swipe Item -------------------------//
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    schoolAdapter.deleteItem(viewHolder.getAdapterPosition(),UserId,db);
+                    recyclerView.setAdapter(schoolAdapter);
+
+                }
+
+            }).attachToRecyclerView(recyclerView);
+            {
+
+            }
+        }
+        private void findViews()
+        {
+            recyclerView = findViewById(R.id.rv_school);
+            fab =(FloatingActionButton) findViewById(R.id.fab);
+            searchBox = findViewById(R.id.searchBox);
+            bottomAppBar=findViewById(R.id.bnb);
+        }
     @Override
     protected void onStart() {
         super.onStart();
@@ -209,5 +228,6 @@ public class Home extends AppCompatActivity {
         super.onStop();
         schoolAdapter.stopListening();
     }
+
 
 }

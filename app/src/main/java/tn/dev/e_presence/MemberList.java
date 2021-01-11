@@ -1,10 +1,14 @@
 package tn.dev.e_presence;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -52,6 +56,7 @@ public class MemberList extends AppCompatActivity {
     private ArrayList<String> listOfPresence;
     private boolean Pres;
     private boolean listenAdapter=true;
+    private EditText searchBox;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,6 +116,7 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
+        searchBar(query);
     }
     private void setUpRecyclerViewPres()
     {
@@ -126,7 +132,9 @@ public class MemberList extends AppCompatActivity {
             RecyclerView recyclerView = findViewById(R.id.rv_user);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(UserAdapter);}
+            recyclerView.setAdapter(UserAdapter);
+            searchBar(query);
+        }
         catch(Exception e)
         {
             listenAdapter=false;
@@ -158,6 +166,7 @@ public class MemberList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
+        searchBar(query);
         UserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -254,8 +263,52 @@ public class MemberList extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent=new Intent(MemberList.this,super.getClass());
+       /* Intent intent=new Intent(MemberList.this,)
+                .putExtra("path",path)
+                .putExtra("key",key)
+                .putExtra("all",all)
+                .putExtra("SchoolID",SchoolId)
+                .putExtra("Priority",priority);
+        startActivity(intent);
+        finish();*/
 
 
+    }
+    private void searchBar(Query Q)
+
+    {
+        searchBox=findViewById(R.id.searchBox);
+        searchBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+                if (s.toString().isEmpty())
+                {
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(Q,User.class)
+                            .build();
+                    UserAdapter.updateOptions(options);
+                }
+                else {
+                    Query query;
+                    query = Q.orderBy("displayName").startAt(s.toString()).endAt(s.toString()+'\uf8ff');
+                    StorageReference path = FirebaseStorage.getInstance().getReference();
+                    FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
+                            .setQuery(query,User.class)
+                            .build();
+                    UserAdapter.updateOptions(options);}
+            }
+        });
     }
 }

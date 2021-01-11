@@ -13,11 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
@@ -48,6 +52,16 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
     public SessionAdapter(@NonNull FirestoreRecyclerOptions<Session> options, StorageReference s) {
         super(options);
         STORAGE_REFERENCE = s;
+    }
+    public void deleteItem(int position, String UserId, FirebaseFirestore db,int priority) {
+
+        if(priority==3)
+        {
+            getSnapshots().getSnapshot(position).getReference().delete();
+        }
+
+
+
     }
 
     public boolean isClickable() {
@@ -83,6 +97,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
             holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field_scanned));
             Clickable=false;
         }
+
 
     }
 
