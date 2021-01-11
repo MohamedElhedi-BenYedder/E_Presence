@@ -301,7 +301,7 @@ public class MemberList extends AppCompatActivity {
                     .putStringArrayListExtra("teacherNameList",  teacherNameList);
 
             startActivity(intent);
-            finish();
+            finish();//
         }
         if(TAG.equals("SchoolPage")){
             Intent intent=new Intent(MemberList.this,SchoolPage.class)
