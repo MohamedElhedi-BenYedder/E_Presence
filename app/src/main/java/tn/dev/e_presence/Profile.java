@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
@@ -23,6 +24,7 @@ public class Profile extends AppCompatActivity {
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference UserRef =db.collection("User");
     private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    private TextView btn_cancel;
     TextView name_user,mail,phone,tv_welcome_user;
     @RequiresApi(api = Build.VERSION_CODES.O)
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,14 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
        // setUpBottomAppBarMenu();
         getUserInformation();
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(Profile.this,Home.class);
+                startActivity(intent);
+                finish();
+            }
+        });
      }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -72,7 +82,7 @@ public class Profile extends AppCompatActivity {
     void getUserInformation()
     {
         tv_welcome_user=findViewById(R.id.tv_welcome_user);
-
+        btn_cancel=findViewById(R.id.back_btn);
         name_user=findViewById(R.id.name);
         mail=findViewById(R.id.mail);
         phone=findViewById(R.id.phone);
