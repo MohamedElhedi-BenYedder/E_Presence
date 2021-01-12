@@ -58,6 +58,7 @@ import java.util.List;
 
 public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private ListView lv_Session;
+    private ArrayList<String> GroupIDs;
     private SessionAdapter Adapter;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -115,6 +116,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         priority=incommingMessages.getInt("Priority",0);
         TAG_rec=incommingMessages.getString("TAG","0");
         bar=incommingMessages.getBoolean("bar",false);
+        GroupIDs=incommingMessages.getStringArrayList("GroupIDs");
         //Qrdb =incommingMessages.getString("Qrdb","0");
 
     }
@@ -205,7 +207,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         if( bar)
         {
            Student_Teacher=!Student_Teacher;
-           recreate();
         }
         else
         switch (priority) {
@@ -314,7 +315,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
                 case 1://Student
                 {
-                    Query query = SessionRef.whereEqualTo("group", GroupId).whereEqualTo("date", day);
+                    Query query = SessionRef.whereIn("group", GroupIDs).whereEqualTo("date", day);
                     StorageReference sr = FirebaseStorage.getInstance().getReference();
                     FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                             .setQuery(query, Session.class)

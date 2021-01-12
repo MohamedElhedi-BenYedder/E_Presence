@@ -31,6 +31,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 import static tn.dev.e_presence.GV.getSchool;
 import static tn.dev.e_presence.GV.getUser;
 
@@ -204,10 +206,14 @@ public class SchoolPage extends AppCompatActivity {
                             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                 if(!queryDocumentSnapshots.getDocuments().isEmpty())
                                 {
-                                    String GID=queryDocumentSnapshots.getDocuments().get(0).getId();
+                                    ArrayList<String> GroupIds=new ArrayList<String>();
+                                    for(DocumentSnapshot doc :queryDocumentSnapshots.getDocuments() )
+                                    {
+                                        GroupIds.add(doc.getId());
+                                    }
                                     Intent intent=new Intent(getApplicationContext(),Dashboard.class)
                                             .putExtra("SchoolID",SchoolId)
-                                            .putExtra("GroupID",GID)
+                                            .putStringArrayListExtra("GroupIDs",GroupIds)
                                             .putExtra("Priority",priority);
                                     //
                                     // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
