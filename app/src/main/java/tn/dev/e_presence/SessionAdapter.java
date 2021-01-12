@@ -1,6 +1,6 @@
 package tn.dev.e_presence;
+
 import android.annotation.SuppressLint;
-import android.graphics.Color;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,31 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
-
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdapter.SessionHolder> {
     private OnItemClickListener listener;
-    private boolean Clickable=true;
     private static String UserId;
     private FirebaseFirestore db;
     static StorageReference STORAGE_REFERENCE;
@@ -67,14 +60,11 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
         }
     }
 
-    public boolean isClickable() {
-        return Clickable;
-    }
+
 
     @SuppressLint("RestrictedApi")
     @Override
     protected void onBindViewHolder(@NonNull SessionHolder holder, int position, @NonNull Session model) {
-        Clickable=true;
         holder.tv_start.setText(model.getStart());
         holder.tv_end.setText(model.getEnd());
         holder.tv_classroom.setText(model.getClassroom());
@@ -104,24 +94,29 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                         }
                     });
         }catch(Exception e){}
-        String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
-        String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-
-        if (!(model.getEnd().compareTo(currentTime)>0 && model.getStart().compareTo(currentTime)<0 && model.getDate().equals(currentDate) )){
+        if(model.getListOfPresence().contains(UserId)) holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field_scanned));
 
 
-            Clickable=false;
+    }
+    public boolean isClickable(int position, String UserId, FirebaseFirestore db,int priority) {
+        boolean Clickable = true;
+        if (priority == 1) {
+
+            DocumentSnapshot doc = getSnapshots().getSnapshot(position);
+            String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
+            String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
+
+            if (!(doc.getString("end").compareTo(currentTime) > 0 && doc.getString("start").compareTo(currentTime) < 0 && doc.getString("date").equals(currentDate)))
+                return false;
+            else if (!doc.getBoolean("presential"))
+                return false;
+            else if (((ArrayList<String>) doc.get("ListOfPresence")).contains(UserId))
+                return false;
+            else return true;
+
+
         }
-        if(!model.isPresential()){
-            Clickable=false;
-        }
-
-        if(model.getListOfPresence().contains(UserId)){
-            holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field_scanned));
-            Clickable=false;
-        }
-
-
+        else return true;
     }
 
     @NonNull

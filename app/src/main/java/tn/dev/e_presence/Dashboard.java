@@ -332,8 +332,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                            Toast.makeText(Dashboard.this, "" + sessionAdapter.isClickable(), Toast.LENGTH_SHORT).show();
-                            if (sessionAdapter.isClickable()) {
+                            Toast.makeText(Dashboard.this, "" + sessionAdapter.isClickable(position,UserId,db,priority), Toast.LENGTH_SHORT).show();
+                            if (sessionAdapter.isClickable(position,UserId,db,priority)) {
                                 Cur_pos = position;
                                 Log.d("qrtesting", "" + Cur_pos);
                                 String SID = documentSnapshot.getId();
