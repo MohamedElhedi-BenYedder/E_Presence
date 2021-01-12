@@ -75,30 +75,21 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginStart="80dp"
         android:layout_marginTop="-25dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginStart="80dp"
-        android:background="@drawable/fui_idp_button_background_github">
+        android:background="#b0e7f7">
 
         <ImageView
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:padding="6dp"
-            android:layout_marginStart="7dp"
             android:layout_gravity="center_vertical"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_back"
+            android:layout_marginStart="7dp"
+            android:layout_marginLeft="7dp"
             android:background="@drawable/bg_circle"
-            android:layout_marginLeft="7dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back To Home"
-            android:textSize="20sp"
-            android:layout_gravity="center"
-            android:textColor="@color/colorPrimary"
-            android:gravity="center"></TextView>
+            android:padding="6dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/ic_back" />
 
 
     </FrameLayout>
@@ -229,7 +220,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_address" />
+                app:srcCompat="@drawable/ic_gender" />
 
             <LinearLayout
                 android:layout_width="match_parent"
