@@ -94,7 +94,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
 
 
     }
-    public boolean isClickable(int position, String UserId, FirebaseFirestore db,int priority) {
+    public boolean isClickable(int position, String UserId,int priority) {
         if (priority == 1)
         {
 
