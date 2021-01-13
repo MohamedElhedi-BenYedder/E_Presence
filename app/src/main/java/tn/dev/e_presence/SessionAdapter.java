@@ -99,24 +99,28 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
 
     }
     public boolean isClickable(int position, String UserId, FirebaseFirestore db,int priority) {
-        boolean Clickable = true;
-        if (priority == 1) {
+        if (priority == 1)
+        {
 
             DocumentSnapshot doc = getSnapshots().getSnapshot(position);
             String currentTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(new Date());
             String currentDate = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(new Date());
-
-            if (!(doc.getString("end").compareTo(currentTime) > 0 && doc.getString("start").compareTo(currentTime) < 0 && doc.getString("date").equals(currentDate)))
-                return false;
-            else if (!doc.getBoolean("presential"))
-                return false;
-            else if (((ArrayList<String>) doc.get("ListOfPresence")).contains(UserId))
-                return false;
-            else return true;
-
+            try {
+                if (!(doc.getString("end").compareTo(currentTime) > 0 && doc.getString("start").compareTo(currentTime) < 0 && doc.getString("date").equals(currentDate)))
+                    return false;
+                else if (!doc.getBoolean("presential"))
+                    return false;
+                else if (((ArrayList<String>) doc.get("ListOfPresence")).contains(UserId))
+                    return false;
+                else return true;
+            } catch (Exception e) { return true;}
 
         }
-        else return true;
+        else {
+            return true;
+        }
+
+
     }
 
     @NonNull

@@ -224,8 +224,7 @@ public class SchoolPage extends AppCompatActivity {
                                     Intent intent=new Intent(getApplicationContext(),Dashboard.class)
                                             .putExtra("SchoolID",SchoolId)
                                             .putExtra("Priority",priority);
-                                    //
-                                    // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+
                                     startActivity(intent);
                                     finish();
                                 }

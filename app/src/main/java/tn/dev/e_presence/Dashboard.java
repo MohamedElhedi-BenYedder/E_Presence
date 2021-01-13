@@ -315,7 +315,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
                 case 1://Student
                 {
-                    Query query = SessionRef.whereIn("group", GroupIDs).whereEqualTo("date", day);
+                    Query query = SessionRef.whereIn("groupId", GroupIDs).whereEqualTo("date", day);
                     StorageReference sr = FirebaseStorage.getInstance().getReference();
                     FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                             .setQuery(query, Session.class)
