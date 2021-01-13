@@ -216,7 +216,7 @@ public class SchoolPage extends AppCompatActivity {
                                             .putStringArrayListExtra("GroupIDs",GroupIds)
                                             .putExtra("Priority",priority);
                                     //
-                                    // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
+                                     Toast.makeText(SchoolPage.this,GroupIds.toString(), Toast.LENGTH_SHORT).show();
                                     startActivity(intent);
                                     finish();
                                 }else
