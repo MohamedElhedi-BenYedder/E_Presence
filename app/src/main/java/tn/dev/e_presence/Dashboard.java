@@ -230,21 +230,17 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     public void setUpRecyclerViewMenuBottomBar(String day)
     {
 
-        UserRef.document(UserId).
-                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
                 Query query;
-                ArrayList<String> Groups= (ArrayList<String>) documentSnapshot.get("studentIN");
                 Query firstQuery = db
                         .collectionGroup("Session")
                         .whereEqualTo("teacherId",user.getUid())
                         .whereEqualTo("day",day);
                 Query secondQuery = db
                         .collectionGroup("Session")
-                        .whereIn("groupId", Groups)
+                        .whereIn("groupId", GroupIDs)
                         .whereEqualTo("day",day);
                if(Student_Teacher)query=firstQuery; else query=secondQuery;
+                Toast.makeText(Dashboard.this, "" + query.toString(), Toast.LENGTH_SHORT).show();
                         StorageReference sr = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                         .setQuery(query, Session.class)
@@ -255,8 +251,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
                 recyclerView.setAdapter(sessionAdapter);
 
-            }
-        });
+
+
     }
     public void setUpRecyclerViewSchoolPage(String day)
      {
@@ -393,7 +389,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     @Override
     protected void onStart() {
         super.onStart();
-       try{ sessionAdapter.startListening();}catch (Exception e){};
+       sessionAdapter.startListening();
     }
 
     @Override

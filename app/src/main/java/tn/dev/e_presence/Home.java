@@ -44,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Home extends AppCompatActivity {
@@ -85,9 +86,18 @@ public class Home extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
-                        startActivity(new Intent(getApplicationContext(),Dashboard.class)
-                                .putExtra("bar",true));
-                        overridePendingTransition(0,0);
+                        db.collection("User").document(UserId).
+                                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Query query;
+                                ArrayList<String> GroupIDs = (ArrayList<String>) documentSnapshot.get("studentIN");
+                                startActivity(new Intent(getApplicationContext(), Dashboard.class)
+                                        .putExtra("bar", true)
+                                        .putStringArrayListExtra("GroupIDs", GroupIDs));
+                                overridePendingTransition(0,0);
+
+                            }});
                         return true;
                     case R.id.miProfile:
                         startActivity(new Intent(getApplicationContext(),Profile.class));
