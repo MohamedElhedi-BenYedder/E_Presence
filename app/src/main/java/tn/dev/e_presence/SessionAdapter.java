@@ -35,10 +35,6 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
     final static int ColorNumber = 3;
     final static int ImageList[] = {R.drawable.ic_male, R.drawable.ic_female, R.drawable.ic_person};
     final static int ImageNumber = 3;
-
-
-
-
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -110,7 +106,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                     return false;
                 else if (!doc.getBoolean("presential"))
                     return false;
-                else if (((ArrayList<String>) doc.get("ListOfPresence")).contains(UserId))
+                else if (((ArrayList<String>) doc.get("listOfPresence")).contains(UserId))
                     return false;
                 else return true;
             } catch (Exception e) { return true;}
