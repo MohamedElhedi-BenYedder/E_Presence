@@ -58,7 +58,7 @@ import java.util.List;
 
 public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private ListView lv_Session;
-    private ArrayList<String> GroupIDs;
+    private  ArrayList<String> GroupIDs=new ArrayList<>();
     private SessionAdapter Adapter;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -84,7 +84,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int priority;
-    private static Boolean Student_Teacher=true;
+    private static Boolean Student_Teacher=false;
     private static boolean Scan_verdict;
     private boolean bar ;
 
@@ -94,7 +94,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
+        GroupIDs.add("Group1610569650940");
         listenForIncommingMessages();
         initSessionAndGroupRef();
         setFloatingAppButtonIcon();
@@ -229,17 +229,18 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     public void setUpRecyclerViewMenuBottomBar(String day)
     {
-
+        Toast.makeText(Dashboard.this,GroupIDs.toString(), Toast.LENGTH_SHORT).show();
                 Query query;
                 Query firstQuery = db
                         .collectionGroup("Session")
                         .whereEqualTo("teacherId",user.getUid())
-                        .whereEqualTo("day",day);
+                        .whereEqualTo("date",day);
                 Query secondQuery = db
                         .collectionGroup("Session")
                         .whereIn("groupId", GroupIDs)
-                        .whereEqualTo("day",day);
-               if(Student_Teacher)query=firstQuery; else query=secondQuery;
+                        .whereEqualTo("date",day);
+               //if(Student_Teacher)query=firstQuery; else query=secondQuery;
+        query=secondQuery;
                 Toast.makeText(Dashboard.this, "" + query.toString(), Toast.LENGTH_SHORT).show();
                         StorageReference sr = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
