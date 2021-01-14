@@ -433,12 +433,15 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }
+   @RequiresApi(api = Build.VERSION_CODES.O)
    void setFloatingAppButtonIcon()
    {
        fab=(FloatingActionButton) findViewById(R.id.fab);
       if( bar)
        {
            fab.setImageResource(R.drawable.ic_swap);
+           if(Student_Teacher) fab.setTooltipText("Student");
+           else fab.setTooltipText("Teacher");
        }
        else
 
