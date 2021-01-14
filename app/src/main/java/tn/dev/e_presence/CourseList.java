@@ -12,18 +12,24 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+
 public class CourseList extends AppCompatActivity {
     private StorageReference mStorageRef;
     private BottomAppBar bottomAppBar;
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private String UserId= FirebaseAuth.getInstance().getCurrentUser().getUid();
     private String SchoolId;
     private String CourseId;
     private CollectionReference CoursesRef;
@@ -111,8 +117,18 @@ public class CourseList extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
-                        startActivity(new Intent(getApplicationContext(),Dashboard.class));
-                        overridePendingTransition(0,0);
+                        db.collection("User").document(UserId).
+                                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Query query;
+                                ArrayList<String> GroupIDs = (ArrayList<String>) documentSnapshot.get("studentIN");
+                                startActivity(new Intent(getApplicationContext(), Dashboard.class)
+                                        .putExtra("bar", true)
+                                        .putStringArrayListExtra("GroupIDs", GroupIDs));
+                                overridePendingTransition(0,0);
+
+                            }});
                         return true;
                     case R.id.miProfile:
                         startActivity(new Intent(getApplicationContext(),Profile.class));

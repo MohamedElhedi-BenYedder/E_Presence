@@ -33,11 +33,10 @@
 
             <ImageView
                 android:id="@+id/iv_school"
-                android:layout_width="90.3dp"
-                android:layout_height="16.3dp"
+                android:layout_width="100dp"
+                android:layout_height="31dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                />
+                android:layout_marginTop="16dp" />
 
 
             <View

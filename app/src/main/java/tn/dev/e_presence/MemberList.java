@@ -45,7 +45,7 @@ public class MemberList extends AppCompatActivity {
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference UserRef =db.collection("User");
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private final String uid =user.getUid();
+    private final String UserId =user.getUid();
     private UserAdapter UserAdapter;
     private String path;
     private ArrayList<String> groupIdList,groupNameList;
@@ -86,8 +86,18 @@ public class MemberList extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
-                        startActivity(new Intent(getApplicationContext(), Dashboard.class));
-                        overridePendingTransition(0,0);
+                        db.collection("User").document(UserId).
+                                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Query query;
+                                ArrayList<String> GroupIDs = (ArrayList<String>) documentSnapshot.get("studentIN");
+                                startActivity(new Intent(getApplicationContext(), Dashboard.class)
+                                        .putExtra("bar", true)
+                                        .putStringArrayListExtra("GroupIDs", GroupIDs));
+                                overridePendingTransition(0,0);
+
+                            }});
                         return true;
                     case R.id.miProfile:
                         startActivity(new Intent(getApplicationContext(), Profile.class));

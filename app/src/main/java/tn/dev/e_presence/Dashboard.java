@@ -79,12 +79,12 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private String Scane_res = "chaine";
     private static String SchoolId;
     private static String GroupId,SessionId;
-    private String day;
+    private static String day;
     private static String Qrdb;
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int priority;
-    private static Boolean Student_Teacher=false;
+    private static Boolean Student_Teacher=true;
     private static boolean Scan_verdict;
     private boolean bar ;
 
@@ -100,7 +100,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         setFloatingAppButtonIcon();
         SetUpBottomAppBarMenu();
         SetDatePicker();
-        setUpRecyclerView(getTodayDate());
+        day=getTodayDate();
+        setUpRecyclerView(day);
         OnSwipedItem();
         fab.setOnClickListener(this::AddSession);
 
@@ -194,6 +195,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     @Override
     public void onDateSelected(DateTime dateSelected) {
+        day=dateSelected.toString("dd/MM/yyyy");
 
         setUpRecyclerView(dateSelected.toString("dd/MM/yyyy"));
       try {
@@ -207,6 +209,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         if( bar)
         {
            Student_Teacher=!Student_Teacher;
+           setUpRecyclerViewMenuBottomBar(day);
+           sessionAdapter.startListening();
+
         }
         else
         switch (priority) {
@@ -233,14 +238,17 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 Query query;
                 Query firstQuery = db
                         .collectionGroup("Session")
+                        .whereEqualTo("date",day)
                         .whereEqualTo("teacherId",user.getUid())
-                        .whereEqualTo("date",day);
+                        .orderBy("start");
+
+
                 Query secondQuery = db
                         .collectionGroup("Session")
+                        .whereEqualTo("date",day)
                         .whereIn("groupId", GroupIDs)
-                        .whereEqualTo("date",day);
-               //if(Student_Teacher)query=firstQuery; else query=secondQuery;
-        query=secondQuery;
+                        .orderBy("start");
+               if(Student_Teacher)query=firstQuery; else query=secondQuery;
                 Toast.makeText(Dashboard.this, "" + query.toString(), Toast.LENGTH_SHORT).show();
                         StorageReference sr = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
