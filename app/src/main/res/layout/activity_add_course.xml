@@ -13,10 +13,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="14.7dp"
         android:layout_marginLeft="14.7dp"
+        android:layout_marginStart="14.7dp"
         android:layout_marginTop="35.7dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/playfair_display_italic"
         android:text="Create/Edit Course"
         android:textColor="@android:color/black"
         android:textSize="30sp" />
@@ -55,6 +55,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="30dp"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="Course Name"
                         android:textColor="@color/colorAccent"
                         android:textSize="20sp" />
@@ -91,6 +92,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="30dp"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="Departement"
                         android:textColor="@color/colorAccent"
                         android:textSize="20sp" />
@@ -125,6 +127,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="30dp"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="Description"
                         android:textColor="@color/colorAccent"
                         android:textSize="20sp" />
@@ -151,10 +154,10 @@
                     android:id="@+id/btn_cancel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginLeft="40dp"
                     android:layout_marginEnd="40dp"
+                    android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
+                    android:layout_marginStart="40dp"
                     android:layout_weight="1"
                     android:text="CANCEL" />
 
