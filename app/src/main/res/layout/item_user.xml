@@ -28,8 +28,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:fontFamily="@font/playfair_display_italic"
                 android:text="MR"
-                android:textColor="@android:color/black"
+                android:textColor="@color/c2"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -38,22 +39,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:fontFamily="@font/playfair_display_italic"
                 android:text="Display Name"
-                android:textColor="@android:color/black"
+                android:textColor="@color/c2"
                 android:textSize="20sp"
                 android:textStyle="bold" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/tv_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:text="email"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="15sp"
-            android:textStyle="bold" />
 
-    </LinearLayout>
 
+</LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_email"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:text="email"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="15sp"
+        android:textStyle="bold" />
 </LinearLayout>
