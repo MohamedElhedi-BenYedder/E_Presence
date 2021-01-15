@@ -21,7 +21,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/playfair_display_italic"
+            android:textStyle="bold"
             android:text="Dashboard"
             android:textColor="#5E5E5E"
             android:textSize="24dp" />
@@ -65,6 +66,7 @@
             android:id="@+id/ll_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="#FF8A80"
             android:background="@drawable/rectengular_field_scanned"
             android:clickable="true"
             android:elevation="0sp"
@@ -215,17 +217,19 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="Students"
+                                    android:textStyle="bold"
                                     android:textColor="#5E5E5E"
                                     android:textSize="18dp" />
 
                                 <ImageView
                                     android:id="@+id/iv_student"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="171dp"
+                                    android:layout_height="75dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginRight="0dp"
                                     app:srcCompat="@drawable/ic_student" />
 
                             </RelativeLayout>
@@ -252,7 +256,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="Teachers"
                                     android:textColor="#5E5E5E"
                                     android:textSize="18dp" />
@@ -296,10 +300,11 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="Groups"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_group"
@@ -332,10 +337,11 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="Courses"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_course"
@@ -377,10 +383,11 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="Sessions"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_session"
@@ -413,10 +420,11 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/playfair_display_italic"
                                     android:text="More"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:layout_width="wrap_content"

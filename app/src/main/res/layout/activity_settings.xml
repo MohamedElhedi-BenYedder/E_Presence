@@ -82,6 +82,7 @@
             android:id="@+id/darkModeSwitch"
             style="@style/settingsText"
             android:drawableLeft="@drawable/ic_dark_mode"
+            android:fontFamily="@font/playfair_display_italic"
             android:text="Dark Mode" />
 
         <TextView
@@ -93,6 +94,7 @@
             style="@style/viewParent.headerText.settingsTextIcon"
             android:clickable="true"
             android:drawableLeft="@drawable/ic_edit_profile"
+            android:fontFamily="@font/playfair_display_italic"
             android:onClick="onClick"
             android:text="Edit Profile" />
 
@@ -100,6 +102,7 @@
             style="@style/viewParent.headerText.settingsTextIcon"
             android:layout_marginTop="10dp"
             android:drawableLeft="@drawable/ic_edit_password"
+            android:fontFamily="@font/playfair_display_italic"
             android:text="Change Password" />
 
         <TextView

@@ -73,6 +73,7 @@
                         android:id="@+id/tv_start"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="08:00 AM"
                         android:textColor="#4b4949"
                         android:textSize="13.3sp" />
@@ -90,6 +91,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="Classroom"
                         android:textColor="#c5c5c5"
                         android:textSize="11.7sp" />
@@ -98,6 +100,7 @@
                         android:id="@+id/tv_classroom"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="4A"
                         android:textColor="#4b4949"
                         android:textSize="13.3sp" />
@@ -115,6 +118,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="End"
                         android:textColor="#c5c5c5"
                         android:textSize="11.7sp" />
@@ -123,6 +127,7 @@
                         android:id="@+id/tv_end"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:text="10:00 AM"
                         android:textColor="#4b4949"
                         android:textSize="13.3sp" />
@@ -152,6 +157,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/playfair_display_italic"
                         android:gravity="center_horizontal"
                         android:text="Teacher"
                         android:textColor="#c5c5c5"

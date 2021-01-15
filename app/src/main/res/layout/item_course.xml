@@ -24,12 +24,12 @@
             android:orientation="horizontal">
 
 
-
             <TextView
                 android:id="@+id/tv_course_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+                android:fontFamily="@font/playfair_display_italic"
                 android:text="Course Name"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
