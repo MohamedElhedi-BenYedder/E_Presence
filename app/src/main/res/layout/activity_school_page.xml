@@ -226,7 +226,7 @@
                                     android:layout_height="80dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_student" />
+                                    app:srcCompat="@drawable/ic8_student_male" />
 
                             </RelativeLayout>
 
@@ -263,7 +263,7 @@
                                     android:layout_height="80dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_teacher" />
+                                    app:srcCompat="@drawable/ic8_teacher2" />
 
                             </RelativeLayout>
 
@@ -307,7 +307,7 @@
                                     android:layout_height="80dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_group" />
+                                    app:srcCompat="@drawable/ic8_classroom" />
 
                             </RelativeLayout>
 
@@ -343,7 +343,7 @@
                                     android:layout_height="78dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_course" />
+                                    app:srcCompat="@drawable/ic8_doc" />
 
                             </RelativeLayout>
 
@@ -388,7 +388,7 @@
                                     android:layout_height="80dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_session" />
+                                    app:srcCompat="@drawable/ic8_cur" />
 
                             </RelativeLayout>
 
@@ -423,7 +423,7 @@
                                     android:layout_height="80dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic_faq" />
+                                    app:srcCompat="@drawable/ic8_settings2" />
 
                             </RelativeLayout>
 

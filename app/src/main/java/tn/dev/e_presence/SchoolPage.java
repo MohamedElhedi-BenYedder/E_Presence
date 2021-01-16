@@ -2,6 +2,7 @@ package tn.dev.e_presence;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.activity.OnBackPressedDispatcherOwner;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActivityChooserView;
 import androidx.appcompat.widget.Toolbar;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -136,14 +138,31 @@ public class SchoolPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (priority > 0) {
-                    Intent intent = new Intent(getApplicationContext(), MemberList.class)
-                            .putExtra("SchoolID", SchoolId)
-                            .putExtra("key", "studentIN")
-                            .putExtra("path", "School/" + SchoolId)
-                            .putExtra("TAG",TAG)
-                            .putExtra("Priority",priority);
-                    startActivity(intent);
-                    finish();}
+                   db.collection("School")
+                           .document(SchoolId)
+                           .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                       @Override
+                       public void onSuccess(DocumentSnapshot documentSnapshot) {
+                           ArrayList<String> Students=(ArrayList<String>)documentSnapshot.get("Students");
+                               Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                                       .putExtra("SchoolID", SchoolId)
+                                       .putStringArrayListExtra("Students", Students)
+                                       .putExtra("key", "studentIN")
+                                       .putExtra("path", "School/" + SchoolId)
+                                       .putExtra("TAG", TAG)
+                                       .putExtra("Priority", priority);
+                               startActivity(intent);
+                               finish();
+
+
+                       }
+                   }).addOnFailureListener(new OnFailureListener() {
+                       @Override
+                       public void onFailure(@NonNull Exception e) {
+
+                       }
+                   });
+                    }
                     else Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
                 }
             });
@@ -155,15 +174,30 @@ public class SchoolPage extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     if (priority > 0) {
-                    Intent intent = new Intent(getApplicationContext(), MemberList.class)
-                            .putExtra("SchoolID", SchoolId);
-                    intent.putExtra("key", "teacherIN")
-                            .putExtra("path", "School/" + SchoolId)
-                            .putExtra("Priority",priority)
-                            .putExtra("TAG",TAG)
-                            .putExtra("Priority",priority);;
-                    startActivity(intent);
-                    finish();
+                        db.collection("School")
+                                .document(SchoolId)
+                                .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                ArrayList<String> Teachers=(ArrayList<String>)documentSnapshot.get("Teachers");
+                                Intent intent = new Intent(getApplicationContext(), MemberList.class)
+                                        .putExtra("SchoolID", SchoolId)
+                                        .putStringArrayListExtra("Teachers",Teachers)
+                                        .putExtra("key", "teacherIN")
+                                        .putExtra("path", "School/" + SchoolId)
+                                        .putExtra("TAG", TAG)
+                                        .putExtra("Priority", priority);
+                                startActivity(intent);
+                                finish();
+
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
                     }
                     else  Toast.makeText(SchoolPage.this, "Access denied!", Toast.LENGTH_SHORT).show();
                 }

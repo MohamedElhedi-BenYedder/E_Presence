@@ -234,7 +234,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     public void setUpRecyclerViewMenuBottomBar(String day)
     {
-        Toast.makeText(Dashboard.this,GroupIDs.toString(), Toast.LENGTH_SHORT).show();
                 Query query;
                 Query firstQuery = db
                         .collectionGroup("Session")
@@ -249,7 +248,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         .whereIn("groupId", GroupIDs)
                         .orderBy("start");
                if(Student_Teacher)query=firstQuery; else query=secondQuery;
-                Toast.makeText(Dashboard.this, "" + query.toString(), Toast.LENGTH_SHORT).show();
                         StorageReference sr = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()
                         .setQuery(query, Session.class)
@@ -417,7 +415,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     Barcode barcode = data.getParcelableExtra("barcode");
                     Scane_res = barcode.displayValue;
 
-                    Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(this, Qrdb, Toast.LENGTH_SHORT).show();
                     if (Scane_res.equals(Qrdb)) {
                         Toast.makeText(this, "verified", Toast.LENGTH_SHORT).show();
 
@@ -439,7 +437,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
        fab=(FloatingActionButton) findViewById(R.id.fab);
       if( bar)
        {
-           fab.setImageResource(R.drawable.ic_swap);
+           fab.setImageResource(R.drawable.ic8_change_user);
            if(Student_Teacher) fab.setTooltipText("Student");
            else fab.setTooltipText("Teacher");
        }

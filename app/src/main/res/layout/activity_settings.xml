@@ -51,7 +51,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/avatar"
+                android:src="@drawable/ic8_test_account"
                 app:civ_border_width="2dp" />
 
             <TextView
@@ -74,7 +74,7 @@
                 style="@style/viewParent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                app:srcCompat="@drawable/ic_more" />
+                app:srcCompat="@drawable/ic8_more_than_resized" />
 
         </RelativeLayout>
 
@@ -92,14 +92,14 @@
             android:id="@+id/btn_editprofile"
             style="@style/viewParent.headerText.settingsTextIcon"
             android:clickable="true"
-            android:drawableLeft="@drawable/ic_edit_profile"
+            android:drawableLeft="@drawable/ic8_edit_profile_resized"
             android:onClick="onClick"
             android:text="Edit Profile" />
 
         <TextView
             style="@style/viewParent.headerText.settingsTextIcon"
             android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/ic_edit_password"
+            android:drawableLeft="@drawable/ic8_add_key_resized"
             android:text="Change Password" />
 
         <TextView
@@ -109,7 +109,7 @@
         <Switch
             style="@style/settingsText"
             android:checked="true"
-            android:drawableLeft="@drawable/ic_notifications"
+            android:drawableLeft="@drawable/ic8_notification_resized"
             android:text="Notifications" />
 
         <TextView
@@ -118,7 +118,7 @@
 
         <TextView
             style="@style/viewParent.headerText.settingsTextIcon"
-            android:drawableLeft="@drawable/ic_languages"
+            android:drawableLeft="@drawable/ic8_translation_resized"
             android:text="Language" />
 
 
@@ -126,7 +126,7 @@
             android:id="@+id/btn_logout"
             style="@style/viewParent.headerText.settingsTextIcon"
             android:clickable="true"
-            android:drawableLeft="@drawable/ic_logout"
+            android:drawableLeft="@drawable/ic8_exit_resized"
             android:onClick="onClick"
             android:text="Logout" />
 

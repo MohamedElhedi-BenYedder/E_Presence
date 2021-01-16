@@ -64,10 +64,11 @@
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/cv_photo"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/avatar" />
+            android:src="@drawable/ic8_user" />
 
 
     </LinearLayout>
@@ -110,7 +111,7 @@
                 android:layout_height="50dp"
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/ic_profile" />
+                app:srcCompat="@drawable/ic8_user" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -143,7 +144,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_gender" />
+                app:srcCompat="@drawable/ic8_gender" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -151,14 +152,14 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/gender"
+                    android:id="@+id/gendertext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Gender"
                     android:textColor="@android:color/black" />
 
                 <Spinner
-                    android:id="@+id/s_gender"
+                    android:id="@+id/gender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -178,7 +179,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_phone" />
+                app:srcCompat="@drawable/ic8_phone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -194,7 +195,8 @@
                 <EditText
                     android:id="@+id/phone"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="phone"/>
 
             </LinearLayout>
 
@@ -212,7 +214,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:padding="4dp"
-                app:srcCompat="@drawable/ic_email" />
+                app:srcCompat="@drawable/ic8_email1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -228,7 +230,8 @@
                 <EditText
                     android:id="@+id/mail"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"/>
 
             </LinearLayout>
 

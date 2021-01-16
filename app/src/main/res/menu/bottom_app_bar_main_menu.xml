@@ -3,25 +3,25 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/miHome"
-        android:icon="@drawable/ic_home"
+        android:icon="@drawable/ic8_home2"
         android:title="Home"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/miDashboard"
-        android:icon="@drawable/ic_calendar"
+        android:icon="@drawable/ic8_calendar"
         android:title="Dashboard"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/miProfile"
-        android:icon="@drawable/ic_person"
+        android:icon="@drawable/ic8_user"
         android:title="Profile"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/miSettings"
-        android:icon="@drawable/ic_settings"
+        android:icon="@drawable/ic8_settings2"
         android:title="Settings"
         app:showAsAction="always" />
 </menu>

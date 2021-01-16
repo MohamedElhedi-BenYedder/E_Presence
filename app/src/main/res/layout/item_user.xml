@@ -7,11 +7,11 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_photo"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        app:srcCompat="@drawable/ic_person" />
+        android:src="@drawable/ic8_user" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:text="MR"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
                 android:textStyle="bold" />

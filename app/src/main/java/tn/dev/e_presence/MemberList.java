@@ -62,6 +62,8 @@ public class MemberList extends AppCompatActivity {
     private String NewSessionID;
     private boolean listenAdapter=true;
     private EditText searchBox;
+    private ArrayList<String> Students;
+    private ArrayList<String> Teachers;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -164,8 +166,26 @@ public class MemberList extends AppCompatActivity {
         Query query;
         if((path.split("/").length<3))
         {
+            query = UserRef.orderBy("userID");
             // Add Student or teacher to school
-             query = UserRef.orderBy("displayName");
+            if(key.equals("studentIN"))
+            {
+                // Add Student to school
+                if (!Students.isEmpty())
+                    query=UserRef.whereNotIn("userID",Students);
+                else
+                    query=UserRef;
+            }
+            else if(key.equals("teacherIN"))
+            {
+                // Add Teacher to school
+                if (!Students.isEmpty())
+                    query=UserRef.whereNotIn("userID",Teachers);
+                else
+                    query=UserRef;
+
+            }
+
         }
         else
         {
@@ -297,15 +317,18 @@ public class MemberList extends AppCompatActivity {
         groupIdList=incommingMessages.getStringArrayList("groupIdList");
         groupNameList=incommingMessages.getStringArrayList("groupNameList");
         NewSessionID=incommingMessages.getString("NewSessionID","0");
+        Students=incommingMessages.getStringArrayList("Students");
+        Teachers=incommingMessages.getStringArrayList("Teachers");
 
     }
     void setFloatingAppButtonIcon()
     {
-        if ((priority==3)&&!Pres) fab.setImageResource(R.drawable.ic_add_person);
+        if ((priority==3)&&!Pres) fab.setImageResource(R.drawable.ic8_add_user_male);
     }
 
     @Override
-   protected void onStart() {
+   protected void onStart()
+    {
         super.onStart();
         if(listenAdapter) UserAdapter.startListening();
     }

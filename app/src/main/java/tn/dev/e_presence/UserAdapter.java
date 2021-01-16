@@ -26,7 +26,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
     static int count = 0;
     final static int ColorList[] = {0, 1, 3};
     final static int ColorNumber = 3;
-    final static int ImageList[] = {R.drawable.ic_male, R.drawable.ic_female, R.drawable.ic_person};
+    final static int ImageList[] = {R.drawable.ic8_person_male, R.drawable.ic8_person_female, R.drawable.ic_person};
     final static int ImageNumber = 3;
 
 

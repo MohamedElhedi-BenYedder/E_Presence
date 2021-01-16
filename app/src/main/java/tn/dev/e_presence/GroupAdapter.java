@@ -18,7 +18,7 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
 
     final static int ColorList[]={0,1,2,3,5,6,7};
     final static int ColorNumber=8;
-    final static int ImageList[]={R.drawable.icons1,R.drawable.icons2,R.drawable.icons3,R.drawable.icons4,R.drawable.icons5,R.drawable.icons6,R.drawable.ic_group};
+    final static int ImageList[]={R.drawable.ic8_1,R.drawable.ic8_2,R.drawable.ic8_3,R.drawable.ic8_4,R.drawable.ic8_5,R.drawable.ic8_6,R.drawable.ic_group};
     final static int ImageNumber=0;
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link

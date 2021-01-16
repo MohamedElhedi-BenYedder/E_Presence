@@ -95,7 +95,7 @@ public class GroupList extends AppCompatActivity {
     {
         if (priority==3)
         {
-            fab.setImageResource(R.drawable.ic_add_group);
+            fab.setImageResource(R.drawable.ic8_add_user_group);
         }
     }
 
@@ -173,11 +173,13 @@ public class GroupList extends AppCompatActivity {
         @Override
         public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
             String clickedGroupId =documentSnapshot.getId();
+            ArrayList<String> ClickedGroupMemeberList= (ArrayList<String>) documentSnapshot.get("Students");
             Intent intent =new Intent(GroupList.this,MemberList.class)
                     .putExtra("GroupID",clickedGroupId)
                     .putExtra("key","studentIN")
                     .putExtra("Priority",priority)
                     .putExtra("SchoolID",SchoolId)
+                    .putStringArrayListExtra("Students",ClickedGroupMemeberList)
                     .putExtra("path","School/"+SchoolId+"/Group/"+clickedGroupId);
 
             Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();

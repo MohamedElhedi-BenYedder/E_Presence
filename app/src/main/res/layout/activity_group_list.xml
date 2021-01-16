@@ -31,9 +31,13 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
+        app:maxImageSize="56dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:src="@drawable/ic8_back_arrow"
+        app:tint="@null"
+        android:scaleType="fitCenter"
         app:layout_anchor="@id/bnb"
-        app:srcCompat="@drawable/ic_back" />
+        app:useCompatPadding="false"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

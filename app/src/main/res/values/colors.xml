@@ -2,8 +2,8 @@
 <resources>
     <!-- <color name="c2">#FF8A80</color>-->
     <color name="c1">#FF9D46FF</color>
-    <color name="c2">@color/royal_blue</color>
-    <color name="colorPrimary">@color/royal_blue</color>
+    <color name="c2">#FF8A80</color>
+    <color name="colorPrimary">#FF8A80</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#241514</color>
     <!--colors for light mode-->

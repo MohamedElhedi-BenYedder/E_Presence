@@ -49,7 +49,7 @@
         android:id="@+id/ib_photo"
         android:layout_width="match_parent"
         android:layout_height="186dp"
-        app:srcCompat="@drawable/ic_add_photo" />
+        app:srcCompat="@drawable/ic8_add_camera" />
     <androidx.coordinatorlayout.widget.CoordinatorLayout
 
         android:layout_width="match_parent"
@@ -158,10 +158,16 @@
             android:id="@+id/fab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:hideOnScroll="true"
+            android:outlineProvider="none"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic8_next"
+            app:backgroundTint="@android:color/white"
+            app:fabSize="normal"
             app:layout_anchor="@id/bnb"
-            app:menu="@menu/bottom_app_bar_main_menu"
-            app:srcCompat="@drawable/ic_next" />
+            app:maxImageSize="56dp"
+            app:rippleColor="@null"
+            app:tint="@null"
+            app:useCompatPadding="false"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

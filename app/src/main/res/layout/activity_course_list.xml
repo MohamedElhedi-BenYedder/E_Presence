@@ -33,7 +33,15 @@
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:outlineProvider="none"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic8_back_arrow"
+        app:backgroundTint="@android:color/white"
+        app:fabSize="normal"
         app:layout_anchor="@id/bnb"
-        app:srcCompat="@drawable/ic_back" />
+        app:maxImageSize="56dp"
+        app:rippleColor="@null"
+        app:tint="@null"
+        app:useCompatPadding="false" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
