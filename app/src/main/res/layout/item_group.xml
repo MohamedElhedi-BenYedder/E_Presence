@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/iv_level"
-        android:layout_width="75dp"
+        android:layout_width="67dp"
         android:layout_height="75dp"
         app:srcCompat="@drawable/ic_persons" />
 
@@ -25,9 +25,12 @@
 
             <TextView
                 android:id="@+id/tv_display_name"
-                android:layout_width="wrap_content"
+                android:layout_width="139dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
+
+
+                android:fontFamily="@font/playfair_display_italic"
                 android:text="Group Name"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
