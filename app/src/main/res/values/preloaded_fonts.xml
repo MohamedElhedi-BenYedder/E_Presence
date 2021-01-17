@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
         <item>@font/bangers</item>
+        <item>@font/lato</item>
+        <item>@font/playfair_display</item>
         <item>@font/playfair_display_italic</item>
         <item>@font/raleway_bold</item>
         <item>@font/raleway_light</item>

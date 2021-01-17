@@ -14,6 +14,7 @@
         android:layout_margin="12dp"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawableStart="@android:drawable/ic_menu_search"
+        android:fontFamily="@font/lato"
         android:hint="search"
         android:inputType="textAutoComplete"
         app:layout_constraintBottom_toTopOf="@id/rv_school"

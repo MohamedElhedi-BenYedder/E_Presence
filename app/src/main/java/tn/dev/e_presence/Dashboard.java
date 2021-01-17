@@ -131,7 +131,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .setMonthAndYearTextColor(Color.BLACK)
                 .setTodayButtonTextColor(Color.WHITE)
                 .setTodayDateTextColor(Color.WHITE)
-                .setTodayDateBackgroundColor(Color.GRAY)
+                .setTodayDateBackgroundColor(Color.)
                 .setUnselectedDayTextColor(Color.BLACK)
                 .setDayOfWeekTextColor(Color.BLACK)
                 .setUnselectedDayTextColor(getResources().getColor(R.color.primaryTextColor))
