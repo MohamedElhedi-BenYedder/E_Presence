@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_bg"
-    android:background="@drawable/back3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:clickable="true"
@@ -11,8 +10,8 @@
 
     <ImageView
         android:id="@+id/iv_photo"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
+        android:layout_width="59dp"
+        android:layout_height="65dp"
         android:clickable="true"
         app:srcCompat="@drawable/ic_school" />
 
@@ -22,17 +21,6 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_display_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:fontFamily="@font/playfair_display_italic"
-            android:text="SUP'COM"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -56,6 +44,17 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:fontFamily="@font/lato"
+            android:text="SUP'COM"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

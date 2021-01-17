@@ -22,17 +22,18 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/lato"
             android:text="Dashboard"
             android:textColor="#5E5E5E"
-            android:textSize="24dp" />
+            android:textSize="24dp"
+            android:textStyle="bold" />
 
         <View
             android:layout_width="40dp"
             android:layout_height="6dp"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/ic_bg">
+            android:background="@color/colorPrimary">
 
         </View>
 
@@ -42,11 +43,11 @@
         android:id="@+id/tv_welcome_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
         android:layout_marginEnd="16sp"
+        android:layout_marginLeft="16sp"
         android:layout_marginRight="16sp"
-        android:fontFamily="@font/roboto_regular"
+        android:layout_marginStart="16sp"
+        android:fontFamily="@font/lato"
         android:text="Welcome %USER%"
         android:textColor="#5E5E5E"
         android:textSize="18dp" />
@@ -66,7 +67,7 @@
             android:id="@+id/ll_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rectengular_field_scanned"
+            android:background="@color/lavender"
             android:clickable="true"
             android:elevation="0sp"
             android:orientation="vertical"
@@ -76,24 +77,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_display_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto_mediumitalic"
-                    android:singleLine="true"
-                    android:textColor="#ffff"
-                    android:textSize="18dp" />
-
-                <TextView
-                    android:id="@+id/tv_full_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:selectAllOnFocus="false"
-                    android:textColor="#ffff"
-                    android:textSize="24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,6 +97,24 @@
                         android:textColor="#ffff"
                         android:textSize="14sp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_medium"
+                    android:selectAllOnFocus="false"
+                    android:textColor="#ffff"
+                    android:textSize="24dp" />
+
+                <TextView
+                    android:id="@+id/tv_display_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_mediumitalic"
+                    android:singleLine="true"
+                    android:textColor="#ffff"
+                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/tv_description"
@@ -216,17 +217,20 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="Students"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_student"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="79dp"
+                                    android:layout_height="58dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="9dp"
+                                    android:layout_marginRight="44dp"
                                     app:srcCompat="@drawable/ic8_student_male" />
 
                             </RelativeLayout>
@@ -253,17 +257,20 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="Teachers"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_teacher"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="77dp"
+                                    android:layout_height="56dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="13dp"
+                                    android:layout_marginRight="54dp"
                                     app:srcCompat="@drawable/ic8_teacher2" />
 
                             </RelativeLayout>
@@ -297,17 +304,20 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="Groups"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_group"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="84dp"
+                                    android:layout_height="66dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="8dp"
+                                    android:layout_marginRight="45dp"
                                     app:srcCompat="@drawable/ic8_classroom" />
 
                             </RelativeLayout>
@@ -333,17 +343,20 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="Courses"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_course"
-                                    android:layout_width="153dp"
-                                    android:layout_height="78dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="121dp"
+                                    android:layout_height="62dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="6dp"
+                                    android:layout_marginRight="30dp"
                                     app:srcCompat="@drawable/ic8_doc1" />
 
                             </RelativeLayout>
@@ -378,17 +391,20 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="Sessions"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                                 <ImageView
                                     android:id="@+id/iv_session"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
+                                    android:layout_width="82dp"
+                                    android:layout_height="69dp"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="9dp"
+                                    android:layout_marginRight="45dp"
                                     app:srcCompat="@drawable/ic8_cur" />
 
                             </RelativeLayout>
@@ -408,23 +424,26 @@
                             <RelativeLayout
                                 android:id="@+id/more"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
+                                android:layout_height="102dp"
                                 android:padding="8dp">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="55dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_marginBottom="-2dp"
+                                    android:layout_marginRight="49dp"
+                                    app:srcCompat="@drawable/ic8_settings2" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
+                                    android:fontFamily="@font/lato"
                                     android:text="More"
                                     android:textColor="#5E5E5E"
-                                    android:textSize="18dp" />
-
-                                <ImageView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="80dp"
-                                    android:layout_alignParentRight="true"
-                                    android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic8_settings2" />
+                                    android:textSize="18dp"
+                                    android:textStyle="bold" />
 
                             </RelativeLayout>
 
