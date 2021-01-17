@@ -2,7 +2,7 @@
 <resources>
     <!-- <color name="c2">#FF8A80</color>-->
     <color name="c1">#FF9D46FF</color>
-    <color name="c2">lavender</color>
+    <color name="c2">#E6E6FA</color>
     <color name="colorPrimary">#FF8A80</color>
     <color name="colorPrimaryDark">#000</color>
     <color name="colorAccent">#241514</color>
