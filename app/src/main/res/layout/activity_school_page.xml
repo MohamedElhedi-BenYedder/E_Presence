@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="0dp"
-    android:background="#f0f2f5"
+    android:background="@color/bg_color"
     android:orientation="vertical"
     android:paddingTop="16sp"
     tools:context=".SchoolPage">

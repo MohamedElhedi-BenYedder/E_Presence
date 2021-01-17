@@ -88,7 +88,7 @@ try    {     StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
 }
 catch (Exception e){count=count%ImageNumber;holder.iv_photo.setImageResource(ImageList[count]);count++;};
 
-holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
+//holder.ll_bg.setBackgroundColor(ColorList[position%ColorNumber]);
     }
 
     @NonNull
