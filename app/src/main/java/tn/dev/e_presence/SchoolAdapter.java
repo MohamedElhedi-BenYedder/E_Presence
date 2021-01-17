@@ -1,12 +1,13 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import androidx.appcompat.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -27,6 +28,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static androidx.core.content.ContextCompat.startActivity;
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
+
 public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter.SchoolHolder>  {
     private OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
@@ -46,18 +50,22 @@ public class SchoolAdapter extends FirestoreRecyclerAdapter<School,SchoolAdapter
         super(options);
         STORAGE_REFERENCE=s;
     }
+    public boolean isAdmin(int position, String UserId)
+    {
+        return ((List<String>)(getSnapshots().getSnapshot(position).get("Admins"))).contains(UserId);
+    }
     public void deleteItem(int position, String UserId, FirebaseFirestore db) {
-
-        if(((List<String>)(getSnapshots().getSnapshot(position).get("Admins"))).contains(UserId))
-        {
             //delete School
             getSnapshots().getSnapshot(position).getReference().delete();
             //remove School from adminIN Array field in User Document
             DocumentReference UserRef = db.collection("User").document(UserId);
-            UserRef.update("adminIN", FieldValue.arrayRemove(getSnapshots().getSnapshot(position).getId()));
-
-
-        }
+            UserRef.update("adminIN", FieldValue.arrayRemove(getSnapshots().getSnapshot(position).getId())); }
+    @SuppressLint("RestrictedApi")
+    public Intent editItem(int position, String UserId)
+    {
+        Intent intent=new Intent(getApplicationContext(),AddSchool.class)
+                .putExtra("SchoolID",getSnapshots().getSnapshot(position).getId());
+        return intent;
 
     }
 
