@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserHolder> {
     private UserAdapter.OnItemClickListener listener;
@@ -41,6 +44,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
         STORAGE_REFERENCE = s;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
         holder.tv_display_name.setText(model.getDisplayName());
@@ -73,7 +77,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
         })
         ;
 
-        holder.ll_bg.setBackgroundColor(ColorList[position % ColorNumber]);
+        holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field2));
     }
 
     @NonNull
