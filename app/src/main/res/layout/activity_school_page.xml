@@ -343,7 +343,7 @@
                                     android:layout_height="78dp"
                                     android:layout_alignParentRight="true"
                                     android:layout_alignParentBottom="true"
-                                    app:srcCompat="@drawable/ic8_doc" />
+                                    app:srcCompat="@drawable/ic8_doc1" />
 
                             </RelativeLayout>
 

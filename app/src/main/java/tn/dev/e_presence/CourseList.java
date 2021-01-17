@@ -89,7 +89,7 @@ public class CourseList extends AppCompatActivity {
     {
         if (priority==3)
         {
-            fab.setImageResource(R.drawable.ic8_add_doc);
+            fab.setImageResource(R.drawable.ic8_add_course);
         }
     }
 
