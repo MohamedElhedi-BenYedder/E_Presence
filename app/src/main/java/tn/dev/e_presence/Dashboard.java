@@ -438,8 +438,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
       if( bar)
        {
            fab.setImageResource(R.drawable.ic8_change_user);
-           if(Student_Teacher) fab.setTooltipText("Student");
-           else fab.setTooltipText("Teacher");
+           //if(Student_Teacher) fab.setTooltipText("Student");
+           //else fab.setTooltipText("Teacher");
        }
        else
 
