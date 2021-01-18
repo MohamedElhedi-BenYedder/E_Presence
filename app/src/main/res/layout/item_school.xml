@@ -7,7 +7,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:backgroundTint="#E6E6FA"
-    android:paddingTop="2dp">
+    android:paddingTop="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"

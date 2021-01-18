@@ -240,7 +240,7 @@
                 </LinearLayout>
 
 
-                <ImageView
+                <ImageButton
                     android:id="@+id/iv_qrc"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
@@ -250,7 +250,7 @@
                     android:layout_marginBottom="5dp"
                     android:layout_weight="0.4"
                     android:paddingLeft="2dp"
-                    app:srcCompat="@drawable/ic_qrcode" />
+                    app:srcCompat="@drawable/ic8_qr" />
 
             </LinearLayout>
 
