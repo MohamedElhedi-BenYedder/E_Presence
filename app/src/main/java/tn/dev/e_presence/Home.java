@@ -224,8 +224,10 @@ public class Home extends AppCompatActivity {
                 public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                     new RecyclerViewSwipeDecorator.Builder(Home.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_document)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_resized)
+                            .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
                             .addSwipeRightActionIcon(R.drawable.ic8_edit_property)
+                            .addSwipeRightBackgroundColor(R.color.c2)
                             .create()
                             .decorate();
 

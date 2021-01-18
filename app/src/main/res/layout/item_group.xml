@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/iv_level"
         android:layout_width="67dp"
-        android:layout_height="75dp"
+        android:layout_height="67dp"
         app:srcCompat="@drawable/ic_persons" />
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_margin="5dp"
 
 
-                android:fontFamily="@font/playfair_display_italic"
+                android:fontFamily="@font/lato"
                 android:text="Group Name"
                 android:textColor="@android:color/black"
                 android:textSize="20sp"
