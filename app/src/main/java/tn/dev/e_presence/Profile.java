@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -54,6 +55,8 @@ public class Profile extends AppCompatActivity {
     TextView name,mail,phone,tv_welcome_user,gender;
     private String UserId= user.getUid();
     private CircleImageView cv_photo;
+    private boolean out;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,15 +90,45 @@ public class Profile extends AppCompatActivity {
         mail=findViewById(R.id.mail);
         cv_photo=findViewById(R.id.cv_photo);
         btn_cancel=findViewById(R.id.back_btn);
+
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public void loadCurentUserInformations()
     {
-        tv_welcome_user.setText("Hello "+GV.currentUserName );
-        name.setText(GV.currentUserName);
-        phone.setText(GV.currentUserPhoneNumber);
-        mail.setText(GV.currentUserMail);
-        gender.setText(GV.currentUserGender);
-        if (!GV.currentUserPhotoPath.equals("0"))Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
+
+        tv_welcome_user.setText("Hello " + GV.currentUserName);
+        boolean in;
+        try{in=!getIntent().getExtras().getBoolean("out",false);}catch (Exception e){in=true;}
+        if(in)
+        {
+
+            name.setText(GV.currentUserName);
+            phone.setText(GV.currentUserPhoneNumber);
+            mail.setText(GV.currentUserMail);
+            gender.setText(GV.currentUserGender);
+            if (!GV.currentUserPhotoPath.equals("0"))
+                Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
+        }
+        else
+        {
+            name.setText(GV.visitedUserName);
+            phone.setText(GV.visitedUserPhoneNumber);
+            mail.setText(GV.visitedUserMail);
+            gender.setText(GV.visitedUserGender);
+            if (!GV.visitedUserPhotoPath.equals("0")) {
+
+                StorageReference image = mStorageRef.child(GV.visitedUserPhotoPath);
+                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        GV.visitedUserPhoto = uri;
+                        Picasso.get().load(GV.visitedUserPhoto).into(cv_photo);
+
+                    }} );
+
+            }
+            else cv_photo.setImageDrawable(getDrawable(R.drawable.ic8_test_account));
+        }
 
     }
 

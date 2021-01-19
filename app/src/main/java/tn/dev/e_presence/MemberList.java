@@ -6,14 +6,18 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -47,12 +51,14 @@ import java.util.List;
 
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
+import static java.lang.Thread.sleep;
 import static tn.dev.e_presence.GV.getUser;
 
 public class MemberList extends AppCompatActivity {
-    private StorageReference mStorageRef;
+    private final int wait=500;
     private BottomAppBar bottomAppBar;
     private BottomNavigationView bottomNavigationView;
+    private static final StorageReference mStorageRef= FirebaseStorage.getInstance().getReference();
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private CollectionReference UserRef =db.collection("User");
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -181,27 +187,10 @@ public class MemberList extends AppCompatActivity {
         Query query;
         if((path.split("/").length<3))
         {
-            query = UserRef.orderBy("userID");
+            query = UserRef;
             // Add Student or teacher to school
-            if(key.equals("studentIN"))
-            {
-                // Add Student to school
-                if (!Students.isEmpty())
-                    query=UserRef.whereNotIn("userID",Students).whereNotIn("userID",Students);
-                else
-                    query=UserRef;
 
-            }
-            else if(key.equals("teacherIN"))
-            {
-                // Add Teacher to school
-                if (!Teachers.isEmpty())
-                    query=UserRef.whereNotIn("userID",Teachers).whereNotIn("userID",Teachers);
-                else
-                    query=UserRef;
 
-            }
-            onSwipedAddUser();
 
         }
         else
@@ -217,39 +206,13 @@ public class MemberList extends AppCompatActivity {
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query,User.class)
                 .build();
-        UserAdapter=new UserAdapter(options,storageReference);
+        UserAdapter=new UserAdapter(options,storageReference,true,key,path);
         recyclerView = findViewById(R.id.rv_user);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
         searchBar(query);
-        UserAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                String clickedUserId =documentSnapshot.getId();
-                String ClickedUserName=documentSnapshot.getString("displayName");
-                DocumentReference clickedUserDocRef=db.collection("User").document(clickedUserId);
-                DocumentReference SchoolDocRef=db.document(path);
-                if(key.equals("studentIN"))
-                {
-                    String p=path;
-                    if((path.split("/").length>3)) p=path.split("/")[3];
-                    clickedUserDocRef.update("studentIN", FieldValue.arrayUnion(p));
-
-                    SchoolDocRef.update("Students",FieldValue.arrayUnion(clickedUserId));
-                }
-                else if(key.equals("teacherIN"))
-                {
-                    clickedUserDocRef.update("teacherIN", FieldValue.arrayUnion("School/"+SchoolId));
-                    SchoolDocRef.update("Teachers",FieldValue.arrayUnion(clickedUserId));
-                }
-                Toast.makeText(MemberList.this, ClickedUserName+" is added" , Toast.LENGTH_SHORT).show();
-
-
-
-            }
-        });
-
+        onSwipedAddUser();
 
 
     }
@@ -312,9 +275,6 @@ public class MemberList extends AppCompatActivity {
         finish();*/
 
 
-    void AddNewPerson() {
-
-    }
 
     void listenForIncommingMessages()
     {
@@ -483,8 +443,10 @@ public class MemberList extends AppCompatActivity {
                             deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+                                    String p=path;
+                                    if((path.split("/").length>3)) p=path.split("/")[3];
 
-                                    db.collection("User").document(Uid).update(key, FieldValue.arrayRemove("School/" + SchoolId));
+                                    db.collection("User").document(Uid).update(key, FieldValue.arrayRemove(p));
                                     db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayRemove(Uid));
                                     Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is removed "), Toast.LENGTH_SHORT).show();
                                 }
@@ -494,6 +456,7 @@ public class MemberList extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // close the dialog
+                                    recyclerView.setAdapter(UserAdapter);
                                 }
                             });
 
@@ -501,6 +464,12 @@ public class MemberList extends AppCompatActivity {
 
                             break;
                         case ItemTouchHelper.RIGHT:
+                            GV.visitedUserPhotoPath=UserAdapter.getItem(position).getPhoto();
+                            GV.visitedUserName=UserAdapter.getItem(position).getDisplayName();
+                            GV.visitedUserMail=UserAdapter.getItem(position).getEmail();
+                            GV.visitedUserPhoneNumber=UserAdapter.getItem(position).getPhoneNumber();
+                            startActivity(new Intent(MemberList.this,Profile.class)
+                                    .putExtra("out",true));
                             break;
                     }
 
@@ -570,7 +539,6 @@ public class MemberList extends AppCompatActivity {
     }
     void onSwipedAddUser()
     {
-        recyclerView.clearOnChildAttachStateChangeListeners();
         if(priority==3)
         {
             itemTouchHelper1.attachToRecyclerView(null);
@@ -587,51 +555,73 @@ public class MemberList extends AppCompatActivity {
                     int position = viewHolder.getAdapterPosition();
                     switch (direction) {
                         case ItemTouchHelper.LEFT:
-                            String User = "";
-                            String SchoolField = "";
-                            if (key.equals("studentIN")) {
-                                SchoolField = "Students";
-                                User = "Student";
-                            } else if (key.equals("teacherIN")) {
-                                SchoolField = "Teachers";
-                                User = "Teacher";
+
+                                String User = "";
+                                String SchoolField = "";
+                                if (key.equals("studentIN")) {
+                                    SchoolField = "Students";
+                                    User = "Student";
+                                } else if (key.equals("teacherIN")) {
+                                    SchoolField = "Teachers";
+                                    User = "Teacher";
+                                }
+                                String UserName = UserAdapter.getItem(position).getDisplayName();
+                                String Uid = UserAdapter.getItem(position).getUserID();
+                            if (!UserAdapter.exist(position))
+                            {
+                                final AlertDialog.Builder deleteUserDialog = new AlertDialog.Builder(MemberList.this);
+                                deleteUserDialog.setTitle("Add " + User + " ?");
+                                Spanned spannedMessage = Html.fromHtml("Do you want to add " + "<b>" + UserName + "</b> to <b>" + SchoolId + "</b> ?");
+                                deleteUserDialog.setMessage(spannedMessage);
+                                deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_denied));
+                                String finalSchoolField = SchoolField;
+                                deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String p = path;
+                                        if ((path.split("/").length > 3)) p = path.split("/")[3];
+
+                                        db.collection("User").document(Uid).update(key, FieldValue.arrayUnion(p));
+                                        db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
+                                        Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is added "), Toast.LENGTH_SHORT).show();
+                                        if (key.equals("studentIN"))
+                                            Students.add(Uid);
+                                        else if (key.equals("teacherIN"))
+                                            Teachers.add(Uid);
+
+
+                                    }
+                                });
+
+                                deleteUserDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        // close the dialog
+                                        try {
+                                            sleep(wait);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        UserAdapter.notifyItemChanged(position);
+                                    }
+                                });
+
+                                deleteUserDialog.create().show();
                             }
-                            String UserName = UserAdapter.getItem(position).getDisplayName();
-                            String Uid = UserAdapter.getItem(position).getUserID();
-                            Toast.makeText(MemberList.this, key, Toast.LENGTH_SHORT).show();
-                            final AlertDialog.Builder deleteUserDialog = new AlertDialog.Builder(MemberList.this);
-                            deleteUserDialog.setTitle("Remove " + User + " ?");
-                            Spanned spannedMessage = Html.fromHtml("Do you want to remove " + "<b>" + UserName + "</b> from <b>" + SchoolId + "</b> ?");
-                            deleteUserDialog.setMessage(spannedMessage);
-                            deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_denied));
-                            String finalSchoolField = SchoolField;
-                            deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    db.collection("User").document(Uid).update(key, FieldValue.arrayUnion("School/" + SchoolId));
-                                    db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
-                                    Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is added "), Toast.LENGTH_SHORT).show();
-                                    if (key.equals("studentIN"))
-                                        Students.add(Uid);
-                                    else if (key.equals("teacherIN"))
-                                        Teachers.add(Uid);
-                                  fab.callOnClick();
-
-                                }
-                            });
-
-                            deleteUserDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // close the dialog
-                                }
-                            });
-
-                            deleteUserDialog.create().show();
+                            else
+                            {
+                                Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> already exists !!!"), Toast.LENGTH_SHORT).show();
+                                Wait(position);
+                            }
 
                             break;
                         case ItemTouchHelper.RIGHT:
+                             GV.visitedUserPhotoPath=UserAdapter.getItem(position).getPhoto();
+                             GV.visitedUserName=UserAdapter.getItem(position).getDisplayName();
+                             GV.visitedUserMail=UserAdapter.getItem(position).getEmail();
+                             GV.visitedUserPhoneNumber=UserAdapter.getItem(position).getPhoneNumber();
+                            startActivity(new Intent(MemberList.this,Profile.class)
+                            .putExtra("out",true));
                             break;
                     }
 
@@ -666,5 +656,14 @@ public class MemberList extends AppCompatActivity {
 
 
 
+    }
+    void Wait(int position)
+    {
+        try {
+            sleep(wait);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        UserAdapter.notifyItemChanged(position);
     }
 }

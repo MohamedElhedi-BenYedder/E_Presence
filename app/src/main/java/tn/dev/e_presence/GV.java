@@ -27,6 +27,13 @@ public class GV {
     public static String currentUserPhoneNumber;
     public static Uri currentUserPhoto;
     public static String currentUserPhotoPath;
+    //-------------------visited user----------
+    public static String visitedUserName;
+    public static String visitedUserGender;
+    public static String visitedUserMail;
+    public static String visitedUserPhoneNumber;
+    public static Uri visitedUserPhoto;
+    public static String visitedUserPhotoPath;
 
     public GV() {
     }

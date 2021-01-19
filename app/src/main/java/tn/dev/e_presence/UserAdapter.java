@@ -26,6 +26,9 @@ import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserHolder> {
     private UserAdapter.OnItemClickListener listener;
     static StorageReference STORAGE_REFERENCE;
+    private boolean Check;
+    private String Key;
+    private String Path;
     static int count = 0;
     final static int ColorList[] = {0, 1, 3};
     final static int ColorNumber = 3;
@@ -42,6 +45,15 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
     public UserAdapter(@NonNull FirestoreRecyclerOptions<User> options, StorageReference s) {
         super(options);
         STORAGE_REFERENCE = s;
+        Check=false;
+    }
+    public UserAdapter(@NonNull FirestoreRecyclerOptions<User> options, StorageReference s,boolean check,String key,String path) {
+        super(options);
+        STORAGE_REFERENCE = s;
+        Check=check;
+        Key=key;
+        Path=path;
+        if((path.split("/").length>3))Path=path.split("/")[3];
     }
 
     @SuppressLint("RestrictedApi")
@@ -75,10 +87,22 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
                     holder.iv_photo.setImageResource(ImageList[1]);}
                catch(Exception e1){}
             }
-        })
-        ;
-
+        });
         holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field2));
+        if (Check)
+        {
+            if (exist(position))
+                holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field));
+        }
+    }
+    public boolean exist(int position)
+    {
+        User model=getItem(position);
+        if (Key.equals("studentIN"))
+            return model.getStudentIN().contains(Path);
+        else if (Key.equals("teacherIN"))
+            return model.getTeacherIN().contains(Path);
+        else return false;
     }
 
 
