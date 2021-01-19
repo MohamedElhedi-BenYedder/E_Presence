@@ -69,7 +69,7 @@
             android:layout_width="111dp"
             android:layout_height="121dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/ic8_user" />
+            android:src="@drawable/ic8_test_account" />
 
 
     </LinearLayout>
