@@ -167,9 +167,10 @@ public class Home extends AppCompatActivity {
                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                     String SID = documentSnapshot.getId();
                     int priority;
-                    boolean isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);
-                    boolean isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);
-                    boolean isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);
+                    boolean isAdmin,isTeacher ,isStudent;
+                    try{  isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);}catch(Exception e){isAdmin=false;}
+                    try{ isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);}catch(Exception e){isTeacher=false;}
+                    try{ isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);}catch(Exception e){isStudent=false;}
                     if (isAdmin) priority=3;
                     else if(isTeacher) priority=2;
                     else if(isStudent) priority=1;
@@ -233,8 +234,10 @@ public class Home extends AppCompatActivity {
 
                                         Toast.makeText(Home.this, "School is deleted.", Toast.LENGTH_SHORT).show();}
 
-                                    else Toast.makeText(Home.this, "Wrong identifier", Toast.LENGTH_SHORT).show();
-                                    recyclerView.setAdapter(schoolAdapter);
+                                    else{
+                                        Toast.makeText(Home.this, "Wrong identifier", Toast.LENGTH_SHORT).show();
+                                        recyclerView.setAdapter(schoolAdapter);
+                                    }
                                 }
                             });
 

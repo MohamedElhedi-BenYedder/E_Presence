@@ -90,36 +90,13 @@ public class Profile extends AppCompatActivity {
     }
     public void loadCurentUserInformations()
     {
-        db.collection("User").document(UserId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot userDoc) {
-                        tv_welcome_user.setText("Hello "+ userDoc.getString("displayName"));
-                        name.setText(userDoc.getString("displayName"));
-                        phone.setText(userDoc.getString("phoneNumber"));
-                        mail.setText(userDoc.getString("email"));
-                        gender.setText(userDoc.getString("gender"));
-                        String photo=userDoc.getString("photo");
-                        LoadPhoto(photo);
-                        }
-                });
+        tv_welcome_user.setText("Hello "+GV.currentUserName );
+        name.setText(GV.currentUserName);
+        phone.setText(GV.currentUserPhoneNumber);
+        mail.setText(GV.currentUserMail);
+        gender.setText(GV.currentUserGender);
+        if (!GV.currentUserPhotoPath.equals("0"))Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
 
-
-    }
-    void LoadPhoto(String photo)
-    {
-
-        /*  try    { */    StorageReference image = mStorageRef.child(photo);
-        image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(cv_photo);
-
-            }
-        });
-      /*  }
-        catch (Exception e){};*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

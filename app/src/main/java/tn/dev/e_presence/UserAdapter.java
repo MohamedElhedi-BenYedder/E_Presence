@@ -57,6 +57,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
             holder.tv_gender.setText("");}catch (Exception e){};
 
         StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
+
         image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -79,6 +80,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
 
         holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field2));
     }
+
 
     @NonNull
     @Override

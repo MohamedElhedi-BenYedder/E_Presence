@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="tn.dev.e_presence.Settings"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/contentBodyColor">
+    android:layout_height="wrap_content"
+    android:background="@color/contentBodyColor"
+    tools:context="tn.dev.e_presence.Settings">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -43,11 +42,13 @@
 
 
         <RelativeLayout
+            android:id="@+id/rl_edit"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:onClick="onClick">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profileCircleImageView"
+                android:id="@+id/cv_photo"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginTop="15dp"
@@ -56,18 +57,19 @@
                 app:civ_border_width="2dp" />
 
             <TextView
-                android:id="@+id/usernameTextView"
+                android:id="@+id/tv_name"
                 style="@style/viewParent.headerText"
                 android:layout_marginTop="20dp"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_toRightOf="@id/cv_photo"
                 android:fontFamily="@font/lato"
                 android:text="Name Surname"
                 android:textSize="18sp" />
 
             <TextView
+                android:id="@+id/tv_edit"
                 style="@style/viewParent.headerText"
-                android:layout_below="@id/usernameTextView"
-                android:layout_toRightOf="@id/profileCircleImageView"
+                android:layout_below="@id/tv_name"
+                android:layout_toRightOf="@id/cv_photo"
                 android:text="Edit personal details"
                 android:textColor="#5D5C5C"
                 android:textSize="16sp" />

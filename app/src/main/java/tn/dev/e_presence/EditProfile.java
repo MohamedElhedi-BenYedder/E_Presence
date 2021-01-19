@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -36,6 +35,8 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static tn.dev.e_presence.GV.currentUserPhotoPath;
+
 public class EditProfile extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Spinner gender;
     private TextView btn_ok;
@@ -43,7 +44,7 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     private FirebaseFirestore db=FirebaseFirestore.getInstance();
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private String UserId= user.getUid();
-    String photo="";
+    String photo=currentUserPhotoPath;
     private static Uri imageUri;
     private TextView tv_welcome_user;
     private EditText name,phone,mail;
@@ -57,11 +58,8 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         findViews();
         setGenderSpinner();
         loadCurentUserInformations();
-        UploadPhoto();
+        selectPhotoFromGalery();
         saveUpdatedInformations();
-
-
-
 
     }
 
@@ -86,45 +84,18 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     }
     public void loadCurentUserInformations()
     {
-        db.collection("User").document(UserId)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot userDoc) {
-                        tv_welcome_user.setText("Hello "+ userDoc.getString("displayName"));
-                        name.setText(userDoc.getString("displayName"));
-                        phone.setText(userDoc.getString("phoneNumber"));
-                        mail.setText(userDoc.getString("email"));
-                        if ((userDoc.getString("gender")).equals("Male")){
-                            gender.setSelection(0);
-                        }
-                        if ((userDoc.getString("gender")).equals("Female")){
-                            gender.setSelection(1);
-                        }
-                        photo=userDoc.getString("photo");
-                        LoadPhoto();
-
-
-                    }
-                });
-
-
+        tv_welcome_user.setText("Hello "+GV.currentUserName );
+        name.setText(GV.currentUserName);
+        phone.setText(GV.currentUserPhoneNumber);
+        mail.setText(GV.currentUserMail);
+        if ((GV.currentUserGender).equals("Male")) gender.setSelection(0);
+        else if ((GV.currentUserGender).equals("Female")) gender.setSelection(1);
+        selected_gender= GV.currentUserGender;
+        if(!GV.currentUserPhoto.equals("0"))
+        Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
     }
-    void LoadPhoto()
-    {
 
-      /*  try    { */    StorageReference image = mStorageRef.child(photo);
-            image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Picasso.get().load(uri).into(cv_photo);
-
-                }
-            });
-      /*  }
-        catch (Exception e){};*/
-    }
-    void UploadPhoto()
+    void selectPhotoFromGalery()
     {
         cv_photo.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -149,11 +120,11 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
             }
         }
     }
-    private String uploadImageToFirebase( Uri contentUri,String curUrl) {
+    private String uploadImageToFirebase( Uri contentUri) {
         String name;
-        if (photo.equals("0"))
+        if (currentUserPhotoPath.equals("0"))
             name="User/"+System.currentTimeMillis();
-        else name=curUrl;
+        else name=currentUserPhotoPath;
         StorageReference image = mStorageRef.child(name);
       try{ image.putFile(contentUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -192,20 +163,30 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         btn_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                photo =uploadImageToFirebase(imageUri,photo);
                 Map<String,Object> userUpdatedInformation=new HashMap<String,Object>();
-                userUpdatedInformation.put("displayName",name.getText().toString());
-                userUpdatedInformation.put("email",mail.getText().toString());
-                userUpdatedInformation.put("phoneNumber",phone.getText().toString());
-                userUpdatedInformation.put("gender",selected_gender);
-                if(!photo.isEmpty())
-                    userUpdatedInformation.put("photo",photo);
+                GV.currentUserName=name.getText().toString();
+                GV.currentUserPhoneNumber=phone.getText().toString();
+                GV.currentUserMail=mail.getText().toString();
+                GV.currentUserGender=selected_gender;
+                if(imageUri!=null)
+                {
+                    currentUserPhotoPath=uploadImageToFirebase(imageUri);
+                    userUpdatedInformation.put("photo",currentUserPhotoPath);
+                    GV.currentUserPhoto=imageUri;
+                }
+
+                userUpdatedInformation.put("displayName",GV.currentUserName);
+                userUpdatedInformation.put("email",GV.currentUserMail);
+                userUpdatedInformation.put("phoneNumber",GV.currentUserPhoneNumber);
+                userUpdatedInformation.put("gender",GV.currentUserGender);
+
                 db.collection("User").document(UserId)
                         .update(userUpdatedInformation);
                 Intent intent=new Intent(EditProfile.this,Home.class);
                 startActivity(intent);
                 finish();
             }
+
         });
     }
 

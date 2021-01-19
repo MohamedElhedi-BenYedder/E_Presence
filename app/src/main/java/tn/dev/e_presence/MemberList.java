@@ -1,18 +1,27 @@
 package tn.dev.e_presence;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +44,8 @@ import com.google.protobuf.Empty;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
 
 import static tn.dev.e_presence.GV.getUser;
 
@@ -64,6 +75,8 @@ public class MemberList extends AppCompatActivity {
     private EditText searchBox;
     private ArrayList<String> Students;
     private ArrayList<String> Teachers;
+    private RecyclerView recyclerView;
+    private ItemTouchHelper itemTouchHelper1,itemTouchHelper2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,11 +144,13 @@ public class MemberList extends AppCompatActivity {
                 .setQuery(query,User.class)
                 .build();
         UserAdapter=new UserAdapter(options,storageReference);
-        RecyclerView recyclerView = findViewById(R.id.rv_user);
+        recyclerView = findViewById(R.id.rv_user);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
         searchBar(query);
+        OnSwipedUserRemove();
+
     }
     private void setUpRecyclerViewPres()
     {
@@ -148,7 +163,7 @@ public class MemberList extends AppCompatActivity {
                     .setQuery(query, User.class)
                     .build();
             UserAdapter = new UserAdapter(options, storageReference);
-            RecyclerView recyclerView = findViewById(R.id.rv_user);
+            recyclerView = findViewById(R.id.rv_user);
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
             recyclerView.setAdapter(UserAdapter);
@@ -172,19 +187,21 @@ public class MemberList extends AppCompatActivity {
             {
                 // Add Student to school
                 if (!Students.isEmpty())
-                    query=UserRef.whereNotIn("userID",Students);
-                else
-                    query=UserRef;
-            }
-            else if(key.equals("teacherIN"))
-            {
-                // Add Teacher to school
-                if (!Students.isEmpty())
-                    query=UserRef.whereNotIn("userID",Teachers);
+                    query=UserRef.whereNotIn("userID",Students).whereNotIn("userID",Students);
                 else
                     query=UserRef;
 
             }
+            else if(key.equals("teacherIN"))
+            {
+                // Add Teacher to school
+                if (!Teachers.isEmpty())
+                    query=UserRef.whereNotIn("userID",Teachers).whereNotIn("userID",Teachers);
+                else
+                    query=UserRef;
+
+            }
+            onSwipedAddUser();
 
         }
         else
@@ -201,7 +218,7 @@ public class MemberList extends AppCompatActivity {
                 .setQuery(query,User.class)
                 .build();
         UserAdapter=new UserAdapter(options,storageReference);
-        RecyclerView recyclerView = findViewById(R.id.rv_user);
+        recyclerView = findViewById(R.id.rv_user);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(UserAdapter);
@@ -425,5 +442,229 @@ public class MemberList extends AppCompatActivity {
                     UserAdapter.updateOptions(options);}
             }
         });
+    }
+    private void OnSwipedUserRemove()
+    {
+        //---------------------------Swipe Item -------------------------//
+       try{ itemTouchHelper2.attachToRecyclerView(null);}catch (Exception e){}
+        if(priority==3)
+        {
+        itemTouchHelper1= new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    int position = viewHolder.getAdapterPosition();
+                    switch (direction) {
+                        case ItemTouchHelper.LEFT:
+                            String User = "";
+                            String SchoolField = "";
+                            if (key.equals("studentIN")) {
+                                SchoolField = "Students";
+                                User = "Student";
+                            } else if (key.equals("teacherIN")) {
+                                SchoolField = "Teachers";
+                                User = "Teacher";
+                            }
+                            String UserName = UserAdapter.getItem(position).getDisplayName();
+                            String Uid = UserAdapter.getItem(position).getUserID();
+                            Toast.makeText(MemberList.this, key, Toast.LENGTH_SHORT).show();
+                            final AlertDialog.Builder deleteUserDialog = new AlertDialog.Builder(MemberList.this);
+                            deleteUserDialog.setTitle("Remove " + User + " ?");
+                            Spanned spannedMessage = Html.fromHtml("Do you want to remove " + "<b>" + UserName + "</b> from <b>" + SchoolId + "</b> ?");
+                            deleteUserDialog.setMessage(spannedMessage);
+                            deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_denied));
+                            String finalSchoolField = SchoolField;
+                            deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    db.collection("User").document(Uid).update(key, FieldValue.arrayRemove("School/" + SchoolId));
+                                    db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayRemove(Uid));
+                                    Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is removed "), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            deleteUserDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // close the dialog
+                                }
+                            });
+
+                            deleteUserDialog.create().show();
+
+                            break;
+                        case ItemTouchHelper.RIGHT:
+                            break;
+                    }
+
+
+                }
+
+                @Override
+                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    String User = "";
+                    if (key.equals("studentIN")) User = "Student";
+                    else if (key.equals("teacherIN")) User = "Teacher";
+
+                    new RecyclerViewSwipeDecorator.Builder(MemberList.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_denied_resized)
+                            .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
+                            .addSwipeLeftLabel("Remove " + User)
+                            .setSwipeLeftLabelTextSize(1, 20)
+                            .addSwipeRightActionIcon(R.drawable.ic8_find_user_male_resized)
+                            .addSwipeRightBackgroundColor(R.color.c2)
+                            .addSwipeRightLabel("Find " + User)
+                            .setSwipeRightLabelTextSize(1, 20)
+                            .create()
+                            .decorate();
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+
+            });
+       try{ itemTouchHelper1.attachToRecyclerView(recyclerView);}catch (Exception e){}
+        }
+        else
+        {
+            itemTouchHelper1=new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,  ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    int position = viewHolder.getAdapterPosition();
+
+                }
+
+
+                @Override
+                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    String User = "";
+                    if (key.equals("studentIN")) User = "Student";
+                    else if (key.equals("teacherIN")) User = "Teacher";
+
+                    new RecyclerViewSwipeDecorator.Builder(MemberList.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeRightActionIcon(R.drawable.ic8_find_user_male_resized)
+                            .addSwipeRightBackgroundColor(R.color.c2)
+                            .addSwipeRightLabel("Find " + User)
+                            .setSwipeRightLabelTextSize(1, 20)
+                            .create()
+                            .decorate();
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+
+            });
+            itemTouchHelper1.attachToRecyclerView(recyclerView);
+        }
+    }
+    void onSwipedAddUser()
+    {
+        recyclerView.clearOnChildAttachStateChangeListeners();
+        if(priority==3)
+        {
+            itemTouchHelper1.attachToRecyclerView(null);
+            itemTouchHelper2=new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    int position = viewHolder.getAdapterPosition();
+                    switch (direction) {
+                        case ItemTouchHelper.LEFT:
+                            String User = "";
+                            String SchoolField = "";
+                            if (key.equals("studentIN")) {
+                                SchoolField = "Students";
+                                User = "Student";
+                            } else if (key.equals("teacherIN")) {
+                                SchoolField = "Teachers";
+                                User = "Teacher";
+                            }
+                            String UserName = UserAdapter.getItem(position).getDisplayName();
+                            String Uid = UserAdapter.getItem(position).getUserID();
+                            Toast.makeText(MemberList.this, key, Toast.LENGTH_SHORT).show();
+                            final AlertDialog.Builder deleteUserDialog = new AlertDialog.Builder(MemberList.this);
+                            deleteUserDialog.setTitle("Remove " + User + " ?");
+                            Spanned spannedMessage = Html.fromHtml("Do you want to remove " + "<b>" + UserName + "</b> from <b>" + SchoolId + "</b> ?");
+                            deleteUserDialog.setMessage(spannedMessage);
+                            deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_denied));
+                            String finalSchoolField = SchoolField;
+                            deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    db.collection("User").document(Uid).update(key, FieldValue.arrayUnion("School/" + SchoolId));
+                                    db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
+                                    Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is added "), Toast.LENGTH_SHORT).show();
+                                    if (key.equals("studentIN"))
+                                        Students.add(Uid);
+                                    else if (key.equals("teacherIN"))
+                                        Teachers.add(Uid);
+                                  fab.callOnClick();
+
+                                }
+                            });
+
+                            deleteUserDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // close the dialog
+                                }
+                            });
+
+                            deleteUserDialog.create().show();
+
+                            break;
+                        case ItemTouchHelper.RIGHT:
+                            break;
+                    }
+
+
+                }
+
+                @Override
+                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                    String User = "";
+                    if (key.equals("studentIN")) User = "Student";
+                    else if (key.equals("teacherIN")) User = "Teacher";
+
+                    new RecyclerViewSwipeDecorator.Builder(MemberList.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_add_user_male_resied)
+                            .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_add))
+                            .addSwipeLeftLabel("Add " + User)
+                            .setSwipeLeftLabelTextSize(1, 20)
+                            .addSwipeRightActionIcon(R.drawable.ic8_find_user_male_resized)
+                            .addSwipeRightBackgroundColor(R.color.c2)
+                            .addSwipeRightLabel("Find " + User)
+                            .setSwipeRightLabelTextSize(1, 20)
+                            .create()
+                            .decorate();
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+
+            });
+            itemTouchHelper2.attachToRecyclerView(recyclerView);
+        }
+
+
+
+
     }
 }

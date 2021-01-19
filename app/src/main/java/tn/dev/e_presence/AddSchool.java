@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,12 +66,10 @@ public class AddSchool extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_school);
+        findViews();
         welcomeUser();
         SetUpBottomAppBarMenu();
         listenForIncommingMessages();
-        findViews();
-
-
         UploadPhoto();
         setDisplay();
         addEditSchool();
@@ -248,12 +248,14 @@ public class AddSchool extends AppCompatActivity {
     }
     void welcomeUser()
     {
-        getUser(UserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        Spanned welcome = Html.fromHtml("Welcome "+"<b>"+GV.currentUserName+"<b/>");
+        tv_welcome_user.setText(welcome);
+        /*getUser(UserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 tv_welcome_user.setText("Welcome "+documentSnapshot.getString("displayName"));
             }
-        });
+        });*/
     }
     private String getFileExtension(Uri uri) {
         ContentResolver cR = getContentResolver();

@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static tn.dev.e_presence.GV.*;
 import static tn.dev.e_presence.GV.createUser;
 
 public class Welcome extends AppCompatActivity {
@@ -45,6 +46,7 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(new Intent(this, Home.class));
             this.finish();
         }
@@ -91,6 +93,7 @@ public class Welcome extends AppCompatActivity {
                 }*/} else {
                     //This is a returning user
                 }
+                GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 Intent intent = new Intent(this, Home.class);
                 startActivity(intent);
                 this.finish();

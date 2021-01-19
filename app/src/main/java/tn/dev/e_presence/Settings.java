@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,24 +25,33 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Settings extends AppCompatActivity {
     private FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
     private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
     private Switch darkModeSwitch;
     private TextView tv_change_password;
+    private TextView tv_name;
+    private TextView tv_edit;
+    private CircleImageView cv_photo;
+    private RelativeLayout rl_edit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        findViews();
+        loadCurentUserInformations();
         //function for enabling dark mode
         setDarkModeSwitch();
         ChangePassword();
 
     }
     private void setDarkModeSwitch(){
-        darkModeSwitch = findViewById(R.id.darkModeSwitch);
+
         darkModeSwitch.setChecked(new DarkModePrefManager(this).isNightMode());
         darkModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -78,7 +88,7 @@ public class Settings extends AppCompatActivity {
     }
     private void EditProfile(View v)
     {
-        if (v.getId() == R.id.btn_editprofile)
+        if (v.getId() ==  R.id.btn_editprofile || v.getId() == R.id.rl_edit )
         {
             startActivity(new Intent(getApplicationContext(),EditProfile.class));
 
@@ -86,7 +96,7 @@ public class Settings extends AppCompatActivity {
 
     }
     private void ChangePassword()
-    {   tv_change_password =findViewById(R.id.tv_change_password);
+    {
         tv_change_password.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
@@ -127,6 +137,22 @@ public class Settings extends AppCompatActivity {
 
             }
         });
+    }
+    public void findViews()
+    {
+        tv_change_password =findViewById(R.id.tv_change_password);
+        darkModeSwitch = findViewById(R.id.darkModeSwitch);
+        tv_name=findViewById(R.id.tv_name);
+        cv_photo=findViewById(R.id.cv_photo);
+        rl_edit=findViewById(R.id.rl_edit);
+        tv_edit=findViewById(R.id.tv_edit);
+    }
+    public void loadCurentUserInformations()
+    {
+        tv_name.setText(GV.currentUserName);
+
+        if (!GV.currentUserPhotoPath.equals("0")) Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
+
     }
 
 
