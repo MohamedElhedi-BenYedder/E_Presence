@@ -94,7 +94,7 @@ public class MemberList extends AppCompatActivity {
         tv_page=findViewById(R.id.tv_page);
         if(key.equals("studentIN"))
             tv_page.setText("Students");
-        else if(key.equals("TeacherIN"))
+        else if(key.equals("teacherIN"))
             tv_page.setText("Teachers");
         setUpBottomAppBarMenu();
         add=false;
@@ -240,7 +240,7 @@ public class MemberList extends AppCompatActivity {
                             fab.setImageResource(R.drawable.ic8_back_arrow);
                             if(key.equals("studentIN"))
                                 tv_page.setText("Add Students");
-                            else if(key.equals("TeacherIN"))
+                            else if(key.equals("teacherIN"))
                                 tv_page.setText("Add Teachers");
                             UserAdapter.startListening();
 
@@ -251,7 +251,7 @@ public class MemberList extends AppCompatActivity {
                             fab.setImageResource(R.drawable.ic8_add_user_male);
                             if(key.equals("studentIN"))
                                 tv_page.setText("Students");
-                            else if(key.equals("TeacherIN"))
+                            else if(key.equals("teacherIN"))
                                 tv_page.setText("Teachers");
                             setUpRecyclerView();
                             UserAdapter.startListening();
