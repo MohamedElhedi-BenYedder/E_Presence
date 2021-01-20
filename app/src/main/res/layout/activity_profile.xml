@@ -68,11 +68,12 @@
     <TextView
         android:id="@+id/back_btn"
         style="@style/profileStyledBackButton"
-        android:text="Back to\nHome"
-        android:layout_marginStart="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_marginTop="-25dp"
-        android:textColor="@android:color/white"
-        android:layout_marginEnd="80dp"/>
+        android:text="Back to Home"
+        android:textColor="@android:color/white" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
