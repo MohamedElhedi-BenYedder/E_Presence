@@ -280,7 +280,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
      {
 
             switch (priority) {
-                case 3://Admin
+                case 3:
+                case 2://Admin
                 {
                     Query query = SessionRef.whereEqualTo("date", day);
                     StorageReference sr = FirebaseStorage.getInstance().getReference();
@@ -315,7 +316,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     });
                 }
                 break;
-                case 2://Teacher
+               /* case 2://Teacher
                 {
                     Query query = SessionRef.whereEqualTo("date", day).whereEqualTo("teacherId", UserId);
                     StorageReference sr = FirebaseStorage.getInstance().getReference();
@@ -330,7 +331,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 }
                 break;
 
-
+                */
                 case 1://Student
                 {
                     Query query = SessionRef.whereIn("groupId", GroupIDs).whereEqualTo("date", day);
