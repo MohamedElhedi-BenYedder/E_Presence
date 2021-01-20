@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -219,13 +220,15 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
       }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private  void AddSession(View v)
     {
         if( bar)
         {
            Student_Teacher=!Student_Teacher;
-           setUpRecyclerViewMenuBottomBar(day);
-           sessionAdapter.startListening();
+            setFloatingAppButtonIcon();
+            setUpRecyclerViewMenuBottomBar(day);
+            sessionAdapter.startListening();
 
         }
         else
@@ -454,9 +457,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
        fab=(FloatingActionButton) findViewById(R.id.fab);
       if( bar)
        {
-           fab.setImageResource(R.drawable.ic8_change_user);
-           //if(Student_Teacher) fab.setTooltipText("Student");
-           //else fab.setTooltipText("Teacher");
+           if(!Student_Teacher)
+           fab.setImageResource(R.drawable.ic8_change_teacher);
+           else fab.setImageResource(R.drawable.ic8_change_user);
+
        }
        else
 
