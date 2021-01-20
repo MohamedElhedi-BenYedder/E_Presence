@@ -1,9 +1,12 @@
 package tn.dev.e_presence;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Html;
@@ -19,11 +22,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,11 +69,14 @@ public class AddSchool extends AppCompatActivity {
     private String SchoolId;
     String photo="";
     String TAG= AddSchool.class.getSimpleName();
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_school);
         findViews();
+        if(user.isAnonymous())
+            bottomAppBar.setVisibility(View.INVISIBLE);
         welcomeUser();
         SetUpBottomAppBarMenu();
         listenForIncommingMessages();
@@ -105,31 +115,35 @@ public class AddSchool extends AppCompatActivity {
 
             });
         }
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void addEditSchool()
         {
+
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                      if (!user.isAnonymous())
+                     {
                     Map<String, Object> school = new HashMap<>();
-                    String displayName=et_display_name.getText().toString();
-                    String location =et_location.getText().toString();
-                    String fullName=et_full_name.getText().toString();
-                    String Description=et_description.getText().toString();
-                    school.put("FullName",fullName);
-                    school.put("Description",Description);
-                    school.put("Location",location);
-                    school.put("Students",new ArrayList<String>());
-                    school.put("Teachers",new ArrayList<String>());
-                    school.put("Admins",new ArrayList<String>());
-                    if(!photo.isEmpty())school.put("Photo",photo);
-                    List<String> admins =new ArrayList<>();
+                    String displayName = et_display_name.getText().toString();
+                    String location = et_location.getText().toString();
+                    String fullName = et_full_name.getText().toString();
+                    String Description = et_description.getText().toString();
+                    school.put("FullName", fullName);
+                    school.put("Description", Description);
+                    school.put("Location", location);
+                    school.put("Students", new ArrayList<String>());
+                    school.put("Teachers", new ArrayList<String>());
+                    school.put("Admins", new ArrayList<String>());
+                    if (!photo.isEmpty()) school.put("Photo", photo);
+                    List<String> admins = new ArrayList<>();
                     admins.add(user.getUid());
-                    school.put("Admins",admins);
+                    school.put("Admins", admins);
                     if (NewSchool)
                     // the user is creating a new school
                     {
-                        if ((!displayName.isEmpty())&&(displayName.length()>4)&&(fullName.length()>4)&&(Description.length()>4)&&(location.length()>4))
-                        {school.put("DisplayName",displayName);
+                        if ((!displayName.isEmpty()) && (displayName.length() > 4) && (fullName.length() > 4) && (Description.length() > 4) && (location.length() > 4)) {
+                            school.put("DisplayName", displayName);
 
                             db.document("School/" + et_display_name.getText().toString())
                                     .get()
@@ -161,17 +175,13 @@ public class AddSchool extends AppCompatActivity {
                                         }
                                     });
 
-                        }else
-                        {
+                        } else {
                             Toast.makeText(AddSchool.this, "fields should have more than 4 caracters", Toast.LENGTH_SHORT).show();
 
                         }
 
-                    }
-                    else
-                    {
-                        if((fullName.length()>4)&&(Description.length()>4)&&(location.length()>4))
-                        {
+                    } else {
+                        if ((fullName.length() > 4) && (Description.length() > 4) && (location.length() > 4)) {
                             db.document("School/" + SchoolId)
                                     .update(school)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -193,14 +203,50 @@ public class AddSchool extends AppCompatActivity {
                             });
 
 
-                        }
-                        else
-                        {
+                        } else {
                             Toast.makeText(AddSchool.this, "fields should have more than 4 caracters", Toast.LENGTH_SHORT).show();
                         }
 
                     }
-                }});
+
+                }
+                else
+                {
+                    final AlertDialog.Builder ananymousDialog = new AlertDialog.Builder(AddSchool.this);
+                    ananymousDialog.setTitle("Sign Up ?");
+                    ananymousDialog.setMessage("To access this page authentification is required !");
+                    ananymousDialog.setIcon(getDrawable(R.drawable.ic8_add_key));
+                    ananymousDialog.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AuthUI.getInstance()
+                                    .signOut(AddSchool.this)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            // user is now signed out
+                                            startActivity(new Intent(AddSchool.this, Welcome.class));
+                                            finish();
+                                        }
+                                    });
+
+
+                        }});
+
+                    ananymousDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // close the dialog
+                        }
+                    });
+
+                    ananymousDialog.create().show();
+
+                }
+                }
+
+            });
+
+
         }
 
 
@@ -264,11 +310,6 @@ public class AddSchool extends AppCompatActivity {
     }
     private void SetUpBottomAppBarMenu( )
     {
-        //find id
-        bottomAppBar=findViewById(R.id.bnb);
-        //set bottom bar to Action bar as it is similar like Toolbar
-        //bottomAppBar.replaceMenu(R.menu.bottom_app_bar_secondary_menu);
-        //click event over Bottom bar menu item
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -300,6 +341,7 @@ public class AddSchool extends AppCompatActivity {
     }
     void findViews()
     {
+        bottomAppBar=findViewById(R.id.bnb);
         et_display_name =findViewById(R.id.et_display_name);
         et_full_name=findViewById(R.id.et_full_name);
         et_description=findViewById(R.id.et_description);

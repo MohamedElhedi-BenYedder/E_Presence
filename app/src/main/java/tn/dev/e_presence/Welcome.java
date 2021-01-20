@@ -57,19 +57,22 @@ public class Welcome extends AppCompatActivity {
         List<AuthUI.IdpConfig> providers;
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.MicrosoftBuilder().build(),
+                //new AuthUI.IdpConfig.MicrosoftBuilder().build(),//
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build()
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.AnonymousBuilder().build()
 
         );
 
         Intent intent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setTosAndPrivacyPolicyUrls("example.com", "https://example.com")
+                .enableAnonymousUsersAutoUpgrade()
+                .setTosAndPrivacyPolicyUrls("https://htmlpreview.github.io/?https://github.com/MohamedElhedi-BenYedder/E_Presence/blob/ChangingDesign/WebPage/terms_of_services.html", "https://htmlpreview.github.io/?https://github.com/MohamedElhedi-BenYedder/E_Presence/blob/ChangingDesign/WebPage/privacy_policy.html")
                 .setLogo(R.drawable.ic_logo)
                 .setAlwaysShowSignInMethodScreen(true)
-                .setIsSmartLockEnabled(false)
+                .enableAnonymousUsersAutoUpgrade()
+                .setIsSmartLockEnabled(true)
                 .setTheme(R.style.AppThemeFirebaseAuth)
                 .build();
 

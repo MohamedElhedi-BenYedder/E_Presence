@@ -1,5 +1,6 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -23,9 +24,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,8 +81,10 @@ public class Home extends AppCompatActivity {
 
         //click event over Bottom bar menu item
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                if (!user.isAnonymous())
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
                         db.collection("User").document(UserId).
@@ -108,7 +114,39 @@ public class Home extends AppCompatActivity {
                         return true;
 
                 }
+                else   {
+                    final AlertDialog.Builder ananymousDialog = new AlertDialog.Builder(Home.this);
+                    ananymousDialog.setTitle("Sign Up ?");
+                    ananymousDialog.setMessage("To access this page authentification is required !");
+                    ananymousDialog.setIcon(getDrawable(R.drawable.ic8_add_key));
+                    ananymousDialog.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AuthUI.getInstance()
+                                    .signOut(Home.this)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            // user is now signed out
+                                            startActivity(new Intent(Home.this, Welcome.class));
+                                            finish();
+                                        }
+                                    });
+
+
+                            }});
+
+                    ananymousDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // close the dialog
+                        }
+                    });
+
+                    ananymousDialog.create().show();
+
+                }
                 return true;
+
             }
 
 
@@ -176,7 +214,7 @@ public class Home extends AppCompatActivity {
                     else if(isStudent) priority=1;
                     else priority=0;
                     String ch=""+priority;
-                    Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
                    startActivity(new Intent(Home.this, SchoolPage.class)
                            .putExtra("SchoolID",SID)
                            .putExtra("Priority",priority));

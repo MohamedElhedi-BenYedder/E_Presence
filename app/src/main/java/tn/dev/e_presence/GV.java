@@ -50,14 +50,16 @@ public class GV {
                         currentUserMail=userDoc.getString("email");
                         currentUserPhoneNumber=userDoc.getString("phoneNumber");
                         currentUserPhotoPath=userDoc.getString("photo");
-                        StorageReference image = mStorageRef.child(currentUserPhotoPath);
-                        image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+                       try {
+                           StorageReference image = mStorageRef.child(currentUserPhotoPath);
+                           image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
                                 currentUserPhoto = uri;
 
 
-                            }} );} }  ); }
+                            }} );}catch (Exception e){}} }  ); }
     //------------------User--------------------//
     // ---Get USER COLLECTION REFERENCE ---
     public static CollectionReference getUsersCollection(){
