@@ -302,7 +302,7 @@ public class SchoolPage extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 tv_description.setText(documentSnapshot.getString("Description"));
-                tv_display_name.setText(documentSnapshot.getString("DisplayName"));
+                //tv_display_name.setText(documentSnapshot.getString("DisplayName"));
                 tv_full_name.setText(documentSnapshot.getString("FullName"));
                 tv_location.setText(documentSnapshot.getString("Location"));
             }
@@ -312,7 +312,7 @@ public class SchoolPage extends AppCompatActivity {
     {
         bottomAppBar=findViewById(R.id.bnb);
         tv_description=findViewById(R.id.tv_description);
-        tv_display_name=findViewById(R.id.tv_display_name);
+       // tv_display_name=findViewById(R.id.tv_display_name);
         tv_full_name=findViewById(R.id.tv_full_name);
         tv_welcome=findViewById(R.id.tv_welcome_user);
         tv_location=findViewById(R.id.tv_location);

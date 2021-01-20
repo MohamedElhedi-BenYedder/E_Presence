@@ -7,16 +7,14 @@
     android:layout_marginBottom="0dp"
     android:background="@color/bg_color"
     android:orientation="vertical"
-    android:paddingTop="16sp"
+    android:paddingTop="30sp"
     tools:context=".SchoolPage">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
         android:orientation="horizontal">
 
         <TextView
@@ -25,7 +23,7 @@
             android:fontFamily="@font/lato"
             android:text="Dashboard"
             android:textColor="#5E5E5E"
-            android:textSize="24dp"
+            android:textSize="30dp"
             android:textStyle="bold" />
 
         <View
@@ -43,10 +41,8 @@
         android:id="@+id/tv_welcome_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginRight="16sp"
-        android:layout_marginStart="16sp"
+        android:layout_marginLeft="30sp"
+        android:layout_marginRight="30sp"
         android:fontFamily="@font/lato"
         android:text="Welcome %USER%"
         android:textColor="#5E5E5E"
@@ -57,17 +53,15 @@
         android:id="@+id/cv_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
+        android:layout_marginLeft="30sp"
         android:layout_marginTop="22dp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp">
+        android:layout_marginRight="30sp">
 
         <LinearLayout
             android:id="@+id/ll_information"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/lavender"
+            android:background="@drawable/rectengular_field_scanned"
             android:clickable="true"
             android:elevation="0sp"
             android:orientation="vertical"
@@ -78,6 +72,15 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+                <TextView
+                    android:id="@+id/tv_full_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/lato"
+                    android:selectAllOnFocus="false"
+                    android:textColor="#5E5E5E"
+                    android:textSize="24dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -87,41 +90,24 @@
                         android:id="@+id/imageView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_location" />
+                        app:srcCompat="@drawable/ic_location_change_color" />
 
                     <TextView
                         android:id="@+id/tv_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
-                        android:textColor="#ffff"
+                        android:fontFamily="@font/lato"
+                        android:textColor="#5E5E5E"
                         android:textSize="14sp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_full_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
-                    android:selectAllOnFocus="false"
-                    android:textColor="#ffff"
-                    android:textSize="24dp" />
-
-                <TextView
-                    android:id="@+id/tv_display_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto_mediumitalic"
-                    android:singleLine="true"
-                    android:textColor="#ffff"
-                    android:textSize="18dp" />
 
                 <TextView
                     android:id="@+id/tv_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
-                    android:textColor="#ffff"
+                    android:fontFamily="@font/lato"
+                    android:textColor="#5E5E5E"
                     android:textSize="14sp" />
 
 
@@ -136,10 +122,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
+        android:layout_marginStart="20sp"
         android:layout_marginLeft="16sp"
         android:layout_marginTop="14dp"
-        android:layout_marginEnd="16sp"
+        android:layout_marginEnd="20sp"
         android:layout_marginRight="16sp"
         android:backgroundTint="@color/fui_transparent"
         android:orientation="horizontal">
@@ -183,9 +169,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16sp"
+                    android:layout_marginStart="20sp"
                     android:layout_marginLeft="16sp"
-                    android:layout_marginEnd="16sp"
+                    android:layout_marginEnd="20sp"
                     android:layout_marginRight="16sp"
                     android:layout_marginBottom="50dp"
                     android:isScrollContainer="true"
@@ -219,7 +205,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="Students"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -259,7 +245,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="Teachers"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -306,7 +292,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="Groups"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -345,7 +331,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="Courses"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -393,7 +379,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="Sessions"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 
@@ -441,7 +427,7 @@
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/lato"
                                     android:text="More"
-                                    android:textColor="#5E5E5E"
+                                    android:textColor="@color/dashboardtext"
                                     android:textSize="18dp"
                                     android:textStyle="bold" />
 

@@ -59,14 +59,13 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
     @SuppressLint("RestrictedApi")
     @Override
     protected void onBindViewHolder(@NonNull UserHolder holder, int position, @NonNull User model) {
-        holder.tv_display_name.setText(model.getDisplayName());
         holder.tv_email.setText(model.getEmail());
        try{ if (model.getGender().equals("Male"))
-            holder.tv_gender.setText("Mr");
+           holder.tv_display_name.setText("Mr "+model.getDisplayName());
         else if (model.getGender().equals("Female"))
-            holder.tv_gender.setText("Mrs");
+           holder.tv_display_name.setText("Mrs "+model.getDisplayName());
         else
-            holder.tv_gender.setText("");}catch (Exception e){};
+           holder.tv_display_name.setText(model.getDisplayName());}catch (Exception e){};
 
         StorageReference image = STORAGE_REFERENCE.child(model.getPhoto());
 
@@ -92,7 +91,11 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
         if (Check)
         {
             if (exist(position))
-                holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field));
+            {
+                holder.ll_bg.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field1));
+
+            }
+
         }
     }
     public boolean exist(int position)
@@ -121,7 +124,7 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
 
     public class UserHolder extends RecyclerView.ViewHolder {
         TextView tv_display_name;
-        TextView tv_gender;
+
         TextView tv_email;
         ImageView iv_photo;
         LinearLayout ll_bg;
@@ -129,7 +132,6 @@ public class UserAdapter extends FirestoreRecyclerAdapter<User,UserAdapter.UserH
         public UserHolder(@NonNull View oneUserItem) {
             super(oneUserItem);
             tv_display_name = oneUserItem.findViewById(R.id.tv_display_name);
-            tv_gender = oneUserItem.findViewById(R.id.tv_gender);
             tv_email = oneUserItem.findViewById(R.id.tv_email);
             iv_photo = oneUserItem.findViewById(R.id.iv_photo);
             ll_bg = oneUserItem.findViewById(R.id.ll_bg);

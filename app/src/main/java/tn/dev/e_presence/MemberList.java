@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -82,13 +83,21 @@ public class MemberList extends AppCompatActivity {
     private ArrayList<String> Students;
     private ArrayList<String> Teachers;
     private RecyclerView recyclerView;
+    private TextView tv_page;
+    private boolean add;
     private ItemTouchHelper itemTouchHelper1,itemTouchHelper2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_member_list);
         listenForIncommingMessages();
+        tv_page=findViewById(R.id.tv_page);
+        if(key.equals("studentIN"))
+            tv_page.setText("Students");
+        else if(key.equals("TeacherIN"))
+            tv_page.setText("Teachers");
         setUpBottomAppBarMenu();
+        add=false;
         if (Pres) setUpRecyclerViewPres();
         else  setUpRecyclerView();
         fab =(FloatingActionButton) findViewById(R.id.fab);
@@ -200,8 +209,7 @@ public class MemberList extends AppCompatActivity {
             Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
 
         }
-
-        Toast.makeText(MemberList.this, "Adding New Members" , Toast.LENGTH_SHORT).show();
+        Toast.makeText(MemberList.this,Html.fromHtml("<b>Adding New Members </b>"), Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query,User.class)
@@ -226,15 +234,30 @@ public class MemberList extends AppCompatActivity {
                     //admin
                     if (priority == 3) {
                         // add User;
-                        setUpRecyclerViewAdmin();
-                        UserAdapter.startListening();
-                        Intent intent = new Intent(getApplicationContext(), MemberList.class)
-                                .putExtra("path", path)
-                                .putExtra("key", key)
-                                .putExtra("all", all)
-                                .putExtra("SchoolID", SchoolId)
-                                .putExtra("Priority", priority)
-                                .putExtra("TAG", "MemberList");
+                        if(!add) {
+                            add=!add;
+                            setUpRecyclerViewAdmin();
+                            fab.setImageResource(R.drawable.ic8_back_arrow);
+                            if(key.equals("studentIN"))
+                                tv_page.setText("Add Students");
+                            else if(key.equals("TeacherIN"))
+                                tv_page.setText("Add Teachers");
+                            UserAdapter.startListening();
+
+                        }
+                        else
+                        {
+                            add=!add;
+                            fab.setImageResource(R.drawable.ic8_add_user_male);
+                            if(key.equals("studentIN"))
+                                tv_page.setText("Students");
+                            else if(key.equals("TeacherIN"))
+                                tv_page.setText("Teachers");
+                            setUpRecyclerView();
+                            UserAdapter.startListening();
+
+
+                        }
                     }
                     //Student or Teacher
                     else {
@@ -300,7 +323,7 @@ public class MemberList extends AppCompatActivity {
     }
     void setFloatingAppButtonIcon()
     {
-        if ((priority==3)&&!Pres) fab.setImageResource(R.drawable.ic8_add_user_male);
+        if ((priority==3)&&!Pres&&!add) fab.setImageResource(R.drawable.ic8_add_user_male);
     }
 
     @Override

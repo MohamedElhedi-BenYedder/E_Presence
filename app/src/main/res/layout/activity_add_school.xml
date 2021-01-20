@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:layout_marginBottom="0dp"
     android:orientation="vertical"
-    android:paddingTop="16sp"
+    android:paddingTop="30sp"
+    android:background="@color/bg_color"
     tools:context=".AddSchool">
 
     <LinearLayout
@@ -18,10 +19,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
-            android:text="Set School information."
+            android:fontFamily="@font/lato"
+            android:text="Edit School"
             android:textColor="#5E5E5E"
-            android:textSize="24dp" />
+            android:textSize="30dp"
+            android:textStyle="bold"/>
 
         <View
             android:layout_width="40dp"
@@ -85,20 +87,22 @@
                     android:id="@+id/et_display_name"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:fontFamily="@font/roboto_mediumitalic"
                     android:hint="Display Name"
                     android:singleLine="true"
-                    android:textColor="#ffff"
+                    android:fontFamily="@font/lato"
+                    android:textColor="#5E5E5E"
+                    android:textColorHint="#5E5E5E"
                     android:textSize="18dp" />
 
                 <EditText
                     android:id="@+id/et_full_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_medium"
                     android:hint="School Name"
                     android:selectAllOnFocus="false"
-                    android:textColor="#ffff"
+                    android:fontFamily="@font/lato"
+                    android:textColor="#5E5E5E"
+                    android:textColorHint="#5E5E5E"
                     android:textSize="24dp" />
 
                 <LinearLayout
@@ -110,15 +114,16 @@
                         android:id="@+id/imageView4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        app:srcCompat="@drawable/ic_location" />
+                        app:srcCompat="@drawable/ic_location_change_color" />
 
                     <EditText
                         android:id="@+id/et_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_regular"
+                        android:fontFamily="@font/lato"
+                        android:textColor="#5E5E5E"
                         android:hint="Location"
-                        android:textColor="#ffff"
+                        android:textColorHint="#5E5E5E"
                         android:textSize="14sp" />
                 </LinearLayout>
 
@@ -126,9 +131,10 @@
                     android:id="@+id/et_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_regular"
                     android:hint="Description"
-                    android:textColor="#ffff"
+                    android:fontFamily="@font/lato"
+                    android:textColor="#5E5E5E"
+                    android:textColorHint="#5E5E5E"
                     android:textSize="14sp" />
 
 

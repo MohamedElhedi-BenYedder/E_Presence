@@ -36,7 +36,7 @@
                 android:layout_margin="5dp"
                 android:fontFamily="@font/lato"
                 android:text="School Name"
-                android:textColor="@android:color/black"
+                android:textColor="@color/text_item"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

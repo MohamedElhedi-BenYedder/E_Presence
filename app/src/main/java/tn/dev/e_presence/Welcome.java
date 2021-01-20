@@ -66,7 +66,7 @@ public class Welcome extends AppCompatActivity {
         Intent intent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
+                .setTosAndPrivacyPolicyUrls("example.com", "https://example.com")
                 .setLogo(R.drawable.ic_logo)
                 .setAlwaysShowSignInMethodScreen(true)
                 .setIsSmartLockEnabled(false)
