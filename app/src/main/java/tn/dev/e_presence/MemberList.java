@@ -94,7 +94,7 @@ public class MemberList extends AppCompatActivity {
         tv_page=findViewById(R.id.tv_page);
         if(key.equals("studentIN"))
             tv_page.setText("Students");
-        else if(key.equals("TeacherIN"))
+        else if(key.equals("teacherIN"))
             tv_page.setText("Teachers");
         setUpBottomAppBarMenu();
         add=false;
@@ -240,7 +240,7 @@ public class MemberList extends AppCompatActivity {
                             fab.setImageResource(R.drawable.ic8_back_arrow);
                             if(key.equals("studentIN"))
                                 tv_page.setText("Add Students");
-                            else if(key.equals("TeacherIN"))
+                            else if(key.equals("teacherIN"))
                                 tv_page.setText("Add Teachers");
                             UserAdapter.startListening();
 
@@ -251,7 +251,7 @@ public class MemberList extends AppCompatActivity {
                             fab.setImageResource(R.drawable.ic8_add_user_male);
                             if(key.equals("studentIN"))
                                 tv_page.setText("Students");
-                            else if(key.equals("TeacherIN"))
+                            else if(key.equals("teacherIN"))
                                 tv_page.setText("Teachers");
                             setUpRecyclerView();
                             UserAdapter.startListening();
@@ -611,11 +611,10 @@ public class MemberList extends AppCompatActivity {
                                         if ((path.split("/").length > 3)) p = path.split("/")[3];
 
                                         db.collection("User").document(Uid).update(key, FieldValue.arrayUnion(p));
-                                        if ((path.split("/").length > 3)) {
+                                        if ((path.split("/").length > 3))
                                             db.collection("School").document(SchoolId).collection("Group").document(p).update(finalSchoolField, FieldValue.arrayUnion(Uid));
-                                        }else
+                                        else
                                             db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
-
                                         Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is added "), Toast.LENGTH_SHORT).show();
                                         if (key.equals("studentIN"))
                                             Students.add(Uid);
