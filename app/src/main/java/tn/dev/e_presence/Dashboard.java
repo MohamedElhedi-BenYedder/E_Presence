@@ -462,7 +462,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
        {
 
-           if (priority==1) fab.setImageResource(R.drawable.ic_school);
+           if (priority==1) fab.setImageResource(R.drawable.ic8_back_arrow);
        }
 
    }
