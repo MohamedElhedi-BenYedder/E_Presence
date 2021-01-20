@@ -79,7 +79,7 @@
             app:maxImageSize="56dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic8_add"
+            android:src="@drawable/ic8_calendar_plus"
             app:tint="@null"
             android:scaleType="fitCenter"
             app:layout_anchor="@id/bnb"
