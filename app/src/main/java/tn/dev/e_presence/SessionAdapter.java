@@ -94,7 +94,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                         }
                     });
         }catch(Exception e){}
-        if(model.getListOfPresence().contains(UserId)) holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field_scanned));
+        if(model.getListOfPresence().contains(UserId)) holder.ll.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.rectengular_field1));
 
 
     }
