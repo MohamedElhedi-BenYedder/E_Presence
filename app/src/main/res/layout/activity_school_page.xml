@@ -486,7 +486,10 @@
                 android:keepScreenOn="false"
                 android:visibility="visible"
                 app:layout_anchor="@id/bnb"
-                app:srcCompat="@drawable/ic_add" />
+                android:backgroundTint="@color/fui_transparent"
+                android:outlineSpotShadowColor="@color/fui_transparent"
+                android:outlineAmbientShadowColor="@color/fui_transparent"
+                />
 
             <com.google.android.material.bottomappbar.BottomAppBar
                 android:id="@+id/bnb"
