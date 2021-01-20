@@ -535,6 +535,12 @@ public class MemberList extends AppCompatActivity {
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     int position = viewHolder.getAdapterPosition();
+                    GV.visitedUserPhotoPath=UserAdapter.getItem(position).getPhoto();
+                    GV.visitedUserName=UserAdapter.getItem(position).getDisplayName();
+                    GV.visitedUserMail=UserAdapter.getItem(position).getEmail();
+                    GV.visitedUserPhoneNumber=UserAdapter.getItem(position).getPhoneNumber();
+                    startActivity(new Intent(MemberList.this,Profile.class)
+                            .putExtra("out",true));
 
                 }
 
