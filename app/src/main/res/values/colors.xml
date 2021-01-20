@@ -5,6 +5,8 @@
     <color name="color_add">#bae0bd</color>
     <color name="color_delete">#F78F8F</color>
     <color name="bar_color">#FFFFFF</color>
+    <color name="facebook">#f0f2f5</color>
+
     <color name="black_grey">#020000</color>
     <color name="dashboardtext">#5E5E5E</color>
     <color name="bg_color">#FFFFFF</color>

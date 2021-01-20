@@ -602,7 +602,7 @@ public class MemberList extends AppCompatActivity {
                                 deleteUserDialog.setTitle("Add " + User + " ?");
                                 Spanned spannedMessage = Html.fromHtml("Do you want to add " + "<b>" + UserName + "</b> to <b>" + SchoolId + "</b> ?");
                                 deleteUserDialog.setMessage(spannedMessage);
-                                deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_denied));
+                                deleteUserDialog.setIcon(getDrawable(R.drawable.ic8_add_user_male));
                                 String finalSchoolField = SchoolField;
                                 deleteUserDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                     @Override
@@ -611,7 +611,11 @@ public class MemberList extends AppCompatActivity {
                                         if ((path.split("/").length > 3)) p = path.split("/")[3];
 
                                         db.collection("User").document(Uid).update(key, FieldValue.arrayUnion(p));
-                                        db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
+                                        if ((path.split("/").length > 3)) {
+                                            db.collection("School").document(SchoolId).collection("Group").document(p).update(finalSchoolField, FieldValue.arrayUnion(Uid));
+                                        }else
+                                            db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayUnion(Uid));
+
                                         Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is added "), Toast.LENGTH_SHORT).show();
                                         if (key.equals("studentIN"))
                                             Students.add(Uid);
