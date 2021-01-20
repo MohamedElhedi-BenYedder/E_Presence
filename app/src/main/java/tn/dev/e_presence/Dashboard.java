@@ -123,20 +123,35 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     }
     private void SetDatePicker() {
         picker = (HorizontalPicker) findViewById(R.id.datePicker);
-        picker.setListener(this)
+        if( new DarkModePrefManager(this).isLightMode())
+            picker.setListener(this)
                 .setDays(120)
-                .setOffset(7)
-                .setDateSelectedColor(Color.BLACK)
+                .setOffset(30)
+                .setDateSelectedColor(getResources().getColor(R.color.c2))
                 .setDateSelectedTextColor(Color.WHITE)
-                .setMonthAndYearTextColor(Color.BLACK)
+                .setMonthAndYearTextColor(getResources().getColor(R.color.c2))
                 .setTodayButtonTextColor(Color.WHITE)
                 .setTodayDateTextColor(Color.WHITE)
-                .setTodayDateBackgroundColor(Color.GRAY)
+                .setTodayDateBackgroundColor(Color.BLACK)
                 .setUnselectedDayTextColor(Color.BLACK)
                 .setDayOfWeekTextColor(Color.BLACK)
-                .setUnselectedDayTextColor(getResources().getColor(R.color.primaryTextColor))
-                .showTodayButton(false)
+                .showTodayButton(true)
                 .init();
+                else
+
+            picker.setListener(this)
+                    .setDays(120)
+                    .setOffset(30)
+                    .setDateSelectedColor(getResources().getColor(R.color.c2))
+                    .setDateSelectedTextColor(Color.BLACK)
+                    .setMonthAndYearTextColor(getResources().getColor(R.color.c2))
+                    .setTodayButtonTextColor(Color.WHITE)
+                    .setTodayDateTextColor(Color.WHITE)
+                    .setTodayDateBackgroundColor(Color.BLACK)
+                    .setUnselectedDayTextColor(getResources().getColor(R.color.ghost_white))
+                    .setDayOfWeekTextColor(getResources().getColor(R.color.ghost_white))
+                    .showTodayButton(true)
+                    .init();
         picker.setBackgroundColor(getResources().getColor(R.color.contentBodyColor));
         picker.setDate(new DateTime());
     }

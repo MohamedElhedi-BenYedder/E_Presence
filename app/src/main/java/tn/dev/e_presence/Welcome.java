@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static tn.dev.e_presence.GV.*;
 import static tn.dev.e_presence.GV.createUser;
 
 public class Welcome extends AppCompatActivity {
@@ -45,6 +46,7 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
             startActivity(new Intent(this, Home.class));
             this.finish();
         }
@@ -55,19 +57,22 @@ public class Welcome extends AppCompatActivity {
         List<AuthUI.IdpConfig> providers;
         providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.MicrosoftBuilder().build(),
+                //new AuthUI.IdpConfig.MicrosoftBuilder().build(),//
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build()
+                new AuthUI.IdpConfig.PhoneBuilder().build(),
+                new AuthUI.IdpConfig.AnonymousBuilder().build()
 
         );
 
         Intent intent = AuthUI.getInstance()
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
-                .setTosAndPrivacyPolicyUrls("https://example.com", "https://example.com")
+                .enableAnonymousUsersAutoUpgrade()
+                .setTosAndPrivacyPolicyUrls("https://htmlpreview.github.io/?https://github.com/MohamedElhedi-BenYedder/E_Presence/blob/ChangingDesign/WebPage/terms_of_services.html", "https://htmlpreview.github.io/?https://github.com/MohamedElhedi-BenYedder/E_Presence/blob/ChangingDesign/WebPage/privacy_policy.html")
                 .setLogo(R.drawable.ic_logo)
                 .setAlwaysShowSignInMethodScreen(true)
-                .setIsSmartLockEnabled(false)
+                .enableAnonymousUsersAutoUpgrade()
+                .setIsSmartLockEnabled(true)
                 .setTheme(R.style.AppThemeFirebaseAuth)
                 .build();
 
@@ -91,6 +96,7 @@ public class Welcome extends AppCompatActivity {
                 }*/} else {
                     //This is a returning user
                 }
+                GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 Intent intent = new Intent(this, Home.class);
                 startActivity(intent);
                 this.finish();

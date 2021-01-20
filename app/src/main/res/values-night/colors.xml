@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--colors for dark mode-->
-    <color name="contentBodyColor">#000</color>
+    <color name="bg_color">#121212</color>
+    <color name="contentBodyColor">#404040</color>
     <color name="contentTextColor">#fff</color>
-    <color name="miniTitle">#fff</color>
+    <color name="black_grey">#5E5E5E</color>
+    <color name="text_item">#fff</color>
+    <color name="miniTitle">#B3B3B3</color>
+    <color name="dashboardtext">#ffffffff</color>
 </resources>

@@ -1,42 +1,32 @@
 package tn.dev.e_presence;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcherOwner;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.ActivityChooserView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 import static tn.dev.e_presence.GV.getSchool;
-import static tn.dev.e_presence.GV.getUser;
 
 public class SchoolPage extends AppCompatActivity {
     private BottomAppBar bottomAppBar;
@@ -123,12 +113,14 @@ public class SchoolPage extends AppCompatActivity {
     }
     void welcomeUser()
     {
-        getUser(UserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        Spanned welcome = Html.fromHtml("Welcome "+"<b>"+GV.currentUserName+"<b/>");
+        tv_welcome.setText(welcome);
+        /*getUser(UserId).addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                tv_welcome.setText("Welcome "+documentSnapshot.getString("displayName"));
+                tv_welcome_user.setText("Welcome "+documentSnapshot.getString("displayName"));
             }
-        });
+        });*/
     }
 
     void onStudentClick() {
@@ -311,7 +303,7 @@ public class SchoolPage extends AppCompatActivity {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 tv_description.setText(documentSnapshot.getString("Description"));
-                tv_display_name.setText(documentSnapshot.getString("DisplayName"));
+                //tv_display_name.setText(documentSnapshot.getString("DisplayName"));
                 tv_full_name.setText(documentSnapshot.getString("FullName"));
                 tv_location.setText(documentSnapshot.getString("Location"));
             }
@@ -321,7 +313,7 @@ public class SchoolPage extends AppCompatActivity {
     {
         bottomAppBar=findViewById(R.id.bnb);
         tv_description=findViewById(R.id.tv_description);
-        tv_display_name=findViewById(R.id.tv_display_name);
+       // tv_display_name=findViewById(R.id.tv_display_name);
         tv_full_name=findViewById(R.id.tv_full_name);
         tv_welcome=findViewById(R.id.tv_welcome_user);
         tv_location=findViewById(R.id.tv_location);

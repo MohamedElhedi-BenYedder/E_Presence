@@ -78,6 +78,9 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                         public void onSuccess(DocumentSnapshot documentSnapshot) {
                            String Photo =documentSnapshot.getString("Photo");
                             StorageReference image;
+
+                            if(Photo!=null)
+                            {
                             image = STORAGE_REFERENCE.child(Photo);
                             image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
@@ -86,7 +89,8 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
                                     Picasso.get().load(uri).into(holder.iv_school);
 
                                 }
-                            });
+
+                            });}
                         }
                     });
         }catch(Exception e){}

@@ -5,32 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Profile">
+    android:paddingTop="30sp"
+    android:paddingHorizontal="30sp"
+
+    android:background="@color/bg_color"
+    tools:context=".EditProfile">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp"
+
         android:orientation="horizontal"
-        android:paddingTop="16sp">
+
+        >
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/lato"
             android:text="Edit Profile"
             android:textColor="#5E5E5E"
-            android:textSize="24dp" />
+            android:textSize="30dp"
+            android:textStyle="bold"/>
 
         <View
             android:layout_width="40dp"
             android:layout_height="6dp"
             android:layout_gravity="center"
             android:layout_marginLeft="8dp"
-            android:background="@drawable/ic_bg">
+            android:background="@color/c2">
 
         </View>
 
@@ -40,11 +43,7 @@
         android:id="@+id/tv_welcome_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp"
-        android:fontFamily="@font/roboto_regular"
+        android:fontFamily="@font/lato"
         android:paddingBottom="16sp"
         android:text="Hello %USER%"
         android:textColor="#5E5E5E"
@@ -54,21 +53,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginRight="16sp"
-        android:layout_marginStart="16sp"
         android:layout_weight="0.4"
-        android:background="@color/lavender"
+        android:background="@drawable/rectengular_field_scanned"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/cv_photo"
-            android:layout_width="142dp"
-            android:layout_height="139dp"
+            android:layout_width="111dp"
+            android:layout_height="121dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/ic8_user" />
+            android:src="@drawable/ic8_test_account"
+            app:civ_border_width="3dp"/>
 
 
     </LinearLayout>
@@ -76,22 +72,19 @@
     <TextView
         android:id="@+id/save_btn"
         style="@style/profileStyledBackButton"
-        android:text="Save\nProfile"
-        android:layout_marginStart="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center"
         android:layout_marginTop="-25dp"
-        android:textColor="@android:color/white"
-        android:layout_marginEnd="80dp"/>
+        android:text="Save"
+        android:textColor="@android:color/white" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16sp"
-        android:layout_marginLeft="16sp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="16sp"
-        android:layout_marginRight="16sp"
         android:layout_weight="0.6"
+        android:layout_marginTop="20dp"
         android:orientation="vertical"
-        android:scrollbars="none"
         android:paddingStart="16dp"
         android:paddingEnd="16dp">
         <LinearLayout
@@ -100,146 +93,157 @@
             android:orientation="vertical"
             >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                app:srcCompat="@drawable/ic8_user" />
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    app:srcCompat="@drawable/ic8_user" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:textColor="@color/black_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Full Name" />
+
+                    <EditText
+                        android:id="@+id/name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic8_gender" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Gender"
+                        android:textColor="@color/black_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
 
-                <TextView
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic8_phone" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/lato"
-                    android:text="Full Name"
-                    android:textColor="@android:color/black" />
+                    android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:textColor="@color/black_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=" Phone Number" />
+
+                    <EditText
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="phone"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic8_gender" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/gendertext"
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="4dp"
+                    app:srcCompat="@drawable/ic8_email1" />
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Gender"
-                    android:textColor="@android:color/black" />
+                    android:orientation="vertical">
 
-                <Spinner
-                    android:id="@+id/gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Email"
+                        android:textColor="@color/black_grey"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/mail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textEmailAddress"
+                        android:textSize="14sp" />
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic8_phone" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:textColor="@android:color/black"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Phone Number" />
-
-                <EditText
-                    android:id="@+id/phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"/>
-
-            </LinearLayout>
 
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="10dp"
-                android:padding="4dp"
-                app:srcCompat="@drawable/ic8_email1" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:textColor="@android:color/black" />
-
-                <EditText
-                    android:id="@+id/mail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-
-    </LinearLayout>
     </ScrollView>
+
+
+
 </LinearLayout>

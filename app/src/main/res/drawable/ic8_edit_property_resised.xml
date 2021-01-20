@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:drawable="@drawable/ic8_edit_property"
+        android:width="59dp"
+        android:height="65dp"
+        />
+
+</layer-list >

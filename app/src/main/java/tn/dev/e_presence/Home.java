@@ -1,10 +1,15 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,8 +24,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,8 +81,10 @@ public class Home extends AppCompatActivity {
 
         //click event over Bottom bar menu item
         bottomAppBar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @SuppressLint("RestrictedApi")
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+                if (!user.isAnonymous())
                 switch (item.getItemId()) {
                     case R.id.miDashboard:
                         db.collection("User").document(UserId).
@@ -103,7 +114,39 @@ public class Home extends AppCompatActivity {
                         return true;
 
                 }
+                else   {
+                    final AlertDialog.Builder ananymousDialog = new AlertDialog.Builder(Home.this);
+                    ananymousDialog.setTitle("Sign Up ?");
+                    ananymousDialog.setMessage("To access this page authentification is required !");
+                    ananymousDialog.setIcon(getDrawable(R.drawable.ic8_add_key));
+                    ananymousDialog.setPositiveButton("Sign Up", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            AuthUI.getInstance()
+                                    .signOut(Home.this)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            // user is now signed out
+                                            startActivity(new Intent(Home.this, Welcome.class));
+                                            finish();
+                                        }
+                                    });
+
+
+                            }});
+
+                    ananymousDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // close the dialog
+                        }
+                    });
+
+                    ananymousDialog.create().show();
+
+                }
                 return true;
+
             }
 
 
@@ -162,15 +205,16 @@ public class Home extends AppCompatActivity {
                 public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
                     String SID = documentSnapshot.getId();
                     int priority;
-                    boolean isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);
-                    boolean isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);
-                    boolean isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);
+                    boolean isAdmin,isTeacher ,isStudent;
+                    try{  isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);}catch(Exception e){isAdmin=false;}
+                    try{ isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);}catch(Exception e){isTeacher=false;}
+                    try{ isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);}catch(Exception e){isStudent=false;}
                     if (isAdmin) priority=3;
                     else if(isTeacher) priority=2;
                     else if(isStudent) priority=1;
                     else priority=0;
                     String ch=""+priority;
-                    Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
                    startActivity(new Intent(Home.this, SchoolPage.class)
                            .putExtra("SchoolID",SID)
                            .putExtra("Priority",priority));
@@ -200,6 +244,7 @@ public class Home extends AppCompatActivity {
                     return false;
                 }
 
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                     int position=viewHolder.getAdapterPosition();
@@ -207,8 +252,43 @@ public class Home extends AppCompatActivity {
                     switch (direction)
                     {
                         case ItemTouchHelper.LEFT:
-                            schoolAdapter.deleteItem(position,UserId,db);
-                            recyclerView.setAdapter(schoolAdapter);
+                            String Identifier=schoolAdapter.getItem(position).getDisplayName();
+                            EditText ConfirmIdentifier=new EditText(Home.this);
+                            final AlertDialog.Builder deleteSchoolDialog = new AlertDialog.Builder(Home.this);
+                            deleteSchoolDialog.setTitle("Delete this school?");
+                            String Identifier_bold = "<b>" + Identifier+ "</b>";
+                            String message = "This action will result in the permanent deletion of all data for this school, including courses, sessions and groups.\n" +
+                                    "<br>"+"<br>"+"Confirm the deletion of this school by entering its identifier: ";
+                            Spanned spannedMessage = Html.fromHtml(message+ Identifier_bold);
+                            deleteSchoolDialog.setMessage(spannedMessage);
+                            deleteSchoolDialog.setView(ConfirmIdentifier);
+                            deleteSchoolDialog.setIcon(getDrawable(R.drawable.ic8_delete));
+                            deleteSchoolDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // verify the identifier
+                                    if(Identifier.equals(ConfirmIdentifier.getText().toString()))
+                                    {schoolAdapter.deleteItem(position,UserId,db);
+
+                                        Toast.makeText(Home.this, "School is deleted.", Toast.LENGTH_SHORT).show();}
+
+                                    else{
+                                        Toast.makeText(Home.this, "Wrong identifier", Toast.LENGTH_SHORT).show();
+                                        recyclerView.setAdapter(schoolAdapter);
+                                    }
+                                }
+                            });
+
+                            deleteSchoolDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // close the dialog
+                                    recyclerView.setAdapter(schoolAdapter);
+                                }
+                            });
+
+                            deleteSchoolDialog.create().show();
+
                             break;
                         case ItemTouchHelper.RIGHT:
                             Intent intent=schoolAdapter.editItem(position,UserId);
@@ -224,9 +304,13 @@ public class Home extends AppCompatActivity {
                 public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                     new RecyclerViewSwipeDecorator.Builder(Home.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_resized)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_document_resized)
+                            .addSwipeLeftLabel("Delete")
+                            .setSwipeLeftLabelTextSize(1,20)
                             .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
-                            .addSwipeRightActionIcon(R.drawable.ic8_edit_property)
+                            .addSwipeRightActionIcon(R.drawable.ic8_edit_property_resised)
+                            .addSwipeRightLabel("Edit")
+                            .setSwipeRightLabelTextSize(1,20)
                             .addSwipeRightBackgroundColor(R.color.c2)
                             .create()
                             .decorate();

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
+    android:background="@color/bg_color"
     tools:context=".ScanActivity">
     <SurfaceView
         android:id="@+id/camera_preview"
