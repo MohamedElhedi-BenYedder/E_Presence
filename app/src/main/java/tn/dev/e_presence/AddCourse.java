@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,8 +33,9 @@ public class AddCourse extends AppCompatActivity {
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private EditText et_cdescription,et_cname,et_departement;
-    private boolean NewCourse=true;
-    private String SchoolId;
+    private boolean NewCourse;
+    private String SchoolId,CourseID;
+    private TextView tv_title;
     private int priority;
     private Button btn_ok;
     private Button btn_cancel;
@@ -45,6 +47,28 @@ public class AddCourse extends AppCompatActivity {
         listenForIncommingMessages();
         setOk();
         setCancel();
+        setDisplay();
+    }
+    void setDisplay()
+    {
+        if(!NewCourse)
+        {
+
+
+            db.collection("School").document(SchoolId).collection("Course").document(CourseID)
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    et_cdescription.setText(documentSnapshot.getString("description"));
+                    et_cname.setText(documentSnapshot.getString("displayName"));
+                    et_departement.setText(documentSnapshot.getString("departement"));
+                }
+            });
+        }else{
+            tv_title.setText("Add Course");
+        }
+
+
     }
 
     public void setCancel(){
@@ -67,6 +91,7 @@ public class AddCourse extends AppCompatActivity {
         btn_cancel=findViewById(R.id.btn_cancel);
         et_cname=findViewById(R.id.et_cname);
         et_cdescription=findViewById(R.id.et_cdescription);
+        tv_title =findViewById(R.id.tv_title);
     }
     public void setOk()
     {
@@ -77,15 +102,16 @@ public class AddCourse extends AppCompatActivity {
                 String new_Name= et_cname.getText().toString();
                 String new_Description= et_cdescription.getText().toString();
                 String new_Departement=et_departement.getText().toString();
+                Map<String, Object> course = new HashMap<>();
+                course.put("displayName", new_Name);
+                course.put("description",new_Description);
+                course.put("departement",new_Departement);
                 // Start Dashborad Activity again
                 if (NewCourse) {
 
                     //put Data into a message for group
 
-                    Map<String, Object> course = new HashMap<>();
-                    course.put("displayName", new_Name);
-                    course.put("description",new_Description);
-                    course.put("departement",new_Departement);
+
 
                     { db.collection("School").document(SchoolId).collection("Course").document(new_Name)
                             .get()
@@ -132,7 +158,27 @@ public class AddCourse extends AppCompatActivity {
                 }
                 else
                 {
-
+                    db.collection("School").document(SchoolId).collection("Course").document(CourseID)
+                            .update(course)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(AddCourse.this, "Course successfully added!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(AddCourse.this,CourseList.class)
+                                            .putExtra("SchoolID",SchoolId)
+                                            .putExtra("Priority", priority);
+                                    ;
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding Group", e);
+                                    Toast.makeText(AddCourse.this, "Error adding Course", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
                 //
             }
@@ -144,6 +190,8 @@ public class AddCourse extends AppCompatActivity {
         Bundle incommingMessages =getIntent().getExtras();
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
+        CourseID=incommingMessages.getString("CourseID","0");
+        NewCourse=incommingMessages.getBoolean("NewCourse",false);
     }
     @Override
     public void onBackPressed() {

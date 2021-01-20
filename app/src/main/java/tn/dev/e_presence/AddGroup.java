@@ -41,7 +41,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
     private int Compteur;
     private Button btn_ok;
     private Button btn_cancel;
-    private String NewGroupID;
+    private String NewGroupID,GroupID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +51,25 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         setCategory();
         setOk();
         setCancel();
+        setDisplay();
+    }
+    void setDisplay()
+    {
+        if(!NewGroup)
+        {
+
+            db.collection("School").document(SchoolId).collection("Group").document(GroupID)
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    et_gdescription.setText(documentSnapshot.getString("description"));
+                    et_gname.setText(documentSnapshot.getString("displayName"));
+
+                }
+            });
+        }
+
+
     }
     public void setCategory(){
         List<String> Category= new ArrayList<String>( Arrays.asList("Level1", "Level2","Level3","Level4","Level5","Level6","Club") );
@@ -103,17 +122,18 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                     String new_Name= et_gname.getText().toString();
                     String new_Description= et_gdescription.getText().toString();
                     String new_Category=category;
+                Map<String, Object> group = new HashMap<>();
+                group.put("displayName", new_Name);
+                group.put("level", new_Category);
+                group.put("description",new_Description);
+                group.put("num",0);
+                group.put("Students",new ArrayList<String>());
                     // Start Dashborad Activity again
                     if (NewGroup) {
 
                         //put Data into a message for group
 
-                        Map<String, Object> group = new HashMap<>();
-                        group.put("displayName", new_Name);
-                        group.put("level", new_Category);
-                        group.put("description",new_Description);
-                        group.put("num",0);
-                        group.put("Students",new ArrayList<String>());
+
 
                         { db.collection("School").document(SchoolId).collection("Group").document(NewGroupID)
                                 .get()
@@ -161,7 +181,29 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                     }
                     else
                     {
+                        db.collection("School").document(SchoolId).collection("Group").document(GroupID)
+                                .update(group)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d(TAG, "Group successfully added!");
+                                        Toast.makeText(AddGroup.this, "Group successfully added!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(AddGroup.this,GroupList.class)
+                                                .putExtra("SchoolID",SchoolId)
+                                                .putExtra("Priority", priority);
+                                        ;
+                                        startActivity(intent);
+                                        finish();
 
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w(TAG, "Error adding Group", e);
+                                        Toast.makeText(AddGroup.this, "Error adding Group", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                     }
                     //
             }
@@ -174,6 +216,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
         NewGroupID=incommingMessages.getString("NewGroupID","0");
+        GroupID=incommingMessages.getString("GroupID","0");
     }
     @Override
     public void onBackPressed() {

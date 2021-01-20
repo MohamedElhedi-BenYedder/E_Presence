@@ -38,21 +38,21 @@ import java.util.List;
 import java.util.Map;
 
 public class CreateSession extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
-    Button btn_ok,btn_cancel;
-    EditText et_classroom,et_qrcode;
-    TextView tv_qrlink,et_start,et_end;
-    int hour_start,min_start,hour_end,min_end;;
-    String time_start="",time_end="",date_sess="";
+    private Button btn_ok,btn_cancel;
+    private EditText et_classroom,et_qrcode;
+    private TextView tv_qrlink,et_start,et_end;
+    private int hour_start,min_start,hour_end,min_end;;
+    private String time_start="",time_end="",date_sess="";
     private static String group_sess,teacher_sess,cours_sess,teacher_sess_id,group_sess_id;
     boolean NewSession;
-    private String NewSessionID;
-    String SchoolId;
-    ArrayAdapter<String> group_adapter;
-    String GroupId,Uri;
-    private TextView mDisplayDate;
+    private String NewSessionID,SessionID;
+    private String SchoolId;
+    private ArrayAdapter<String> group_adapter;
+    private String GroupId,Uri;
+    private TextView et_date;
     private DatePickerDialog.OnDateSetListener mDateSetListener;
     final String TAG="CreateNewSession";
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final String UserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private  int Compteur;
     private Spinner spinner_group,spinner_teacher,spinner_cours;
@@ -80,6 +80,28 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         setLink();
         setCancel();
         setOk();
+        setDisplay();
+    }
+    void setDisplay()
+    {
+        if(!NewSession)
+        {
+
+            db.collection("School").document(SchoolId).collection("Session").document(SessionID)
+                    .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    et_start.setText(documentSnapshot.getString("start"));
+                    et_end.setText(documentSnapshot.getString("end"));
+                    et_classroom.setText(documentSnapshot.getString("classroom"));
+                    et_date.setText(documentSnapshot.getString("classroom"));
+                    sw_presential.setChecked(documentSnapshot.getBoolean("presential"));
+                    et_qrcode.setText(documentSnapshot.getString("qrcode"));
+                }
+            });
+        }
+
+
     }
     public void setGroup(){
         List<String> groupestatique= new ArrayList<String>();groupestatique.add("Select a Group");
@@ -111,7 +133,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     }
     public void setDate(){
 
-        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+        et_date.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Calendar cal = Calendar.getInstance();
@@ -139,7 +161,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 else smonth=""+month;
                 date = Sday+"/"+smonth+"/" + year;
                 date_sess=date;
-                mDisplayDate.setText(date);
+                et_date.setText(date);
             }
         };
     }
@@ -152,7 +174,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         et_classroom=findViewById(R.id.et_classroom);
         spinner_cours=findViewById(R.id.sp_cours);
         spinner_teacher=findViewById(R.id.sp_teacher);
-        mDisplayDate = (TextView) findViewById(R.id.et_date);
+        et_date = (TextView) findViewById(R.id.et_date);
         et_qrcode=findViewById(R.id.et_qrcode);
         sw_presential=findViewById(R.id.sw_presential);
         tv_qrlink=findViewById(R.id.tv_qrlink);
@@ -281,33 +303,34 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
+                Intent i = new Intent(CreateSession.this,QrwebpageActivity.class)
+                        .putExtra("SchoolID",SchoolId)
+                        .putExtra("GroupID",GroupId)
+                        .putExtra("Priority",priority)
+                        .putStringArrayListExtra("groupIdList",groupIdList)
+                        .putStringArrayListExtra("groupNameList",groupNameList)
+                        .putStringArrayListExtra("teacherIdList", teacherIdList)
+                        .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                        .putExtra("NewSessionID",NewSessionID);
+                //put Data into a message for DashboradActivty
+
+                Map<String, Object> session = new HashMap<>();
+                session.put("start", new_start);
+                session.put("end", new_end);
+                session.put("date", new_date);
+                session.put("classroom", new_classroom);
+                session.put("group", new_group);
+                session.put("teacher", new_teacher);
+                session.put("subject", new_subject);
+                session.put("presential", new_presential);
+                session.put("qrcode", new_qrcode);
+                session.put("listOfPresence",new ArrayList<String>());
+                session.put("teacherId",new_teacherId);
+                session.put("schoolId",SchoolId);
+                session.put("groupId",new_groupId);
                 // Start Dashborad Activity again
                 if (NewSession) {
-                    Intent i = new Intent(CreateSession.this,QrwebpageActivity.class)
-                            .putExtra("SchoolID",SchoolId)
-                            .putExtra("GroupID",GroupId)
-                            .putExtra("Priority",priority)
-                            .putStringArrayListExtra("groupIdList",groupIdList)
-                            .putStringArrayListExtra("groupNameList",groupNameList)
-                            .putStringArrayListExtra("teacherIdList", teacherIdList)
-                            .putStringArrayListExtra("teacherNameList",  teacherNameList)
-                            .putExtra("NewSessionID",NewSessionID);;
-                    //put Data into a message for DashboradActivty
 
-                    Map<String, Object> session = new HashMap<>();
-                    session.put("start", new_start);
-                    session.put("end", new_end);
-                    session.put("date", new_date);
-                    session.put("classroom", new_classroom);
-                    session.put("group", new_group);
-                    session.put("teacher", new_teacher);
-                    session.put("subject", new_subject);
-                    session.put("presential", new_presential);
-                    session.put("qrcode", new_qrcode);
-                    session.put("listOfPresence",new ArrayList<String>());
-                    session.put("teacherId",new_teacherId);
-                    session.put("schoolId",SchoolId);
-                    session.put("groupId",new_groupId);
 
                     db.collection("School")
                             .document(SchoolId)
@@ -355,7 +378,30 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 }
                 else
                 {
+                    db.collection("School").document(SchoolId).collection("Session").document(SessionID)
+                            .update(session)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "Session successfully added!");
+                                    Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
+                                    Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
 
+                                    i.putExtra("Qrurl",Uri)
+                                            .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
+
+                                    startActivity(i);
+                                    finish();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error adding session", e);
+                                    Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                 }
 
                 //
@@ -378,6 +424,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         groupNameList=incommingMessages.getStringArrayList("groupNameList");
         courseNameList=incommingMessages.getStringArrayList("courseNameList");
         priority=incommingMessages.getInt("Priority",0);
+        SessionID =incommingMessages.getString("SessionID","0");
 
 
     }

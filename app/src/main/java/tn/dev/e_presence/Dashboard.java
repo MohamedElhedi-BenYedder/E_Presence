@@ -61,7 +61,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private ListView lv_Session;
     private  ArrayList<String> GroupIDs=new ArrayList<>();
     private SessionAdapter Adapter;
-    private FirebaseFirestore db=FirebaseFirestore.getInstance();
+    private final static FirebaseFirestore db=FirebaseFirestore.getInstance();
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private final String UserId = user.getUid();
     private CollectionReference SessionRef ;
