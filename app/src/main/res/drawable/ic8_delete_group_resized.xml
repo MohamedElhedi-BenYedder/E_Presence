@@ -3,8 +3,8 @@
 
     <item
         android:drawable="@drawable/ic8_delete_group"
-        android:width="55dp"
-        android:height="65dp"
+        android:width="60dp"
+        android:height="60dp"
         />
 
 </layer-list >
