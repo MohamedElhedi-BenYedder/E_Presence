@@ -1,11 +1,16 @@
 package tn.dev.e_presence;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +58,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private ListView lv_Session;
     private  ArrayList<String> GroupIDs=new ArrayList<>();
@@ -99,7 +106,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
         SetDatePicker();
         day=getTodayDate();
         setUpRecyclerView(day);
-        OnSwipedItem();
         fab.setOnClickListener(this::AddSession);
 
 
@@ -271,6 +277,33 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 recyclerView.setHasFixedSize(true);
                 recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
                 recyclerView.setAdapter(sessionAdapter);
+                {
+                    /*------------------set click--------------*/
+                    /*-------Scan QR-Code--------------------*/
+                    sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.M)
+                        @Override
+                        public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
+                            String SID=sessionAdapter.getItem(position).getSchoolId();
+                            int priority;
+                            boolean isAdmin,isTeacher ,isStudent;
+                            try{  isAdmin=((List<String>)documentSnapshot.get("Admins")).contains(UserId);}catch(Exception e){isAdmin=false;}
+                            try{ isTeacher=((List<String>)documentSnapshot.get("Teachers")).contains(UserId);}catch(Exception e){isTeacher=false;}
+                            try{ isStudent=((List<String>)documentSnapshot.get("Students")).contains(UserId);}catch(Exception e){isStudent=false;}
+                            if (isAdmin) priority=3;
+                            else if(isTeacher) priority=2;
+                            else if(isStudent) priority=1;
+                            else priority=0;
+                            String ch=""+priority;
+                            //Toast.makeText(Home.this,ch, Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(Dashboard.this, SchoolPage.class)
+                                    .putExtra("SchoolID",SID)
+                                    .putExtra("Priority",priority));
+                            finish();
+
+                        }
+                    });
+                }
 
 
 
@@ -292,6 +325,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
                     recyclerView.setAdapter(sessionAdapter);
+                    OnSwipedItem();
                     sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
                         @Override
                         public void onItemClick(DocumentSnapshot documentSnapshot, int pos) {
@@ -307,10 +341,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                     .putExtra("NewSessionID","Session"+System.currentTimeMillis());
                             startActivity(intent);
                             finish();
-
-
-
-
                         }
                     });
                 }
@@ -327,6 +357,24 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                     recyclerView.setHasFixedSize(true);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Dashboard.this));
                     recyclerView.setAdapter(sessionAdapter);
+                    OnSwipedItem();
+                    sessionAdapter.setOnItemClickListener(new SessionAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(DocumentSnapshot documentSnapshot, int pos) {
+                            String SessionId =documentSnapshot.getId();
+                            ArrayList<String> listOfPresence= (ArrayList<String>)documentSnapshot.get("listOfPresence");
+                            Intent intent = new Intent(Dashboard.this,MemberList.class)
+                                    .putStringArrayListExtra("listOfPresence",listOfPresence)
+                                    .putExtra("Pres",true)
+                                    .putExtra("TAG",TAG)
+                                    .putExtra("SchoolID",SchoolId)
+                                    .putExtra("GroupID",GroupId)
+                                    .putExtra("Priority",priority)
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                            startActivity(intent);
+                            finish();
+                        }
+                    });
 
                 }
                 break;
@@ -609,9 +657,56 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                sessionAdapter.deleteItem(viewHolder.getAdapterPosition(),UserId,db,priority);
-                recyclerView.setAdapter(sessionAdapter);
+                int position=viewHolder.getAdapterPosition();
+                switch (direction) {
+                    case ItemTouchHelper.LEFT:
+                        final AlertDialog.Builder deleateSessionDialog = new AlertDialog.Builder(Dashboard.this);
+                        deleateSessionDialog.setTitle("Delete Group?");
+                        String message = "Do you want to remove " + "<b>"+"this session"+"</b>" +" from "+"<b>"+SchoolId+"</b>" +" session list?";
+                        Spanned spannedMessage = Html.fromHtml(message);
+                        deleateSessionDialog.setMessage(spannedMessage);
+                        deleateSessionDialog.setIcon(R.drawable.ic8_delete_calendar);
+                        deleateSessionDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // verify the identifier
+                                sessionAdapter.deleteItem(position, UserId, db, priority);
+                            }
+                        });
 
+                        deleateSessionDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // close the dialog
+                                sessionAdapter.notifyItemChanged(position);
+                            }
+                        });
+
+                        deleateSessionDialog.create().show();
+                        break;
+                    case ItemTouchHelper.RIGHT:
+                        sessionAdapter.notifyItemChanged(position);
+                        break;
+                }
+
+
+            }
+            @Override
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                new RecyclerViewSwipeDecorator.Builder(Dashboard.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                        .addSwipeLeftActionIcon(R.drawable.ic8_delete_calendar)
+                        .addSwipeLeftLabel("Delete Session")
+                        .setSwipeLeftLabelTextSize(1,20)
+                        .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
+                        .addSwipeRightActionIcon(R.drawable.ic8_calendar)
+                        .addSwipeRightLabel("Edit Session")
+                        .setSwipeRightLabelTextSize(1,20)
+                        .addSwipeRightBackgroundColor(R.color.c2)
+                        .create()
+                        .decorate();
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
             }
 
         }).attachToRecyclerView(recyclerView);

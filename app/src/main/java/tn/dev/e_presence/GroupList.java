@@ -226,7 +226,7 @@ public class GroupList extends AppCompatActivity {
                             String message = "Do you want to remove " + Identifier_bold +" from "+"<b>"+SchoolId+"</b>" +" group list?";
                             Spanned spannedMessage = Html.fromHtml(message);
                             deleateGroupDialog.setMessage(spannedMessage);
-                            deleateGroupDialog.setIcon(R.drawable.ic8_delete_file);
+                            deleateGroupDialog.setIcon(R.drawable.ic8_delete_group);
                             deleateGroupDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
