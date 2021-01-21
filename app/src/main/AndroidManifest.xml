@@ -26,7 +26,7 @@
         <activity android:name=".UserItem" />
         <activity android:name=".SchoolPage" />
         <activity android:name=".EditProfile" />
-        <activity android:name=".CreateSession" />
+        <activity android:name=".AddSession" />
         <activity android:name=".SessionItem" />
         <activity android:name=".ScanActivity" />
         <activity android:name=".Settings" />
@@ -47,6 +47,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.version"

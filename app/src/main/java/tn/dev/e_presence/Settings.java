@@ -46,7 +46,13 @@ public class Settings extends AppCompatActivity {
         findViews();
         setDarkModeSwitch();
         ChangePassword();
-        loadCurentUserInformations();
+        try {
+            loadCurentUserInformations();
+        }catch (Exception e)
+        {
+
+        }
+
 
 
     }
@@ -62,7 +68,7 @@ public class Settings extends AppCompatActivity {
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
                 }
                 else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                GV.loadCurentUserInformations();
                 recreate();
             }
         });
@@ -150,8 +156,10 @@ public class Settings extends AppCompatActivity {
     }
     public void loadCurentUserInformations()
     {
-        tv_name.setText(GV.currentUserName);
-        if (!GV.currentUserPhotoPath.equals("0")) Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
+
+           tv_name.setText(GV.currentUserName);
+           if (!GV.currentUserPhotoPath.equals("0"))
+               Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
 
     }
 

@@ -9,7 +9,7 @@
     android:paddingTop="30sp"
     android:background="@color/bg_color"
     android:scrollbars="vertical"
-    tools:context=".CreateSession">
+    tools:context=".AddSession">
 
 
     <LinearLayout

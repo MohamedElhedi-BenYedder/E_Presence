@@ -71,24 +71,9 @@ public class Home extends AppCompatActivity {
         fab.setImageResource(R.drawable.ic8_addx);
         fab.setOnClickListener(this::AddSchool);
         searchBar();
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("token", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
+        NotificationHandler.Notification notification =new NotificationHandler.Notification("Hi","heloo","e4tO5fSfTLievHwxyMuRqI:APA91bE2saUWdFOlgrc_smUCT_54gt3kz6TyIa3F5luvL1rfjV5VCgK1s2HM62mXcSGfWPWgg79XMS9Yf9J7Pp5F4B1dkYi8hXMQn3myoCbLT8WuP4pe0u_Q3Ke0tB31RsVM_nPJs9eX");
+        notification.sendNotifications();
 
-                        // Get new FCM registration token
-                        String token = task.getResult();
-
-                        // Log and toast
-
-                        Log.d("tokennnnn",token);
-                        Toast.makeText(Home.this, token, Toast.LENGTH_SHORT).show();
-                    }
-                });
 
 
     }

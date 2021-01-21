@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,7 +38,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CreateSession extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+
+public class AddSession extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
     private Button btn_ok,btn_cancel;
     private EditText et_classroom,et_qrcode;
     private TextView tv_qrlink,et_start,et_end;
@@ -150,7 +153,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 int day = cal.get(Calendar.DAY_OF_MONTH);
 
                 DatePickerDialog dialog = new DatePickerDialog(
-                        CreateSession.this,
+                        AddSession.this,
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
                         year,month,day);
@@ -195,7 +198,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        CreateSession.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        AddSession.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -226,7 +229,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
             @Override
             public void onClick(View v) {
                 TimePickerDialog timePickerDialog = new TimePickerDialog(
-                        CreateSession.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        AddSession.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -258,7 +261,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
             public void onClick(View v) {
                  Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
-                Intent i = new Intent(CreateSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
+                Intent i = new Intent(AddSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
                         .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId)
                         .putExtra("Priority",priority)
                         .putStringArrayListExtra("groupIdList",groupIdList)
@@ -277,7 +280,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateSession.this,Dashboard.class)
+                Intent i = new Intent(AddSession.this,Dashboard.class)
                         .putExtra("SchoolID",SchoolId)
                         .putExtra("GroupID",GroupId)
                         .putExtra("Priority",priority)
@@ -312,7 +315,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                 String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
-                Intent i = new Intent(CreateSession.this,QrwebpageActivity.class)
+                Intent i = new Intent(AddSession.this,QrwebpageActivity.class)
                         .putExtra("SchoolID",SchoolId)
                         .putExtra("GroupID",GroupId)
                         .putExtra("Priority",priority);
@@ -346,7 +349,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     if(documentSnapshot.exists())
                                     {
-                                        Toast.makeText(CreateSession.this, "Loading . . .", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AddSession.this, "Loading . . .", Toast.LENGTH_SHORT).show();
                                     }
                                     else
                                     {
@@ -356,9 +359,21 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         Log.d(TAG, "Session successfully added!");
-                                                        Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(AddSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
                                                         Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
+                                                        db.collection("User").document(teacher_sess_id).get()
+                                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                                                    @Override
+                                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                                        String token =documentSnapshot.getString("token");
+                                                                        Toast.makeText(AddSession.this, token, Toast.LENGTH_SHORT).show();
+                                                                    }
+                                                                }).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
 
+                                                            }
+                                                        });
                                                         i.putExtra("Qrurl",Uri)
                                                                 .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
 
@@ -371,7 +386,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
                                                         Log.w(TAG, "Error adding session", e);
-                                                        Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(AddSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
                                                     }
                                                 });
                                     }
@@ -388,7 +403,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "Session successfully added!");
-                                    Toast.makeText(CreateSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
                                     Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
 
                                     i.putExtra("Qrurl",Uri)
@@ -403,7 +418,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.w(TAG, "Error adding session", e);
-                                    Toast.makeText(CreateSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(AddSession.this, "Error adding session", Toast.LENGTH_SHORT).show();
                                 }
                             });
                 }
@@ -437,7 +452,7 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     @Override
     public void onBackPressed() {
         //super.onBackPressed();
-        Intent i = new Intent(CreateSession.this,Dashboard.class)
+        Intent i = new Intent(AddSession.this,Dashboard.class)
                 .putExtra("SchoolID",SchoolId)
                 .putExtra("GroupID",GroupId)
                 .putExtra("Priority",priority)
@@ -481,4 +496,14 @@ public class CreateSession extends AppCompatActivity implements AdapterView.OnIt
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+    private void UpdateToken(){
+        Map<String,Object> tokenMap=new HashMap<String, Object>();
+        String refreshToken= FirebaseInstanceId.getInstance().getToken();
+        tokenMap.put("token",refreshToken);
+        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).update(tokenMap);
+    }
+
+
+
+
 }

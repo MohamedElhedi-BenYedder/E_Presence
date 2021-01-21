@@ -46,7 +46,7 @@ public class Welcome extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-            GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
+            GV.loadCurentUserInformations();
             startActivity(new Intent(this, Home.class));
             this.finish();
         }
@@ -96,7 +96,10 @@ public class Welcome extends AppCompatActivity {
                 }*/} else {
                     //This is a returning user
                 }
-                GV.loadCurentUserInformations(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                NotificationHandler.getNewToken();
+                NotificationHandler.updateToken();
+                GV.loadCurentUserInformations();
+
                 Intent intent = new Intent(this, Home.class);
                 startActivity(intent);
                 this.finish();

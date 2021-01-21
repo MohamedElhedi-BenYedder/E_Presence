@@ -44,18 +44,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.gson.internal.$Gson$Preconditions;
 
 import org.joda.time.DateTime;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -551,7 +547,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                        Intent intent =new Intent(Dashboard.this, AddSession.class)
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("GroupID",GroupId)
                                 .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
@@ -586,7 +582,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                        Intent intent =new Intent(Dashboard.this, AddSession.class)
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("GroupID",GroupId)
                                 .putExtra("Priority",priority)
@@ -617,7 +613,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 CourseNameList.add(doc.getId());
                             }
 
-                            Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                            Intent intent =new Intent(Dashboard.this, AddSession.class)
                                     .putExtra("SchoolID",SchoolId)
                                     .putExtra("GroupID",GroupId)
                                     .putExtra("Priority",priority)
@@ -640,7 +636,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Intent intent =new Intent(Dashboard.this,CreateSession.class)
+                        Intent intent =new Intent(Dashboard.this, AddSession.class)
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("GroupID",GroupId)
                                 .putExtra("Priority",priority)

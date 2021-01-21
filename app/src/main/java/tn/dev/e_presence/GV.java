@@ -1,18 +1,29 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 import static java.lang.Thread.sleep;
 
 public class GV {
@@ -29,6 +40,7 @@ public class GV {
     public static String currentUserPhoneNumber;
     public static Uri currentUserPhoto;
     public static String currentUserPhotoPath;
+    public static String currentUserToken;
     //-------------------visited user----------
     public static String visitedUserName;
     public static String visitedUserGender;
@@ -40,9 +52,10 @@ public class GV {
     public GV() {
     }
 
-    public static void loadCurentUserInformations(String UserId)
+
+    public static void loadCurentUserInformations()
     {
-        db.collection("User").document(UserId)
+        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
