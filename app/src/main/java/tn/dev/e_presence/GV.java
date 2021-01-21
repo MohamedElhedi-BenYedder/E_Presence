@@ -13,6 +13,8 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import static java.lang.Thread.sleep;
+
 public class GV {
 
     //----COLLECTIONS
@@ -103,5 +105,13 @@ public class GV {
     public static Task<DocumentSnapshot> getSchool(String uid){
         return GV.getSchoolsCollection().document(uid).get();}
 
+    public static void Wait(int wait)
+    {
+        try {
+            sleep(wait);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
+    }
 }

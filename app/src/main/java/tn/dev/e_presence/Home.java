@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -56,6 +58,7 @@ public class Home extends AppCompatActivity {
     private FloatingActionButton fab;
     private EditText searchBox;
     private RecyclerView recyclerView;
+    private final int wait=500;
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,24 @@ public class Home extends AppCompatActivity {
         fab.setImageResource(R.drawable.ic8_addx);
         fab.setOnClickListener(this::AddSchool);
         searchBar();
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("token", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+
+                        // Log and toast
+
+                        Log.d("tokennnnn",token);
+                        Toast.makeText(Home.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
 
     }
@@ -274,7 +295,8 @@ public class Home extends AppCompatActivity {
 
                                     else{
                                         Toast.makeText(Home.this, "Wrong identifier", Toast.LENGTH_SHORT).show();
-                                        recyclerView.setAdapter(schoolAdapter);
+                                        schoolAdapter.notifyItemChanged(position);
+                                        GV.Wait(wait);
                                     }
                                 }
                             });
@@ -283,7 +305,8 @@ public class Home extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     // close the dialog
-                                    recyclerView.setAdapter(schoolAdapter);
+                                    schoolAdapter.notifyItemChanged(position);
+                                    GV.Wait(wait);
                                 }
                             });
 
@@ -296,7 +319,8 @@ public class Home extends AppCompatActivity {
                             finish();
 
                     }
-                    else recyclerView.setAdapter(schoolAdapter);
+                    schoolAdapter.notifyItemChanged(position);
+                    GV.Wait(wait);
 
 
                 }
