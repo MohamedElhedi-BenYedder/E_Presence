@@ -48,6 +48,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.internal.$Gson$Preconditions;
 
 import org.joda.time.DateTime;
 
@@ -88,7 +89,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     private RecyclerView recyclerView;
     private FloatingActionButton fab;
     private int priority;
-    private static Boolean Student_Teacher=true;
+    private static Boolean NewSession,Student_Teacher=true;
     private static boolean Scan_verdict;
     private boolean bar ;
 
@@ -238,6 +239,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
             case 3:
             case 2: {
                 String Schoolpath="School/"+SchoolId;
+                NewSession=true;
 
                 getListOfTeachers_Groups_Courses(Schoolpath);
                 }
@@ -553,7 +555,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 .putExtra("SchoolID",SchoolId)
                                 .putExtra("GroupID",GroupId)
                                 .putStringArrayListExtra("teacherIdList",new ArrayList<String>())
-                                .putStringArrayListExtra("teacherNameList",new ArrayList<String>());
+                                .putStringArrayListExtra("teacherNameList",new ArrayList<String>())
+                                .putExtra("NewSession",NewSession)
+                                .putExtra("SessionID",SessionId);
                     }
                 })
         ;
@@ -590,7 +594,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 .putStringArrayListExtra("groupNameList",new ArrayList<String>())
                                 .putStringArrayListExtra("teacherIdList", (ArrayList<String>) teacherIdList)
                                 .putStringArrayListExtra("teacherNameList", (ArrayList<String>) teacherNameList)
-                                .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                                .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                                .putExtra("NewSession",NewSession)
+                                .putExtra("SessionID",SessionId);
                     }
                 })
         ;
@@ -620,7 +626,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                     .putStringArrayListExtra("groupIdList",(ArrayList<String>)groupIdList)
                                     .putStringArrayListExtra("groupNameList",(ArrayList<String>)groupNameList)
                                     .putStringArrayListExtra("courseNameList",CourseNameList)
-                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                                    .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                                    .putExtra("NewSession",NewSession)
+                                    .putExtra("SessionID",SessionId);
                             ;
                             //
                             // Toast.makeText(SchoolPage.this, GID, Toast.LENGTH_SHORT).show();
@@ -641,7 +649,9 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                 .putStringArrayListExtra("groupIdList",(ArrayList<String>)groupIdList)
                                 .putStringArrayListExtra("groupNameList",(ArrayList<String>)groupNameList)
                                 .putStringArrayListExtra("courseNameList",new ArrayList<String>())
-                                .putExtra("NewSessionID","Session"+System.currentTimeMillis());
+                                .putExtra("NewSessionID","Session"+System.currentTimeMillis())
+                                .putExtra("NewSession",NewSession)
+                                .putExtra("SessionID",SessionId);
                     }
                 });
 
@@ -685,7 +695,11 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         deleateSessionDialog.create().show();
                         break;
                     case ItemTouchHelper.RIGHT:
-                        sessionAdapter.notifyItemChanged(position);
+                         SessionId=sessionAdapter.getSnapshots().getSnapshot(position).getId();
+                        SchoolId=sessionAdapter.getItem(position).getSchoolId();
+                        NewSession=false;
+                        String Schoolpath="School/"+SchoolId;
+                        getListOfTeachers_Groups_Courses(Schoolpath);
                         break;
                 }
 

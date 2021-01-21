@@ -20,10 +20,11 @@
         android:orientation="horizontal">
 
         <TextView
+            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
-            android:text="Add Session"
+            android:text="Edit Session"
             android:textColor="#5E5E5E"
             android:textSize="30dp"
             android:textStyle="bold" />

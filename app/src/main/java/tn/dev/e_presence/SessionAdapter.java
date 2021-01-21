@@ -1,6 +1,7 @@
 package tn.dev.e_presence;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +56,7 @@ public class SessionAdapter extends FirestoreRecyclerAdapter<Session,SessionAdap
             getSnapshots().getSnapshot(position).getReference().delete();
         }
     }
+
 
 
 
