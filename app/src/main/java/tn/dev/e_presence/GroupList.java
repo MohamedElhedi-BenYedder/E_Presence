@@ -263,11 +263,11 @@ public class GroupList extends AppCompatActivity {
                 public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
 
                     new RecyclerViewSwipeDecorator.Builder(GroupList.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_file_resized)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_group_resized)
                             .addSwipeLeftLabel("Delete Group")
                             .setSwipeLeftLabelTextSize(1,20)
                             .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
-                            .addSwipeRightActionIcon(R.drawable.ic8_edit_file_resized)
+                            .addSwipeRightActionIcon(R.drawable.ic8_edit_group_resized)
                             .addSwipeRightLabel("Edit Group")
                             .setSwipeRightLabelTextSize(1,20)
                             .addSwipeRightBackgroundColor(R.color.c2)
