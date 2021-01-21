@@ -35,10 +35,10 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
     private Spinner sp_category;
     private static String category;
     private EditText et_gdescription,et_gname;
-    private boolean NewGroup=true;
+    private boolean NewGroup;
     private String SchoolId;
     private int priority;
-    private int Compteur;
+    private TextView tv_title;
     private Button btn_ok;
     private Button btn_cancel;
     private String NewGroupID,GroupID;
@@ -64,9 +64,32 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     et_gdescription.setText(documentSnapshot.getString("description"));
                     et_gname.setText(documentSnapshot.getString("displayName"));
+                    switch(documentSnapshot.getString("level")) {
+                        case "Level1":
+                            sp_category.setSelection(0);
+                            break;
+                        case "Level2":
+                            sp_category.setSelection(1);
+                        case "Level3":
+                            sp_category.setSelection(2);
+                        case "Level4":
+                            sp_category.setSelection(3);
+                        case "Level5":
+                            sp_category.setSelection(4);
+                        case "Level6":
+                            sp_category.setSelection(5);
+                            break;
+                        case "Club":
+                            sp_category.setSelection(6);
+                            break;}
 
                 }
             });
+
+        }
+        else
+        {
+            tv_title.setText("Add Group");
         }
 
 
@@ -81,17 +104,11 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position != 0) {
-            category = parent.getItemAtPosition(position).toString();
-
-
-        }
+        category = parent.getItemAtPosition(position).toString();
     }
 
     @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
+    public void onNothingSelected(AdapterView<?> parent) { /* mata3mil chay*/ }
 
     public void findViews()
     {
@@ -100,6 +117,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         btn_cancel=findViewById(R.id.btn_cancel);
         et_gname=findViewById(R.id.et_gname);
         et_gdescription=findViewById(R.id.et_gdescription);
+        tv_title=findViewById(R.id.tv_title);
     }
     public void setCancel(){
         btn_cancel.setOnClickListener(new View.OnClickListener() {
@@ -128,13 +146,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                 group.put("description",new_Description);
                 group.put("num",0);
                 group.put("Students",new ArrayList<String>());
-                    // Start Dashborad Activity again
                     if (NewGroup) {
-
-                        //put Data into a message for group
-
-
-
                         { db.collection("School").document(SchoolId).collection("Group").document(NewGroupID)
                                 .get()
                                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -186,7 +198,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Log.d(TAG, "Group successfully added!");
+                                        Log.d(TAG, "Group Details successfully Edited!");
                                         Toast.makeText(AddGroup.this, "Group successfully added!", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(AddGroup.this,GroupList.class)
                                                 .putExtra("SchoolID",SchoolId)
@@ -200,8 +212,8 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
                                 .addOnFailureListener(new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        Log.w(TAG, "Error adding Group", e);
-                                        Toast.makeText(AddGroup.this, "Error adding Group", Toast.LENGTH_SHORT).show();
+                                        Log.w(TAG, "Error Editing Group", e);
+                                        Toast.makeText(AddGroup.this, "Error Editing Group", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                     }
@@ -216,6 +228,7 @@ public class AddGroup extends AppCompatActivity implements AdapterView.OnItemSel
         SchoolId =incommingMessages.getString("SchoolID","0");
         priority=incommingMessages.getInt("Priority",0);
         NewGroupID=incommingMessages.getString("NewGroupID","0");
+        NewGroup=incommingMessages.getBoolean("NewGroup");
         GroupID=incommingMessages.getString("GroupID","0");
     }
     @Override

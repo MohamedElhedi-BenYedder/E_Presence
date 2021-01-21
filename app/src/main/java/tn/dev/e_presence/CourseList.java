@@ -66,7 +66,7 @@ public class CourseList extends AppCompatActivity {
 
 
     }
-    private void OnSwipedItem()
+    private void OnSwipedCourse()
     {
         if (priority==3){
             //---------------------------Swipe Item -------------------------//
@@ -87,9 +87,9 @@ public class CourseList extends AppCompatActivity {
                             String Identifier=courseAdapter.getItem(position).getDisplayName();
 
                             final AlertDialog.Builder deleateCourseDialog = new AlertDialog.Builder(CourseList.this);
-                            deleateCourseDialog.setTitle("Delete this Course?");
+                            deleateCourseDialog.setTitle("Delete Course?");
                             String Identifier_bold = "<b>" + Identifier+ "</b>";
-                            String message = "Do you want to remove " + Identifier_bold +" from "+"<b>"+SchoolId+"</b>" +" course list";
+                            String message = "Do you want to remove " + Identifier_bold +" from "+"<b>"+SchoolId+"</b>" +" course list?";
                             Spanned spannedMessage = Html.fromHtml(message);
                             deleateCourseDialog.setMessage(spannedMessage);
                             deleateCourseDialog.setIcon(R.drawable.ic8_delete_file);
@@ -262,7 +262,7 @@ public class CourseList extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(courseAdapter);
-        OnSwipedItem();
+        OnSwipedCourse();
 
     }
 

@@ -1,14 +1,22 @@
 package tn.dev.e_presence;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.Spanned;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -27,6 +35,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator;
+
 import static tn.dev.e_presence.GV.getUser;
 
 public class GroupList extends AppCompatActivity {
@@ -38,6 +48,7 @@ public class GroupList extends AppCompatActivity {
     private String GroupId;
     private CollectionReference GroupsRef;
     private GroupAdapter groupAdapter;
+    private RecyclerView recyclerView;
     private int priority;
     String path;
     private FloatingActionButton fab;
@@ -165,10 +176,11 @@ public class GroupList extends AppCompatActivity {
                 .setQuery(query,Group.class)
                 .build();
         groupAdapter=new GroupAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.rv_group);
+        recyclerView = findViewById(R.id.rv_group);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(groupAdapter);
+        OnSwipedGroup();
         groupAdapter.setOnItemClickListener(new GroupAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
@@ -187,6 +199,89 @@ public class GroupList extends AppCompatActivity {
             finish();
         }
     });
+
+    }
+    private void OnSwipedGroup()
+    {
+        if (priority==3){
+            //---------------------------Swipe Item -------------------------//
+
+            new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT |ItemTouchHelper.RIGHT) {
+
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    return false;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                    int position=viewHolder.getAdapterPosition();
+                    switch (direction)
+                    {
+                        case ItemTouchHelper.LEFT:
+                            String Identifier=groupAdapter.getItem(position).getDisplayName();
+                            final AlertDialog.Builder deleateGroupDialog = new AlertDialog.Builder(GroupList.this);
+                            deleateGroupDialog.setTitle("Delete Group?");
+                            String Identifier_bold = "<b>" + Identifier+ "</b>";
+                            String message = "Do you want to remove " + Identifier_bold +" from "+"<b>"+SchoolId+"</b>" +" group list?";
+                            Spanned spannedMessage = Html.fromHtml(message);
+                            deleateGroupDialog.setMessage(spannedMessage);
+                            deleateGroupDialog.setIcon(R.drawable.ic8_delete_file);
+                            deleateGroupDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // verify the identifier
+                                    groupAdapter.delete(position,SchoolId);
+                                }
+                            });
+
+                            deleateGroupDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // close the dialog
+                                    groupAdapter.notifyItemChanged(position);
+                                }
+                            });
+
+                            deleateGroupDialog.create().show();
+
+                            break;
+                        case ItemTouchHelper.RIGHT:
+                            Intent intent=groupAdapter.edit(position)
+                                    .putExtra("Priority",priority)
+                                    .putExtra("NewGroup",false)
+                                    .putExtra("SchoolID",SchoolId);
+                            startActivity(intent);
+                            finish();
+                            break;
+
+                    }
+
+
+                }
+                @Override
+                public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+
+                    new RecyclerViewSwipeDecorator.Builder(GroupList.this, c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                            .addSwipeLeftActionIcon(R.drawable.ic8_delete_file_resized)
+                            .addSwipeLeftLabel("Delete Group")
+                            .setSwipeLeftLabelTextSize(1,20)
+                            .addSwipeLeftBackgroundColor(getResources().getColor(R.color.color_delete))
+                            .addSwipeRightActionIcon(R.drawable.ic8_edit_file_resized)
+                            .addSwipeRightLabel("Edit Group")
+                            .setSwipeRightLabelTextSize(1,20)
+                            .addSwipeRightBackgroundColor(R.color.c2)
+                            .create()
+                            .decorate();
+
+                    super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+                }
+
+            }).attachToRecyclerView(recyclerView);
+            {
+
+            }
+        }
 
     }
 

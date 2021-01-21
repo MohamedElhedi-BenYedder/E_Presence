@@ -1,5 +1,7 @@
 package tn.dev.e_presence;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.GroupHolder> {
     private OnItemClickListener listener;
@@ -20,6 +26,7 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
     final static int ColorNumber=8;
     final static int ImageList[]={R.drawable.ic8_1,R.drawable.ic8_2,R.drawable.ic8_3,R.drawable.ic8_4,R.drawable.ic8_5,R.drawable.ic8_6,R.drawable.ic_group};
     final static int ImageNumber=0;
+    private final static FirebaseFirestore db=FirebaseFirestore.getInstance();
     /**
      * Create a new RecyclerView adapter that listens to a Firestore Query.  See {@link
      * FirestoreRecyclerOptions} for configuration options.
@@ -60,13 +67,9 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
                 holder.iv_level.setImageResource(ImageList[5]);
                 holder.ll_bg.setBackgroundColor(ColorList[5]);
                 break;
-            case "Admin":
+            case "Club":
                 holder.iv_level.setImageResource(ImageList[6]);
                 holder.ll_bg.setBackgroundColor(ColorList[6]);
-                break;
-            case"Club":
-                holder.iv_level.setImageResource(ImageList[7]);
-                holder.ll_bg.setBackgroundColor(ColorList[7]);
                 break;
 
 
@@ -84,12 +87,20 @@ public class GroupAdapter extends FirestoreRecyclerAdapter<Group,GroupAdapter.Gr
         return new GroupAdapter.GroupHolder(oneGroupItem);
     }
 
-    @Override
-    public int getItemCount() {
-        return super.getItemCount();
+    public void delete(int position,String SchoolID){
+        String deletedGroupId=getSnapshots().getSnapshot(position).getId();
+        DocumentReference groupRef= db.collection("School")
+                .document(SchoolID).collection("Group").document(deletedGroupId);
+        groupRef.delete();
 
     }
-
+    @SuppressLint("RestrictedApi")
+    public Intent edit(int position){
+        String editedGroupId=getSnapshots().getSnapshot(position).getId();
+        Intent intent= new Intent(getApplicationContext(),AddGroup.class).
+                putExtra("GroupID",editedGroupId);
+        return intent;
+    }
 
     /***************Group Holder Class*********************/
     public class GroupHolder extends RecyclerView.ViewHolder {
