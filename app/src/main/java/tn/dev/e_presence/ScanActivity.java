@@ -45,9 +45,7 @@ public class ScanActivity extends AppCompatActivity {
         GroupId=incommingMessages.getString("GroupID","0");
         SessionId=incommingMessages.getString("GroupID","0");
         Qrdb=incommingMessages.getString("Qrdb","0");
-        Toast.makeText(ScanActivity.this,
-                Qrdb,
-                Toast.LENGTH_SHORT).show();
+       // Toast.makeText(ScanActivity.this,Qrdb,Toast.LENGTH_SHORT).show();
     }
 
     private void createCameraSource() {

@@ -25,7 +25,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.github.jhonnyx2012.horizontalpicker.DatePickerListener;
 import com.github.jhonnyx2012.horizontalpicker.HorizontalPicker;
@@ -95,7 +94,6 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        GroupIDs.add("Group1610569650940");
         listenForIncommingMessages();
         initSessionAndGroupRef();
         setFloatingAppButtonIcon();
@@ -417,7 +415,7 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         @RequiresApi(api = Build.VERSION_CODES.M)
                         @Override
                         public void onItemClick(DocumentSnapshot documentSnapshot, int position) {
-                            Toast.makeText(Dashboard.this, "" + sessionAdapter.isClickable(position,UserId,priority), Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(Dashboard.this, "" + sessionAdapter.isClickable(position,UserId,priority), Toast.LENGTH_SHORT).show();
                             if (sessionAdapter.isClickable(position,UserId,priority)) {
                                 Cur_pos = position;
                                 Log.d("qrtesting", "" + Cur_pos);
@@ -439,6 +437,10 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                                     ActivityCompat.requestPermissions(Dashboard.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
                                 }postponeEnterTransition();
 
+                            }
+                            else
+                            {
+                                Toast.makeText(Dashboard.this, "Access denied", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
