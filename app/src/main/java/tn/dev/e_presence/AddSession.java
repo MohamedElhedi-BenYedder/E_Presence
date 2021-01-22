@@ -105,7 +105,7 @@ public class AddSession extends AppCompatActivity implements AdapterView.OnItemS
                     int groupId_pos=groupIdList.indexOf(documentSnapshot.getString("groupId"));
                     int course_pos=courseNameList.indexOf(documentSnapshot.getString("subject"));
                     spinner_teacher.setSelection(teacherId_pos+1);
-                    spinner_cours.setSelection(course_pos);
+                    spinner_cours.setSelection(course_pos+1);
                     spinner_group.setSelection(groupId_pos+1);
                 }
             });
