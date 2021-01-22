@@ -17,7 +17,7 @@ public class WebPage extends AppCompatActivity {
     private String NewSessionID;
     private int priority;
     private boolean more;
-
+    //
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
