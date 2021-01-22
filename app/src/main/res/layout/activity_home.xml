@@ -59,9 +59,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_school"
-        android:layout_marginTop="120dp"
         android:layout_width="match_parent"
-        android:layout_height="541dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
         android:clickable="false"
         android:focusable="auto"
         android:focusableInTouchMode="true"
