@@ -180,6 +180,20 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                         startActivity(new Intent(getApplicationContext(), Settings.class));
                         overridePendingTransition(0, 0);
                         return true;
+                    case R.id.miDashboard:
+                        db.collection("User").document(UserId).
+                                get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Query query;
+                                ArrayList<String> GroupIDs = (ArrayList<String>) documentSnapshot.get("studentIN");
+                                startActivity(new Intent(getApplicationContext(), Dashboard.class)
+                                        .putExtra("bar", true)
+                                        .putStringArrayListExtra("GroupIDs", GroupIDs));
+                                overridePendingTransition(0,0);
+
+                            }});
+                        return true;
                 }
                 return true;
 
