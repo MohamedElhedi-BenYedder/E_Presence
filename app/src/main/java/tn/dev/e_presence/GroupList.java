@@ -194,7 +194,7 @@ public class GroupList extends AppCompatActivity {
                     .putStringArrayListExtra("Students",ClickedGroupMemeberList)
                     .putExtra("path","School/"+SchoolId+"/Group/"+clickedGroupId);
 
-            Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
+           // Toast.makeText(GroupList.this, "Group Memeber List" , Toast.LENGTH_SHORT).show();
             startActivity(intent);
             finish();
         }

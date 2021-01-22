@@ -370,6 +370,17 @@ public class MemberList extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+        else
+        {
+            Intent intent=new Intent(MemberList.this,GroupList.class)
+                    .putExtra("path",path)
+                    .putExtra("key",key)
+                    .putExtra("all",all)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority);
+            startActivity(intent);
+            finish();
+        }
        /* Intent intent=new Intent(MemberList.this,)
                 .putExtra("path",path)
                 .putExtra("key",key)
