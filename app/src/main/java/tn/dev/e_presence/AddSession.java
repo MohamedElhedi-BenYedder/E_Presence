@@ -361,19 +361,6 @@ public class AddSession extends AppCompatActivity implements AdapterView.OnItemS
                                                         Log.d(TAG, "Session successfully added!");
                                                         Toast.makeText(AddSession.this, "Session successfully added!", Toast.LENGTH_SHORT).show();
                                                         Uri="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data="+et_qrcode.getText().toString();
-                                                        db.collection("User").document(teacher_sess_id).get()
-                                                                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                                                    @Override
-                                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                                        String token =documentSnapshot.getString("token");
-                                                                        Toast.makeText(AddSession.this, token, Toast.LENGTH_SHORT).show();
-                                                                    }
-                                                                }).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-
-                                                            }
-                                                        });
                                                         i.putExtra("Qrurl",Uri)
                                                                 .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId);
 
