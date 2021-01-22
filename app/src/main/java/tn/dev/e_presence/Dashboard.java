@@ -263,8 +263,8 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 Query secondQuery = db
                         .collectionGroup("Session")
                         .whereEqualTo("date",day)
-                        .whereIn("groupId", GroupIDs)
                         .orderBy("start");
+                if(!GroupIDs.isEmpty()) secondQuery=secondQuery.whereIn("groupId", GroupIDs);
                if(Student_Teacher)query=firstQuery; else query=secondQuery;
                         StorageReference sr = FirebaseStorage.getInstance().getReference();
                 FirestoreRecyclerOptions<Session> options = new FirestoreRecyclerOptions.Builder<Session>()

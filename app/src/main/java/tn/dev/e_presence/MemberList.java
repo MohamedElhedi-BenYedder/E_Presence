@@ -174,7 +174,7 @@ public class MemberList extends AppCompatActivity {
         try
         {
         Query query = UserRef.whereIn("userID", listOfPresence);
-            Toast.makeText(MemberList.this, SchoolId, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MemberList.this, SchoolId, Toast.LENGTH_SHORT).show();
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
             FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                     .setQuery(query, User.class)
@@ -189,7 +189,7 @@ public class MemberList extends AppCompatActivity {
         catch(Exception e)
         {
             listenAdapter=false;
-            Toast.makeText(MemberList.this, "Empty List Of Presence", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MemberList.this, Html.fromHtml("<b>Empty List Of Presence </b>"), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -208,7 +208,7 @@ public class MemberList extends AppCompatActivity {
         {
             //Add Student To group
              query = UserRef.whereArrayContains("studentIN","School/"+SchoolId);
-            Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MemberList.this, "School/"+SchoolId , Toast.LENGTH_SHORT).show();
 
         }
         Toast.makeText(MemberList.this,Html.fromHtml("<b>Adding New Members </b>"), Toast.LENGTH_SHORT).show();

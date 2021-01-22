@@ -88,7 +88,7 @@ public class Welcome extends AppCompatActivity {
                 //Checking for User (New/Old)
                 if (user.getMetadata().getCreationTimestamp() == user.getMetadata().getLastSignInTimestamp()) {
                     //This is a New User
-                    createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "-", "0",  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>(),new ArrayList<String>());
+                    createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), (String)null, "0",  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>(),new ArrayList<String>());
                     Toast.makeText(Welcome.this, user.getDisplayName(), Toast.LENGTH_SHORT).show();
                   /*  try{createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", uploadImageToFirebase( user.getPhotoUrl(),user.getUid()),  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());}
                     catch (Exception e){createUser(user.getUid(),user.getDisplayName(), user.getEmail(), user.getPhoneNumber(), "Male", user.getPhotoUrl().getPath(),  new ArrayList<String>(),  new ArrayList<String>(),  new ArrayList<String>());

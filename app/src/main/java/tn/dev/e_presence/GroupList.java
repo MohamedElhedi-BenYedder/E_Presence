@@ -171,7 +171,7 @@ public class GroupList extends AppCompatActivity {
     {
 
         Query query = GroupsRef.orderBy("displayName");
-        Toast.makeText(GroupList.this, "School/"+SchoolId+"/Group", Toast.LENGTH_SHORT).show();
+       // Toast.makeText(GroupList.this, "School/"+SchoolId+"/Group", Toast.LENGTH_SHORT).show();
         FirestoreRecyclerOptions<Group> options = new FirestoreRecyclerOptions.Builder<Group>()
                 .setQuery(query,Group.class)
                 .build();
