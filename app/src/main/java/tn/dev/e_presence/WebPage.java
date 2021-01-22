@@ -1,13 +1,11 @@
 package tn.dev.e_presence;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-
 import java.util.ArrayList;
 
 public class WebPage extends AppCompatActivity {
@@ -18,6 +16,7 @@ public class WebPage extends AppCompatActivity {
     private ArrayList<String> groupIdList,groupNameList;
     private String NewSessionID;
     private int priority;
+    private boolean more;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +34,9 @@ public class WebPage extends AppCompatActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-           if(super.getAttributionTag()=="AddSession")
+           if(!more)
            {
+
                Intent i = new Intent(WebPage.this,Dashboard.class)
                        .putExtra("SchoolID",SchoolID)
                        .putExtra("GroupID",GroupID)
@@ -74,6 +74,7 @@ public class WebPage extends AppCompatActivity {
         groupIdList=incommingMessages.getStringArrayList("groupIdList");
         groupNameList=incommingMessages.getStringArrayList("groupNameList");
         priority=incommingMessages.getInt("Priority",0);
+        more=incommingMessages.getBoolean("more",false);
 
     }
 

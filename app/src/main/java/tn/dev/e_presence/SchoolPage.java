@@ -284,7 +284,8 @@ public class SchoolPage extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(SchoolPage.this, WebPage.class).putExtra("Qrurl",tv_description.getText().toString())
                         .putExtra("SchoolID",SchoolId)
-                        .putExtra("Priority",priority);
+                        .putExtra("Priority",priority)
+                        .putExtra("more",true);
 
                 startActivity(i);
                 finish();
