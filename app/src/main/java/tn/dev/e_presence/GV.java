@@ -53,28 +53,36 @@ public class GV {
     }
 
 
-    public static void loadCurentUserInformations()
-    {
-        db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot userDoc) {
-                        currentUserName=userDoc.getString("displayName");
-                        currentUserGender=userDoc.getString("gender");
-                        currentUserMail=userDoc.getString("email");
-                        currentUserPhoneNumber=userDoc.getString("phoneNumber");
-                        currentUserPhotoPath=userDoc.getString("photo");
+    public static void loadCurentUserInformations() {
+        if (!FirebaseAuth.getInstance().getCurrentUser().isAnonymous())
+        {
+            db.collection("User").document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot userDoc) {
+                            currentUserName = userDoc.getString("displayName");
+                            currentUserGender = userDoc.getString("gender");
+                            currentUserMail = userDoc.getString("email");
+                            currentUserPhoneNumber = userDoc.getString("phoneNumber");
+                            currentUserPhotoPath = userDoc.getString("photo");
 
-                       try {
-                           StorageReference image = mStorageRef.child(currentUserPhotoPath);
-                           image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                            @Override
-                            public void onSuccess(Uri uri) {
-                                currentUserPhoto = uri;
+                            try {
+                                StorageReference image = mStorageRef.child(currentUserPhotoPath);
+                                image.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                    @Override
+                                    public void onSuccess(Uri uri) {
+                                        currentUserPhoto = uri;
 
 
-                            }} );}catch (Exception e){}} }  ); }
+                                    }
+                                });
+                            } catch (Exception e) {
+                            }
+                        }
+                    });
+        }else GV.currentUserName="Anonymous";
+    }
     //------------------User--------------------//
     // ---Get USER COLLECTION REFERENCE ---
     public static CollectionReference getUsersCollection(){
