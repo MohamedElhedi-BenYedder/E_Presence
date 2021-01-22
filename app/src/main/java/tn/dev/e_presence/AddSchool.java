@@ -68,6 +68,7 @@ public class AddSchool extends AppCompatActivity {
     FloatingActionButton fab;
     private String SchoolId;
     String photo="";
+    TextView tv_title;
     String TAG= AddSchool.class.getSimpleName();
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -79,6 +80,8 @@ public class AddSchool extends AppCompatActivity {
             bottomAppBar.setVisibility(View.INVISIBLE);
         welcomeUser();
         SetUpBottomAppBarMenu();
+        if(NewSchool)
+            tv_title.setText("Add School");
         listenForIncommingMessages();
         UploadPhoto();
         setDisplay();
@@ -349,6 +352,7 @@ public class AddSchool extends AppCompatActivity {
         tv_welcome_user=findViewById(R.id.tv_welcome_user);
         ib_photo = findViewById(R.id.ib_photo);
         fab=findViewById(R.id.fab);
+        tv_title=findViewById(R.id.tv_title);
     }
  void listenForIncommingMessages()
  {
