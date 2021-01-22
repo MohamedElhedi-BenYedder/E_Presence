@@ -344,9 +344,9 @@ public class MemberList extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Toast.makeText(MemberList.this, TAG+priority, Toast.LENGTH_SHORT).show();
-        if(TAG.equals("Dashbord")){
+        if(add)
+            fab.callOnClick();
+        else if(TAG.equals("Dashbord")){
             Intent intent=new Intent(MemberList.this,Dashboard.class)
                     .putExtra("SchoolID",SchoolId)
                     .putExtra("Priority",priority)
@@ -360,18 +360,8 @@ public class MemberList extends AppCompatActivity {
             startActivity(intent);
             finish();//
         }
-        if(TAG.equals("SchoolPage")){
+        else if(TAG.equals("SchoolPage")){
             Intent intent=new Intent(MemberList.this,SchoolPage.class)
-                    .putExtra("path",path)
-                    .putExtra("key",key)
-                    .putExtra("all",all)
-                    .putExtra("SchoolID",SchoolId)
-                    .putExtra("Priority",priority);
-            startActivity(intent);
-            finish();
-        }
-        if(TAG.equals("MemberList")){
-            Intent intent=new Intent(MemberList.this,MemberList.class)
                     .putExtra("path",path)
                     .putExtra("key",key)
                     .putExtra("all",all)
