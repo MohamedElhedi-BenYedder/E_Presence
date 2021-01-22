@@ -80,9 +80,9 @@ public class AddSchool extends AppCompatActivity {
             bottomAppBar.setVisibility(View.INVISIBLE);
         welcomeUser();
         SetUpBottomAppBarMenu();
+        listenForIncommingMessages();
         if(NewSchool)
             tv_title.setText("Add School");
-        listenForIncommingMessages();
         UploadPhoto();
         setDisplay();
         addEditSchool();
