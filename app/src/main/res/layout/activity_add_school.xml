@@ -126,17 +126,26 @@
                         android:textColorHint="#5E5E5E"
                         android:textSize="14sp" />
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/ic_language_change_color" />
 
-                <EditText
+                    <EditText
                     android:id="@+id/et_description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Description"
                     android:fontFamily="@font/lato"
+                    android:hint="Web Site lin"
+                    android:inputType="textUri"
                     android:textColor="#5E5E5E"
                     android:textColorHint="#5E5E5E"
                     android:textSize="14sp" />
-
+                </LinearLayout>
 
             </LinearLayout>
 

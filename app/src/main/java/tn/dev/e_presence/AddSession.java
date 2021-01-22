@@ -261,7 +261,7 @@ public class AddSession extends AppCompatActivity implements AdapterView.OnItemS
             public void onClick(View v) {
                  Uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+et_qrcode.getText().toString();
                 //String uri="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=hani";
-                Intent i = new Intent(AddSession.this,QrwebpageActivity.class).putExtra("Qrurl",Uri)
+                Intent i = new Intent(AddSession.this, WebPage.class).putExtra("Qrurl",Uri)
                         .putExtra("SchoolID",SchoolId).putExtra("GroupID",GroupId)
                         .putExtra("Priority",priority)
                         .putStringArrayListExtra("groupIdList",groupIdList)
@@ -315,7 +315,7 @@ public class AddSession extends AppCompatActivity implements AdapterView.OnItemS
                 String new_date=date_sess;
                 String new_qrcode=et_qrcode.getText().toString();
                 boolean new_presential=sw_presential.isChecked();
-                Intent i = new Intent(AddSession.this,QrwebpageActivity.class)
+                Intent i = new Intent(AddSession.this, WebPage.class)
                         .putExtra("SchoolID",SchoolId)
                         .putExtra("GroupID",GroupId)
                         .putExtra("Priority",priority);

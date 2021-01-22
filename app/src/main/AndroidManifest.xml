@@ -16,7 +16,7 @@
         <activity android:name=".AddCourse"></activity>
         <activity android:name=".CourseItem" />
         <activity android:name=".CourseList" />
-        <activity android:name=".QrwebpageActivity" />
+        <activity android:name=".WebPage" />
         <activity android:name=".AddGroup" />
         <activity android:name=".GroupList" />
         <activity android:name=".MemberList" />

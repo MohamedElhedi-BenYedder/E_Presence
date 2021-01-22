@@ -10,7 +10,7 @@ import android.webkit.WebViewClient;
 
 import java.util.ArrayList;
 
-public class QrwebpageActivity extends AppCompatActivity {
+public class WebPage extends AppCompatActivity {
 
     private WebView webView;
     private String Url,GroupID,SchoolID;
@@ -35,18 +35,30 @@ public class QrwebpageActivity extends AppCompatActivity {
         if (webView.canGoBack()) {
             webView.goBack();
         } else {
-            super.onBackPressed();
-            Intent i = new Intent(QrwebpageActivity.this,Dashboard.class)
-                    .putExtra("SchoolID",SchoolID)
-                    .putExtra("GroupID",GroupID)
-                    .putExtra("Priority",priority)
-                    .putStringArrayListExtra("groupIdList",groupIdList)
-                    .putStringArrayListExtra("groupNameList",groupNameList)
-                    .putStringArrayListExtra("teacherIdList", teacherIdList)
-                    .putStringArrayListExtra("teacherNameList",  teacherNameList)
-                    .putExtra("NewSessionID",NewSessionID);
-            startActivity(i);
-            finish();
+           if(super.getAttributionTag()=="AddSession")
+           {
+               Intent i = new Intent(WebPage.this,Dashboard.class)
+                       .putExtra("SchoolID",SchoolID)
+                       .putExtra("GroupID",GroupID)
+                       .putExtra("Priority",priority)
+                       .putStringArrayListExtra("groupIdList",groupIdList)
+                       .putStringArrayListExtra("groupNameList",groupNameList)
+                       .putStringArrayListExtra("teacherIdList", teacherIdList)
+                       .putStringArrayListExtra("teacherNameList",  teacherNameList)
+                       .putExtra("NewSessionID",NewSessionID);
+               startActivity(i);
+               finish();
+           }
+           else
+           {
+               Intent i = new Intent(WebPage.this,SchoolPage.class)
+                       .putExtra("SchoolID",SchoolID)
+                       .putExtra("Priority",priority);
+
+               startActivity(i);
+               finish();
+           }
+
         }
     }
     void listenForIncommingMessages()
@@ -64,6 +76,7 @@ public class QrwebpageActivity extends AppCompatActivity {
         priority=incommingMessages.getInt("Priority",0);
 
     }
+
 
 
 

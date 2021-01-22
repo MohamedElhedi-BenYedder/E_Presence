@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class SchoolPage extends AppCompatActivity {
     private ImageView iv_group;
     private ImageView iv_session;
     private ImageView iv_course;
+    private ImageView iv_more;
     private LinearLayout ll_information;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,7 @@ public class SchoolPage extends AppCompatActivity {
         onGroupClick();
         onCourseClick();
         onSessionClick();
+        onMoreClick();
 
     }
 
@@ -274,6 +277,21 @@ public class SchoolPage extends AppCompatActivity {
         });
 
     }
+    void onMoreClick()
+    {
+        iv_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(SchoolPage.this, WebPage.class).putExtra("Qrurl",tv_description.getText().toString())
+                        .putExtra("SchoolID",SchoolId)
+                        .putExtra("Priority",priority);
+
+                startActivity(i);
+                finish();
+            }
+        });
+
+    }
     void onInfromationLongClick()
     {
         if(priority==3)
@@ -323,6 +341,7 @@ public class SchoolPage extends AppCompatActivity {
         iv_session=findViewById(R.id.iv_session);
         ll_information=findViewById(R.id.ll_information);
         iv_course=findViewById(R.id.iv_course);
+        iv_more=findViewById(R.id.iv_more);
     }
     void initReferences()
     {
