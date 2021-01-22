@@ -529,12 +529,23 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent intent=new Intent(Dashboard.this,SchoolPage.class)
-                .putExtra("SchoolID",SchoolId)
-                .putExtra("Priority",priority);
-        startActivity(intent);
-        finish();
+        if(bar)
+        {
+            Intent intent=new Intent(Dashboard.this,Home.class)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority);
+            startActivity(intent);
+            finish();
+        }
+        else
+        {
+            Intent intent=new Intent(Dashboard.this,SchoolPage.class)
+                    .putExtra("SchoolID",SchoolId)
+                    .putExtra("Priority",priority);
+            startActivity(intent);
+            finish();
+        }
+
     }
     void getListOfTeachers_Groups_Courses(String path)
     {
