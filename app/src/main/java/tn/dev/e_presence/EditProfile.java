@@ -57,7 +57,9 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         setContentView(R.layout.activity_edit_profile);
         findViews();
         setGenderSpinner();
-        loadCurentUserInformations();
+        try{
+        loadCurentUserInformations();}
+        catch (Exception e){}
         selectPhotoFromGalery();
         saveUpdatedInformations();
 
@@ -88,8 +90,10 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
         name.setText(GV.currentUserName);
         phone.setText(GV.currentUserPhoneNumber);
         mail.setText(GV.currentUserMail);
-        if ((GV.currentUserGender).equals("Male")) gender.setSelection(0);
-        else if ((GV.currentUserGender).equals("Female")) gender.setSelection(1);
+        if ((GV.currentUserGender).equals("Male"))
+            gender.setSelection(0);
+        else if ((GV.currentUserGender).equals("Female"))
+            gender.setSelection(1);
         selected_gender= GV.currentUserGender;
         if(!GV.currentUserPhoto.equals("0"))
         Picasso.get().load(GV.currentUserPhoto).into(cv_photo);
@@ -150,9 +154,9 @@ public class EditProfile extends AppCompatActivity implements AdapterView.OnItem
     void setGenderSpinner()
     {
         List<String> groupestatique= new ArrayList<String>();
+        groupestatique.add("Select Gender");
         groupestatique.add("Male");
         groupestatique.add("Female");
-
         ArrayAdapter<String> group_adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,groupestatique);
         group_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender.setAdapter(group_adapter);

@@ -155,7 +155,7 @@ public class MemberList extends AppCompatActivity {
         String p=path;
         if(path.split("/").length>3) p=path.split("/")[3];
         Query query = UserRef.whereArrayContains(key,p);
-        Toast.makeText(MemberList.this, key+"/"+path, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(MemberList.this, key+"/"+path, Toast.LENGTH_SHORT).show();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
         FirestoreRecyclerOptions<User> options = new FirestoreRecyclerOptions.Builder<User>()
                 .setQuery(query,User.class)

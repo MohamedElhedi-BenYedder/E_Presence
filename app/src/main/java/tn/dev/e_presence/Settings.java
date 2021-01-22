@@ -97,7 +97,7 @@ public class Settings extends AppCompatActivity {
     {
         if (v.getId() ==  R.id.btn_editprofile || v.getId() == R.id.rl_edit )
         {
-            startActivity(new Intent(getApplicationContext(),EditProfile.class));
+            startActivity(new Intent(Settings.this,EditProfile.class));
 
         }
 

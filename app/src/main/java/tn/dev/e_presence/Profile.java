@@ -62,7 +62,9 @@ public class Profile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         findViews();
-        loadCurentUserInformations();
+        try{
+            loadCurentUserInformations();}
+        catch (Exception e){}
         // setUpBottomAppBarMenu();
 
         btn_cancel.setOnClickListener(new View.OnClickListener() {

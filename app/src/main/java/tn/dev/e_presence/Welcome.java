@@ -96,8 +96,6 @@ public class Welcome extends AppCompatActivity {
                 }*/} else {
                     //This is a returning user
                 }
-                NotificationHandler.getNewToken();
-                NotificationHandler.updateToken();
                 GV.loadCurentUserInformations();
 
                 Intent intent = new Intent(this, Home.class);
