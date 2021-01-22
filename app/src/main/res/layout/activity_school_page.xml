@@ -480,15 +480,15 @@
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab"
-                android:layout_width="wrap_content"
+                android:layout_width="42dp"
                 android:layout_height="wrap_content"
-                android:isScrollContainer="false"
-                android:keepScreenOn="false"
-                android:visibility="visible"
+                android:onClick="backHome"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic8_back_arrow"
                 app:layout_anchor="@id/bnb"
-                android:backgroundTint="@color/fui_transparent"
-                android:outlineSpotShadowColor="@color/fui_transparent"
-                android:outlineAmbientShadowColor="@color/fui_transparent"
+                app:maxImageSize="56dp"
+                app:tint="@null"
+                app:useCompatPadding="false"
                 />
 
             <com.google.android.material.bottomappbar.BottomAppBar

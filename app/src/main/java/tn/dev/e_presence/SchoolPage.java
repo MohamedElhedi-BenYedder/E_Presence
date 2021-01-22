@@ -339,6 +339,10 @@ public class SchoolPage extends AppCompatActivity {
         finish();
 
     }
+    public void backHome(View v)
+    {
+        onBackPressed();
+    }
     
 
 }

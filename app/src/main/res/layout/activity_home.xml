@@ -83,14 +83,14 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
-        app:maxImageSize="56dp"
-        android:layout_width="wrap_content"
+        android:layout_width="42dp"
         android:layout_height="wrap_content"
         android:onClick="AddSchool"
-        android:src="@drawable/ic8_add"
-        app:tint="@null"
         android:scaleType="fitCenter"
+        android:src="@drawable/ic8_add"
         app:layout_anchor="@id/bnb"
+        app:maxImageSize="56dp"
+        app:tint="@null"
         app:useCompatPadding="false" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
