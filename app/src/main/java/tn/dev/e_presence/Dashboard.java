@@ -255,7 +255,13 @@ public class Dashboard extends AppCompatActivity implements DatePickerListener {
                 }
             break;
             case 1:
+                Intent intent=new Intent(Dashboard.this,SchoolPage.class)
+                        .putExtra("SchoolID",SchoolId)
+                        .putExtra("Priority",priority);
+                startActivity(intent);
+                finish();
             case 0:
+
             {
 
             }
