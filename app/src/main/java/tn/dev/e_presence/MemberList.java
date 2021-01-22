@@ -92,7 +92,9 @@ public class MemberList extends AppCompatActivity {
         setContentView(R.layout.activity_member_list);
         listenForIncommingMessages();
         tv_page=findViewById(R.id.tv_page);
-        if(key.equals("studentIN"))
+        if(Pres)
+            tv_page.setText("List Of Presence");
+        else if(key.equals("studentIN"))
             tv_page.setText("Students");
         else if(key.equals("teacherIN"))
             tv_page.setText("Teachers");
