@@ -448,7 +448,7 @@ public class MemberList extends AppCompatActivity {
                             }
                             String UserName = UserAdapter.getItem(position).getDisplayName();
                             String Uid = UserAdapter.getItem(position).getUserID();
-                            Toast.makeText(MemberList.this, key, Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(MemberList.this, key, Toast.LENGTH_SHORT).show();
                             final AlertDialog.Builder deleteUserDialog = new AlertDialog.Builder(MemberList.this);
                             deleteUserDialog.setTitle("Remove " + User + " ?");
                             Spanned spannedMessage = Html.fromHtml("Do you want to remove " + "<b>" + UserName + "</b> from <b>" + SchoolId + "</b> ?");
