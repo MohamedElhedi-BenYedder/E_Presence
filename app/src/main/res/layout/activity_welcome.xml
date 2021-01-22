@@ -33,13 +33,13 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="331dp"
-        android:layout_height="133dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/lato"
         android:text="Together, we facilate life"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textSize="30sp"
-        app:drawableTint="#CD3D3D"
+        android:textColor="#3c3c3c"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
