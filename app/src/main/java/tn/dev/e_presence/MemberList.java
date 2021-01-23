@@ -351,11 +351,7 @@ public class MemberList extends AppCompatActivity {
                     .putExtra("SchoolID",SchoolId)
                     .putExtra("Priority",priority)
                     .putExtra("GroupID",GroupId)
-                    .putExtra("NewSessionID","Session"+System.currentTimeMillis())
-                    .putStringArrayListExtra("groupIdList",new ArrayList<String>())
-                    .putStringArrayListExtra("groupNameList",new ArrayList<String>())
-                    .putStringArrayListExtra("teacherIdList", teacherIdList)
-                    .putStringArrayListExtra("teacherNameList",  teacherNameList);
+                    .putExtra("NewSessionID","Session"+System.currentTimeMillis());
 
             startActivity(intent);
             finish();//
@@ -473,7 +469,10 @@ public class MemberList extends AppCompatActivity {
                                     if((path.split("/").length>3)) p=path.split("/")[3];
 
                                     db.collection("User").document(Uid).update(key, FieldValue.arrayRemove(p));
-                                    db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayRemove(Uid));
+                                    if((path.split("/").length>3)) db.collection("School").document(SchoolId).collection("Group").document(p).update(finalSchoolField, FieldValue.arrayRemove(Uid));
+
+                                    else db.collection("School").document(SchoolId).update(finalSchoolField, FieldValue.arrayRemove(Uid));
+
                                     Toast.makeText(MemberList.this, Html.fromHtml("<b>" + UserName + "</b> is removed "), Toast.LENGTH_SHORT).show();
                                 }
                             });
