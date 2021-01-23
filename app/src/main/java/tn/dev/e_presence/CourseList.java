@@ -253,7 +253,7 @@ public class CourseList extends AppCompatActivity {
     {
 
         Query query = CoursesRef.orderBy("displayName");
-        Toast.makeText(CourseList.this, "School/"+SchoolId+"/Course", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(CourseList.this, "School/"+SchoolId+"/Course", Toast.LENGTH_SHORT).show();
         FirestoreRecyclerOptions<Course> options = new FirestoreRecyclerOptions.Builder<Course>()
                 .setQuery(query,Course.class)
                 .build();
